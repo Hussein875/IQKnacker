@@ -139,7 +139,7 @@ Alles steht zentral in **`config.json`**:
 
 ## Logo & Musik
 
-- **Logo:** `assets/logo/logo_symbol.png` (PNG mit transparentem Hintergrund). Wird klein als Wasserzeichen oben links eingeblendet. Solange keine Datei da ist, steht dort `@iqknacker` als Text. Anderer Dateiname → `wasserzeichen.datei` in `config.json` anpassen.
+- **Logo:** `assets/logo/logo_symbol.png` (nur Symbol) und `assets/logo/logo_komplett.png` (mit Schriftzug), PNG mit transparentem Hintergrund. Wird klein als Wasserzeichen oben links eingeblendet. Solange keine Datei da ist, steht dort `@iqknacker` als Text. Anderer Dateiname → `wasserzeichen.datei` in `config.json` anpassen.
 - **Musik:** MP3s (auch M4A/WAV/OGG) in `assets/music/` legen. Pro Video wird zufällig ein Track gewählt, auf Videolänge geschnitten (kurze Tracks werden wiederholt) und am Ende ausgeblendet. Ohne Dateien entsteht ein stilles Video (mit leerer Tonspur, damit du in der App einen Sound darunterlegen kannst).
 
 ---
