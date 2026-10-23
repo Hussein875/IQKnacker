@@ -26,6 +26,33 @@ def ease_out(x):
     return 1 - (1 - x) ** 3
 
 
+def ease_out_back(x):
+    """Schießt leicht über das Ziel hinaus und federt zurück – für „Pop“-Effekte."""
+    x = clamp(x)
+    c1 = 1.70158
+    return 1 + (c1 + 1) * (x - 1) ** 3 + c1 * (x - 1) ** 2
+
+
+def farbmix(a, b, anteil):
+    return tuple(round(x + (y - x) * anteil) for x, y in zip(a, b))
+
+
+def radialer_verlauf(breite, hoehe, farbe, innen, aussen, staerke=1.0):
+    """Ebene mit radialem Verlauf von Deckkraft `innen` (Mitte) zu `aussen` (Rand)."""
+    klein_b, klein_h = max(8, breite // 10), max(8, hoehe // 10)
+    alpha = Image.new("L", (klein_b, klein_h))
+    pixel = alpha.load()
+    for y in range(klein_h):
+        for x in range(klein_b):
+            dx = (x + 0.5) / klein_b * 2 - 1
+            dy = (y + 0.5) / klein_h * 2 - 1
+            d = clamp(math.hypot(dx, dy) / math.sqrt(2) * 1.25)
+            pixel[x, y] = round(255 * (innen + (aussen - innen) * d ** staerke))
+    ebene = Image.new("RGBA", (breite, hoehe), farbe[:3] + (0,))
+    ebene.putalpha(alpha.resize((breite, hoehe), Image.BICUBIC))
+    return ebene
+
+
 def ist_emoji(zeichen):
     cp = ord(zeichen)
     return cp >= 0x1F000 or 0x2600 <= cp <= 0x27BF or 0x2B00 <= cp <= 0x2BFF or 0x2300 <= cp <= 0x23FF \
@@ -185,8 +212,11 @@ class TextSetzer:
                 return groesse
         return min_groesse
 
-    def block(self, text, groesse, max_breite, farbe, akzent, zeilenabstand=1.2):
-        """Setzt zentrierten, umbrochenen Text auf eine transparente Ebene."""
+    def block_mit_woertern(self, text, groesse, max_breite, farbe, akzent, zeilenabstand=1.2):
+        """Setzt zentrierten, umbrochenen Text auf eine transparente Ebene.
+
+        Rückgabe: (Ebene, Liste der Wort-Rechtecke) – die Rechtecke braucht die Wort-für-Wort-Animation.
+        """
         f = schrift(self.schrift_pfad, groesse)
         leer = f.getlength(" ")
         zeilen, _ = self.umbrechen(text, groesse, max_breite)
@@ -197,12 +227,20 @@ class TextSetzer:
         ebenen_hoehe = zeilenhoehe * (len(zeilen) - 1) + oberlaenge + unterlaenge + 8
         ebene = Image.new("RGBA", (ebenen_breite, ebenen_hoehe), (0, 0, 0, 0))
         zeichnen = ImageDraw.Draw(ebene)
+        wortboxen = []
+
+        def zeilengrenze(i):
+            unterkante_davor = 4 + oberlaenge + (i - 1) * zeilenhoehe + unterlaenge
+            oberkante = 4 + i * zeilenhoehe
+            return round((unterkante_davor + oberkante) / 2)
+
         for i, (zeile, zb) in enumerate(zip(zeilen, breiten)):
             x = (ebenen_breite - zb) / 2
             grundlinie = 4 + oberlaenge + i * zeilenhoehe
             for j, wort in enumerate(zeile):
                 if j:
                     x += leer
+                wort_start = x
                 for teiltext, ist_akzent in wort:
                     fuellung = akzent if ist_akzent else farbe
                     for lauf, emoji in self._laeufe(teiltext):
@@ -218,12 +256,23 @@ class TextSetzer:
                         else:
                             zeichnen.text((x, grundlinie), lauf, font=f, fill=fuellung, anchor="ls")
                             x += f.getlength(lauf)
-        return ebene
+                # Rechtecke überlappen sich nicht: Grenzen liegen mittig zwischen Wörtern bzw. Zeilen
+                oben = 0 if i == 0 else zeilengrenze(i)
+                unten = ebenen_hoehe if i == len(zeilen) - 1 else zeilengrenze(i + 1)
+                wortboxen.append((max(0, math.floor(wort_start - leer / 2)), oben,
+                                  min(ebenen_breite, math.ceil(x + leer / 2)), unten))
+        return ebene, wortboxen
+
+    def block(self, *args, **kwargs):
+        """Wie block_mit_woertern, aber nur die fertige Ebene."""
+        return self.block_mit_woertern(*args, **kwargs)[0]
 
 
 # ---------------------------------------------------------------- Video-Szenen
 
 class RaetselRenderer:
+    """Ablauf: Hook → Rätsel (Wort für Wort, dann Countdown) → „Zeit um!“ → Endkarte."""
+
     def __init__(self, config, raetsel, basis_pfad):
         self.cfg = config
         self.raetsel = raetsel
@@ -236,6 +285,7 @@ class RaetselRenderer:
         self.hintergrund = hex_zu_rgb(farben["hintergrund"]) + (255,)
         self.textfarbe = hex_zu_rgb(farben["text"]) + (255,)
         self.akzent = hex_zu_rgb(kat.get("akzent") or farben["akzent"]) + (255,)
+        self.warnung = hex_zu_rgb(farben.get("warnung", "#FF4D4D")) + (255,)
         self.dezent = hex_zu_rgb(farben["dezent"]) + (255,)
         self.label_textfarbe = hex_zu_rgb(farben["label_text"]) + (255,)
         self.balken_hg = hex_zu_rgb(farben["balken_hintergrund"]) + (255,)
@@ -252,9 +302,15 @@ class RaetselRenderer:
         self.t_lesen = z["lesezeit"]
         self.t_countdown = z["countdown"]
         self.t_raetsel = z["lesezeit"] + z["countdown"]
+        self.t_zeit_um = z.get("zeit_um", 0)
         self.t_end = z["endkarte"]
         self.t_uebergang = z["uebergang"]
-        self.dauer = self.t_hook + self.t_raetsel + self.t_end
+        self.dauer = self.t_hook + self.t_raetsel + self.t_zeit_um + self.t_end
+
+        a = config["animation"]
+        self.kritisch_ab = a.get("kritisch_ab", 3)
+        self.wort_intervall = a.get("wort_intervall", 0.12)
+        self.wort_dauer = a.get("wort_einblenden", 0.25)
 
         self._layout()
         self._ebenen_vorbereiten(kat)
@@ -265,6 +321,16 @@ class RaetselRenderer:
     @property
     def frame_anzahl(self):
         return round(self.dauer * self.fps)
+
+    # ---- Zeitpunkte für Soundeffekte (in Sekunden ab Videostart)
+    def ticks(self):
+        """Liste (zeit, kritisch) – ein Tick pro Countdown-Sekunde."""
+        start = self.t_hook + self.t_lesen
+        n = math.ceil(self.t_countdown)
+        return [(start + i, n - i <= self.kritisch_ab) for i in range(n)]
+
+    def zeit_um_zeitpunkt(self):
+        return self.t_hook + self.t_raetsel
 
     # ---- Layout innerhalb der TikTok-Safe-Zones
     def _layout(self):
@@ -277,26 +343,39 @@ class RaetselRenderer:
         self.mitte_x = (self.inhalt_links + self.inhalt_rechts) / 2
         hoehe = self.inhalt_unten - self.inhalt_oben
 
+        g = self.cfg["groessen"]
+        self.ring_d = g.get("countdown_ring_durchmesser", 280)
         self.label_y = self.inhalt_oben + 0.08 * hoehe
-        self.text_oben = self.inhalt_oben + 0.17 * hoehe
-        self.text_unten = self.inhalt_oben + 0.74 * hoehe
-        self.countdown_y = self.inhalt_oben + 0.83 * hoehe
-        self.balken_y = self.inhalt_oben + 0.955 * hoehe
+        self.text_oben = self.inhalt_oben + 0.15 * hoehe
+        self.countdown_y = self.inhalt_unten - self.ring_d / 2 - 30
+        self.text_unten = self.countdown_y - self.ring_d / 2 - 40
+        self.balken_y = self.countdown_y + self.ring_d / 2 - 10
         self.mitte_y = (self.inhalt_oben + self.inhalt_unten) / 2
 
     def _ebenen_vorbereiten(self, kat):
         g = self.cfg["groessen"]
         texte = self.cfg["texte"]
+        a = self.cfg["animation"]
         textbreite = self.inhalt_breite - 20
 
-        # Hook
-        self.hook_ebene = self.setzer_fett.block(texte["hook"], g["hook"], textbreite, self.textfarbe,
-                                                 self.akzent, 1.1)
+        # Hook + Unterzeile passend zur Schwierigkeit
         groesse = g["hook"]
-        while self.hook_ebene.width > textbreite and groesse > 40:
+        while True:
+            self.hook_ebene, self.hook_boxen = self.setzer_fett.block_mit_woertern(
+                texte["hook"], groesse, textbreite, self.textfarbe, self.akzent, 1.1)
+            if self.hook_ebene.width <= textbreite + 8 or groesse <= 40:
+                break
             groesse -= 4
-            self.hook_ebene = self.setzer_fett.block(texte["hook"], groesse, textbreite, self.textfarbe,
-                                                     self.akzent, 1.1)
+        unterzeilen = texte.get("hook_unterzeile", {})
+        unterzeile = unterzeilen.get(str(self.raetsel.get("schwierigkeit", "")).lower()) \
+            if isinstance(unterzeilen, dict) else unterzeilen
+        self.hook_unter_ebene = None
+        if unterzeile:
+            groesse = g.get("hook_unterzeile", 46)
+            while groesse > 28 and len(self.setzer_fett.umbrechen(unterzeile, groesse, textbreite)[0]) > 1:
+                groesse -= 2  # Unterzeile soll einzeilig bleiben
+            self.hook_unter_ebene = self.setzer_fett.block(unterzeile, groesse, textbreite, self.akzent,
+                                                           self.textfarbe, 1.2)
 
         # Kategorie-Label als gefüllte Pille
         label_text = kat.get("label") or self.raetsel["kategorie"].upper()
@@ -327,24 +406,28 @@ class RaetselRenderer:
         groesse = self.setzer_fett.passende_groesse(self.raetsel["frage"], textbreite, kasten_hoehe,
                                                     g["raetsel_max"], g["raetsel_min"], g["zeilenabstand"])
         self.raetsel_schriftgroesse = groesse
-        self.text_ebene = self.setzer_fett.block(self.raetsel["frage"], groesse, textbreite, self.textfarbe,
-                                                 self.akzent, g["zeilenabstand"])
+        self.text_ebene, self.text_boxen = self.setzer_fett.block_mit_woertern(
+            self.raetsel["frage"], groesse, textbreite, self.textfarbe, self.akzent, g["zeilenabstand"])
+        self.bild_versatz = 0
         if self.bild_ebene is not None:
-            # Bild und Text zu einer Ebene zusammenfassen, damit beide gemeinsam animiert werden
-            abstand = 40
-            w = max(self.bild_ebene.width, self.text_ebene.width)
-            h = self.bild_ebene.height + abstand + self.text_ebene.height
-            kombi = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-            kombi.alpha_composite(self.bild_ebene, ((w - self.bild_ebene.width) // 2, 0))
-            kombi.alpha_composite(self.text_ebene, ((w - self.text_ebene.width) // 2,
-                                                    self.bild_ebene.height + abstand))
-            self.text_ebene = kombi
+            self.bild_versatz = self.bild_ebene.height + 40
 
-        # Countdown-Zahlen 5 ... 1
+        # Wort-Animation so takten, dass der Text vor dem Countdown komplett steht
+        n = max(1, len(self.text_boxen))
+        self.text_intervall = min(self.wort_intervall, max(0.02, (self.t_lesen - 0.3 - self.wort_dauer) / n))
+
+        # Countdown-Zahlen in Normal- und Warnfarbe
         self.zahl_ebenen = {}
         for n in range(1, math.ceil(self.t_countdown) + 1):
-            self.zahl_ebenen[n] = self.setzer_fett.block(str(n), g["countdown_zahl"], 400, self.akzent,
-                                                         self.akzent, 1.0)
+            for farbe in (self.akzent, self.warnung):
+                self.zahl_ebenen[(n, farbe)] = self.setzer_fett.block(str(n), g["countdown_zahl"], 400, farbe,
+                                                                      farbe, 1.0)
+
+        # „Zeit um!“
+        self.zeit_um_ebene = None
+        if self.t_zeit_um > 0 and texte.get("zeit_um"):
+            self.zeit_um_ebene = self.setzer_fett.block(texte["zeit_um"], g.get("zeit_um", 130), textbreite,
+                                                        self.warnung, self.textfarbe, 1.1)
 
         # Endkarte
         self.end1_ebene = self.setzer_fett.block(texte["endkarte_1"], g["endkarte_1"], textbreite,
@@ -353,6 +436,15 @@ class RaetselRenderer:
                                                  self.akzent, self.textfarbe, 1.2)
         self.handle_ebene = self.setzer_normal.block(texte.get("handle", ""), g["handle"], textbreite,
                                                      self.dezent, self.akzent, 1.2) if texte.get("handle") else None
+
+        # Hintergrund-Effekte: weiches Leuchten hinter dem Text und roter Rand für die letzten Sekunden
+        self.glow_ebene = None
+        if a.get("glow_deckkraft", 0) > 0:
+            d = round(self.inhalt_breite * 1.25)
+            self.glow_ebene = radialer_verlauf(d, d, self.akzent, a["glow_deckkraft"], 0.0, 1.4)
+        self.vignette = None
+        if a.get("vignette_deckkraft", 0) > 0:
+            self.vignette = radialer_verlauf(self.breite, self.hoehe, self.warnung, 0.0, a["vignette_deckkraft"], 2.2)
 
         self._wasserzeichen_vorbereiten()
 
@@ -384,12 +476,15 @@ class RaetselRenderer:
     # ---- Frame-Erzeugung
     def frame(self, t):
         bild = Image.new("RGBA", (self.breite, self.hoehe), self.hintergrund)
+        ende_raetsel = self.t_hook + self.t_raetsel
         if t < self.t_hook:
             self._szene_hook(bild, t)
-        elif t < self.t_hook + self.t_raetsel:
+        elif t < ende_raetsel:
             self._szene_raetsel(bild, t - self.t_hook)
+        elif t < ende_raetsel + self.t_zeit_um:
+            self._szene_zeit_um(bild, t - ende_raetsel)
         else:
-            self._szene_ende(bild, t - self.t_hook - self.t_raetsel)
+            self._szene_ende(bild, t - ende_raetsel - self.t_zeit_um)
         if self.wasserzeichen:
             ebene, pos = self.wasserzeichen
             bild.alpha_composite(ebene, dest=pos)
@@ -401,44 +496,107 @@ class RaetselRenderer:
             return 1.0
         return clamp((dauer - t) / self.t_uebergang)
 
+    def _woerter_zeigen(self, ebene, boxen, t, intervall, dauer, hub):
+        """Baut die Text-Ebene Wort für Wort auf: jedes Wort gleitet von unten herein."""
+        if t >= (len(boxen) - 1) * intervall + dauer:
+            return ebene
+        aufbau = Image.new("RGBA", ebene.size, (0, 0, 0, 0))
+        for i, (x0, y0, x1, y1) in enumerate(boxen):
+            p = ease_out((t - i * intervall) / dauer)
+            if p <= 0:
+                break
+            stueck = ebene.crop((x0, y0, x1, y1))
+            dy = round(hub * (1 - p))
+            platz = aufbau.height - (y0 + dy)
+            if platz <= 0:
+                continue
+            if stueck.height > platz:
+                stueck = stueck.crop((0, 0, stueck.width, platz))
+            aufbau.alpha_composite(mit_deckkraft(stueck, p), dest=(x0, y0 + dy))
+        return aufbau
+
+    def _glow(self, bild, t, mitte_y, deckkraft):
+        if self.glow_ebene is None:
+            return
+        atmen = 0.75 + 0.25 * math.sin(2 * math.pi * t / 2.5)
+        einfuegen(bild, self.glow_ebene, (self.mitte_x, mitte_y), deckkraft * atmen)
+
     def _szene_hook(self, bild, t):
-        a = self.cfg["animation"]
-        p = ease_out(t / max(0.01, a["einblenden_dauer"] + 0.2))
-        deckkraft = p * self._ausblenden(t, self.t_hook)
-        skalierung = 0.85 + 0.15 * p
-        einfuegen(bild, self.hook_ebene, (self.mitte_x, self.mitte_y), deckkraft, skalierung)
+        raus = self._ausblenden(t, self.t_hook)
+        hoehe_unter = self.hook_unter_ebene.height + 50 if self.hook_unter_ebene else 0
+        mitte_y = self.mitte_y - hoehe_unter / 2
+        self._glow(bild, t, mitte_y, ease_out(t / 0.6) * raus)
+
+        ebene = self._woerter_zeigen(self.hook_ebene, self.hook_boxen, t, 0.12, 0.3, 30)
+        skalierung = 0.8 + 0.2 * ease_out_back(t / 0.55)
+        einfuegen(bild, ebene, (self.mitte_x, mitte_y), raus, skalierung)
+
+        if self.hook_unter_ebene:
+            start = min(0.55, self.t_hook * 0.4)
+            p = ease_out((t - start) / 0.35)
+            y = mitte_y + self.hook_ebene.height / 2 + 50 + self.hook_unter_ebene.height / 2 + 20 * (1 - p)
+            einfuegen(bild, self.hook_unter_ebene, (self.mitte_x, y), p * raus)
 
     def _szene_raetsel(self, bild, t):
         a = self.cfg["animation"]
         dauer_ein = max(0.01, a["einblenden_dauer"])
         raus = self._ausblenden(t, self.t_raetsel)
+        c = t - self.t_lesen                       # Sekunden seit Countdown-Start
+        rest_sek = self.t_countdown - max(c, 0)
+        kritisch = c >= 0 and rest_sek <= self.kritisch_ab
+        in_sekunde = max(c, 0) - math.floor(max(c, 0))
+        warn_anteil = clamp((self.kritisch_ab - rest_sek + 0.3) / 0.3) if c >= 0 else 0.0
+
+        # Roter Rand pulsiert in den letzten Sekunden mit jedem Tick
+        if self.vignette is not None and kritisch:
+            einfuegen(bild, self.vignette, (self.breite / 2, self.hoehe / 2),
+                      (0.35 + 0.65 * (1 - ease_out(in_sekunde / 0.6))) * raus)
+
+        text_mitte_y = (self.text_oben + self.text_unten) / 2
+        self._glow(bild, t, text_mitte_y, ease_out(t / dauer_ein) * raus)
 
         # Label
         p_label = ease_out(t / dauer_ein)
         einfuegen(bild, self.label_ebene, (self.mitte_x, self.label_y + 20 * (1 - p_label)), p_label * raus)
 
-        # Rätseltext: Einblenden mit leichtem Zoom, danach ganz langsames Heranzoomen
-        p_text = ease_out((t - 0.1) / dauer_ein)
-        zoom = a["zoom_start"] + (1 - a["zoom_start"]) * p_text
-        zoom *= 1 + a["zoom_drift"] * (t / self.t_raetsel)
-        text_mitte_y = (self.text_oben + self.text_unten) / 2
-        einfuegen(bild, self.text_ebene, (self.mitte_x, text_mitte_y), p_text * raus, zoom)
+        # Rätseltext Wort für Wort, dann langsames Heranzoomen und ein „Herzschlag“ in der Schlussphase
+        ebene = self._woerter_zeigen(self.text_ebene, self.text_boxen, t - 0.15, self.text_intervall,
+                                     self.wort_dauer, 24)
+        if self.bild_ebene is not None:
+            kombi = Image.new("RGBA", (max(self.bild_ebene.width, ebene.width), self.bild_versatz + ebene.height),
+                              (0, 0, 0, 0))
+            p_bild = ease_out(t / dauer_ein)
+            kombi.alpha_composite(mit_deckkraft(self.bild_ebene, p_bild),
+                                  ((kombi.width - self.bild_ebene.width) // 2, 0))
+            kombi.alpha_composite(ebene, ((kombi.width - ebene.width) // 2, self.bild_versatz))
+            ebene = kombi
+        zoom = 1 + a["zoom_drift"] * (t / self.t_raetsel)
+        if kritisch:
+            zoom *= 1 + 0.02 * (1 - ease_out(in_sekunde / 0.4))
+        einfuegen(bild, ebene, (self.mitte_x, text_mitte_y), raus, zoom)
 
         # Countdown
-        c = t - self.t_lesen
         if c < -0.3:
             return
-        stil = self.cfg["countdown"].get("stil", "beides")
+        stil = self.cfg["countdown"].get("stil", "ring")
         p_cd = ease_out((c + 0.3) / 0.4) * raus
         rest = clamp(1 - c / self.t_countdown)
+        farbe = farbmix(self.akzent, self.warnung, warn_anteil)
 
-        if stil in ("zahlen", "beides"):
-            n = int(clamp(self.t_countdown - math.floor(max(c, 0)), 1, self.t_countdown))
-            in_sekunde = max(c, 0) - math.floor(max(c, 0))
-            puls = 1 + a["countdown_puls"] * (1 - ease_out(in_sekunde / 0.3))
-            ebene = self.zahl_ebenen.get(n)
+        wackeln = 0.0
+        if kritisch:
+            wackeln = 9 * math.sin(2 * math.pi * 16 * in_sekunde) * (1 - ease_out(in_sekunde / 0.35))
+
+        if stil == "ring":
+            einfuegen(bild, self._ring(rest, farbe), (self.mitte_x + wackeln, self.countdown_y), p_cd)
+
+        if stil in ("ring", "zahlen", "beides"):
+            n = int(clamp(math.ceil(self.t_countdown - math.floor(max(c, 0))), 1, math.ceil(self.t_countdown)))
+            staerke = a["countdown_puls"] * (1.8 if kritisch else 1.0)
+            puls = 1 + staerke * (1 - ease_out(in_sekunde / 0.3))
+            ebene = self.zahl_ebenen.get((n, self.warnung if warn_anteil > 0.5 else self.akzent))
             if ebene is not None:
-                einfuegen(bild, ebene, (self.mitte_x, self.countdown_y), p_cd, puls)
+                einfuegen(bild, ebene, (self.mitte_x + wackeln, self.countdown_y), p_cd, puls)
 
         if stil in ("balken", "beides"):
             g = self.cfg["groessen"]
@@ -448,27 +606,66 @@ class RaetselRenderer:
             d.rounded_rectangle((0, 0, bb - 1, bh - 1), radius=bh // 2, fill=self.balken_hg)
             fuell = round(bb * rest)
             if fuell >= bh:
-                d.rounded_rectangle((0, 0, fuell - 1, bh - 1), radius=bh // 2, fill=self.akzent)
+                d.rounded_rectangle((0, 0, fuell - 1, bh - 1), radius=bh // 2, fill=farbe)
             einfuegen(bild, balken, (self.mitte_x, self.balken_y), p_cd)
 
+    def _ring(self, rest, farbe):
+        """Kreisförmiger Timer; doppelt so groß gezeichnet und verkleinert für glatte Kanten."""
+        faktor = 2
+        d = self.ring_d * faktor
+        staerke = self.cfg["groessen"].get("countdown_ring_staerke", 18) * faktor
+        ring = Image.new("RGBA", (d, d), (0, 0, 0, 0))
+        zeichnen = ImageDraw.Draw(ring)
+        zeichnen.ellipse((0, 0, d - 1, d - 1), outline=self.balken_hg, width=staerke)
+        if rest > 0.002:
+            ende = -90 + 360 * rest
+            zeichnen.arc((0, 0, d - 1, d - 1), start=-90, end=ende, fill=farbe, width=staerke)
+            # abgerundete Enden
+            r_mitte = (d - staerke) / 2
+            for winkel in (-90, ende):
+                bogen = math.radians(winkel)
+                cx = d / 2 + r_mitte * math.cos(bogen)
+                cy = d / 2 + r_mitte * math.sin(bogen)
+                zeichnen.ellipse((cx - staerke / 2, cy - staerke / 2, cx + staerke / 2, cy + staerke / 2), fill=farbe)
+        return ring.resize((self.ring_d, self.ring_d), Image.LANCZOS)
+
+    def _szene_zeit_um(self, bild, t):
+        if self.vignette is not None:
+            einfuegen(bild, self.vignette, (self.breite / 2, self.hoehe / 2), 1 - ease_out(t / 0.7))
+        if self.zeit_um_ebene is None:
+            return
+        raus = self._ausblenden(t, self.t_zeit_um)
+        skalierung = 1.5 - 0.5 * ease_out_back(t / 0.3)
+        wackeln = 14 * math.sin(2 * math.pi * 14 * t) * (1 - ease_out(t / 0.4))
+        einfuegen(bild, self.zeit_um_ebene, (self.mitte_x + wackeln, self.mitte_y), ease_out(t / 0.12) * raus,
+                  skalierung)
+
     def _szene_ende(self, bild, t):
-        a = self.cfg["animation"]
-        dauer_ein = max(0.01, a["einblenden_dauer"])
-        p1 = ease_out(t / dauer_ein)
-        p2 = ease_out((t - 0.3) / dauer_ein)
-        p3 = ease_out((t - 0.5) / dauer_ein)
+        self._glow(bild, t, self.mitte_y, ease_out(t / 0.5))
         abstand = 70
         h1, h2 = self.end1_ebene.height, self.end2_ebene.height
         h3 = self.handle_ebene.height if self.handle_ebene else 0
         gesamt = h1 + abstand + h2 + (abstand * 0.6 + h3 if h3 else 0)
         y = self.mitte_y - gesamt / 2
-        einfuegen(bild, self.end1_ebene, (self.mitte_x, y + h1 / 2 + 15 * (1 - p1)), p1, 0.96 + 0.04 * p1)
+
+        def pop(ebene, y_mitte, start):
+            p = (t - start) / 0.4
+            if p > 0:
+                einfuegen(bild, ebene, (self.mitte_x, y_mitte), ease_out(p * 2), 0.7 + 0.3 * ease_out_back(p))
+
+        pop(self.end1_ebene, y + h1 / 2, 0.0)
         y += h1 + abstand
-        einfuegen(bild, self.end2_ebene, (self.mitte_x, y + h2 / 2 + 15 * (1 - p2)), p2, 0.96 + 0.04 * p2)
+        # „Folge für die Auflösung“ pulsiert danach sanft weiter
+        pop_zeit = max(0.0, t - 0.65)
+        puls = 1 + 0.035 * math.sin(2 * math.pi * pop_zeit / 0.9) if pop_zeit > 0 else 1.0
+        if t > 0.25:
+            p = (t - 0.25) / 0.4
+            einfuegen(bild, self.end2_ebene, (self.mitte_x, y + h2 / 2), ease_out(p * 2),
+                      (0.7 + 0.3 * ease_out_back(p)) * puls)
         if self.handle_ebene:
             y += h2 + abstand * 0.6
-            einfuegen(bild, self.handle_ebene, (self.mitte_x, y + h3 / 2), p3)
+            einfuegen(bild, self.handle_ebene, (self.mitte_x, y + h3 / 2), ease_out((t - 0.5) / 0.4))
 
     def vorschau_zeitpunkt(self):
-        """Zeitpunkt für das Vorschaubild: Rätsel vollständig sichtbar, Countdown bei 5."""
-        return self.t_hook + self.t_lesen + 0.35
+        """Zeitpunkt für das Vorschaubild: Rätsel vollständig sichtbar, Countdown läuft gerade an."""
+        return self.t_hook + self.t_lesen + 0.4

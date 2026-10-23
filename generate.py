@@ -12,13 +12,16 @@ Beispiele:
 """
 
 import argparse
+import array
 import json
+import math
 import os
 import random
 import shutil
 import subprocess
 import sys
 import time
+import wave
 
 BASIS = os.path.dirname(os.path.abspath(__file__))
 CONFIG_DATEI = os.path.join(BASIS, "config.json")
@@ -124,7 +127,7 @@ def caption_text(r, cfg):
     kat = cfg["kategorien"].get(r["kategorie"], {})
     zufall = random.Random(f"{r['id']}-{r['kategorie']}")  # gleiche ID → gleiche Caption
     captions = kat.get("captions") or ["Kannst du das lösen? 🧠"]
-    caption = zufall.choice(captions)
+    caption = zufall.choice(captions).replace("{countdown}", str(round(cfg["zeiten"]["countdown"])))
 
     allgemein = list(cfg.get("hashtags_allgemein", []))
     eigene = [h for h in kat.get("hashtags", []) if h not in allgemein]
@@ -149,21 +152,65 @@ def musik_dateien(cfg):
                   if f.lower().endswith(MUSIK_ENDUNGEN) and not f.startswith("."))
 
 
-def ffmpeg_befehl(ffmpeg, renderer, ziel, cfg, musik):
+def soundeffekte_schreiben(renderer, ziel, rate=44100):
+    """Erzeugt Countdown-Ticks und einen Gong bei „Zeit um!“ als WAV – ganz ohne Sound-Dateien."""
+    puffer = array.array("f", bytes(4 * round(renderer.dauer * rate)))
+
+    def ton(start, dauer, frequenzen, lautstaerke, abklingen):
+        s0 = round(start * rate)
+        for i in range(round(dauer * rate)):
+            if s0 + i >= len(puffer):
+                break
+            t = i / rate
+            huelle = math.exp(-t * abklingen) * min(1.0, t * 2000)  # kurzes Einschwingen gegen Knacken
+            puffer[s0 + i] += lautstaerke * huelle * sum(math.sin(2 * math.pi * f * t) * g for f, g in frequenzen)
+
+    for zeit, kritisch in renderer.ticks():
+        if kritisch:  # höher, lauter und doppelt („Tick-Tack“) in den letzten Sekunden
+            ton(zeit, 0.08, [(1760, 1.0), (3520, 0.3)], 0.45, 55)
+            ton(zeit + 0.5, 0.05, [(1320, 1.0)], 0.2, 70)
+        else:
+            ton(zeit, 0.06, [(1200, 1.0), (2400, 0.25)], 0.28, 70)
+    if renderer.t_zeit_um > 0:
+        ton(renderer.zeit_um_zeitpunkt(), 1.4, [(523.25, 1.0), (784, 0.6), (1046.5, 0.35)], 0.35, 3.2)
+
+    daten = array.array("h", (max(-32767, min(32767, round(x * 32767))) for x in puffer))
+    with wave.open(ziel, "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(rate)
+        w.writeframes(daten.tobytes())
+
+
+def ffmpeg_befehl(ffmpeg, renderer, ziel, cfg, musik, effekte):
     v = cfg["video"]
     dauer = renderer.dauer
     befehl = [ffmpeg, "-y", "-loglevel", "error",
               "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{renderer.breite}x{renderer.hoehe}",
               "-r", str(renderer.fps), "-i", "-"]
+    filter_teile, spuren, eingang = [], [], 1
     if musik:
         m = cfg["musik"]
         aus = min(m["ausblenden"], dauer)
         befehl += ["-stream_loop", "-1", "-i", musik]
-        filter_audio = (f"[1:a]atrim=0:{dauer:.3f},asetpts=N/SR/TB,"
-                        f"afade=t=in:st=0:d={m['einblenden']},"
-                        f"afade=t=out:st={dauer - aus:.3f}:d={aus},"
-                        f"volume={m['lautstaerke']}[a]")
-        befehl += ["-filter_complex", filter_audio, "-map", "0:v", "-map", "[a]"]
+        filter_teile.append(f"[{eingang}:a]atrim=0:{dauer:.3f},asetpts=N/SR/TB,"
+                            f"afade=t=in:st=0:d={m['einblenden']},"
+                            f"afade=t=out:st={dauer - aus:.3f}:d={aus},"
+                            f"volume={m['lautstaerke']}[musik]")
+        spuren.append("[musik]")
+        eingang += 1
+    if effekte:
+        befehl += ["-i", effekte]
+        filter_teile.append(f"[{eingang}:a]volume={cfg['soundeffekte']['lautstaerke']},"
+                            f"aformat=channel_layouts=stereo,apad[sfx]")
+        spuren.append("[sfx]")
+        eingang += 1
+    if spuren:
+        if len(spuren) == 2:
+            filter_teile.append("[musik][sfx]amix=inputs=2:duration=first:normalize=0[a]")
+        else:
+            filter_teile.append(f"{spuren[0]}anull[a]")
+        befehl += ["-filter_complex", ";".join(filter_teile), "-map", "0:v", "-map", "[a]"]
     else:
         # Stille Tonspur, damit sich das Video überall problemlos weiterbearbeiten lässt
         befehl += ["-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-map", "0:v", "-map", "1:a"]
@@ -175,7 +222,7 @@ def ffmpeg_befehl(ffmpeg, renderer, ziel, cfg, musik):
     return befehl
 
 
-def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False):
+def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False, ohne_effekte=False):
     from renderer import RaetselRenderer
 
     ausgabe = os.path.join(BASIS, cfg["ausgabe"]["ordner"])
@@ -194,19 +241,27 @@ def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False):
     musik = random.choice(musik_liste) if musik_liste else None
     video = os.path.join(ausgabe, f"{name}.mp4")
     tmp = os.path.join(ausgabe, f".{name}.tmp.mp4")
+    effekte = None
+    if cfg.get("soundeffekte", {}).get("aktiv") and not ohne_effekte:
+        effekte = os.path.join(ausgabe, f".{name}.sfx.wav")
+        soundeffekte_schreiben(renderer, effekte)
 
     start = time.time()
-    prozess = subprocess.Popen(ffmpeg_befehl(ffmpeg, renderer, tmp, cfg, musik), stdin=subprocess.PIPE)
     try:
-        for i in range(renderer.frame_anzahl):
-            prozess.stdin.write(renderer.frame(i / renderer.fps).tobytes())
-        prozess.stdin.close()
-    except BrokenPipeError:
-        pass
-    if prozess.wait() != 0:
-        if os.path.exists(tmp):
-            os.remove(tmp)
-        raise RuntimeError("FFmpeg ist mit einem Fehler abgebrochen (siehe Meldung oben).")
+        prozess = subprocess.Popen(ffmpeg_befehl(ffmpeg, renderer, tmp, cfg, musik, effekte), stdin=subprocess.PIPE)
+        try:
+            for i in range(renderer.frame_anzahl):
+                prozess.stdin.write(renderer.frame(i / renderer.fps).tobytes())
+            prozess.stdin.close()
+        except BrokenPipeError:
+            pass
+        if prozess.wait() != 0:
+            if os.path.exists(tmp):
+                os.remove(tmp)
+            raise RuntimeError("FFmpeg ist mit einem Fehler abgebrochen (siehe Meldung oben).")
+    finally:
+        if effekte and os.path.exists(effekte):
+            os.remove(effekte)
     os.replace(tmp, video)
 
     with open(os.path.join(ausgabe, f"{name}_caption.txt"), "w", encoding="utf-8") as f:
@@ -216,6 +271,7 @@ def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False):
         f.write(kommentar)
 
     musik_info = os.path.basename(musik) if musik else "ohne Musik"
+    musik_info += ", mit Soundeffekten" if effekte else ""
     print(f"  ✓ {os.path.relpath(video, BASIS)}  ({renderer.dauer:.1f} s, {musik_info}, "
           f"Schriftgröße {renderer.raetsel_schriftgroesse}, {time.time() - start:.1f} s Renderzeit)")
     if len(kommentar.strip()) > KOMMENTAR_MAX:
@@ -231,6 +287,7 @@ def main():
     parser.add_argument("--alle", action="store_true", help="alle Rätsel erzeugen, egal welcher Status")
     parser.add_argument("--vorschau", action="store_true", help="nur Vorschaubilder, kein Video, Status bleibt")
     parser.add_argument("--ohne-musik", action="store_true", help="Video ohne Musik erzeugen")
+    parser.add_argument("--ohne-effekte", action="store_true", help="ohne Ticken und Gong")
     parser.add_argument("--liste", action="store_true", help="alle Rätsel mit Status anzeigen")
     parser.add_argument("--check", action="store_true", help="Installation prüfen")
     args = parser.parse_args()
@@ -272,7 +329,8 @@ def main():
     for r in auswahl:
         print(f"• Rätsel {r['id']} ({r['kategorie']})")
         try:
-            erzeuge(r, cfg, ffmpeg, nur_vorschau=args.vorschau, ohne_musik=args.ohne_musik)
+            erzeuge(r, cfg, ffmpeg, nur_vorschau=args.vorschau, ohne_musik=args.ohne_musik,
+                    ohne_effekte=args.ohne_effekte)
         except Exception as e:
             fehler += 1
             print(f"  ✗ Fehler: {e}")

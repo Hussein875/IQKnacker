@@ -2,13 +2,15 @@
 
 Erzeugt aus einer Rätsel-Liste (`raetsel.json`) automatisch fertige Hochformat-Videos für TikTok, Reels und Shorts – ohne Stimme, nur Text, Grafik und (optional) Musik.
 
-**Ablauf jedes Videos (1080 × 1920, 30 fps, H.264, 11 Sekunden):**
+**Ablauf jedes Videos (1080 × 1920, 30 fps, H.264, ca. 17 Sekunden):**
 
 | Abschnitt | Dauer | Inhalt |
 |---|---|---|
-| Hook | 1,5 s | „Kannst du das lösen?“ – eingeblendet mit leichtem Zoom |
-| Rätsel | 7,5 s | Kategorie-Label oben, Rätseltext mittig; nach 2,5 s Lesezeit Countdown 5 → 1 (Zahl + Balken) |
-| Endkarte | 2 s | „Schreib deine Lösung in die Kommentare 👇“ + „Folge für die Auflösung“ |
+| Hook | 1,8 s | „Kannst du das lösen?“ ploppt Wort für Wort auf, darunter ein Spruch passend zur Schwierigkeit |
+| Rätsel | 12 s | Rätseltext baut sich Wort für Wort auf (2 s), dann läuft ein Ring-Countdown 10 → 1 mit Ticken |
+| Schlussphase | letzte 3 s | Countdown wird rot, Zahl wackelt, roter Rand pulsiert, Ticken wird schneller und höher |
+| Zeit um! | 0,8 s | „⏱️ ZEIT UM!“ mit rotem Blitz und Gong |
+| Endkarte | 2,2 s | „Schreib deine Lösung in die Kommentare 👇“ + pulsierendes „Folge für die Auflösung“ |
 
 Die Lösung erscheint **nie** im Video – sie landet nur in der Kommentar-Datei zum Anpinnen.
 
@@ -38,6 +40,7 @@ python generate.py --id 3 7 9   # mehrere bestimmte Rätsel
 python generate.py --alle       # alle Rätsel (neu) erzeugen
 python generate.py --vorschau   # nur Vorschaubilder, schnell zum Kontrollieren
 python generate.py --ohne-musik # Videos ohne Musik
+python generate.py --ohne-effekte # ohne Ticken und Gong
 python generate.py --liste      # Übersicht aller Rätsel mit Status
 ```
 
@@ -108,7 +111,7 @@ In `config.json` unter `kategorien` einen Block ergänzen:
 - `label` – Text der kleinen Plakette oben im Video
 - `akzent` *(optional)* – eigene Akzentfarbe für diese Kategorie; ohne Angabe gilt das IQKnacker-Gelb
 - `hashtags` – Pool, aus dem pro Video passend ausgewählt wird (zusätzlich zu `hashtags_allgemein`)
-- `captions` – Caption-Sätze, pro Rätsel wird einer ausgewählt (immer derselbe für dieselbe ID)
+- `captions` – Caption-Sätze, pro Rätsel wird einer ausgewählt (immer derselbe für dieselbe ID). `{countdown}` wird durch die Countdown-Länge ersetzt („Nur {countdown} Sekunden“ → „Nur 10 Sekunden“).
 
 ---
 
@@ -118,16 +121,17 @@ Alles steht zentral in **`config.json`**:
 
 | Bereich | Was du dort einstellst |
 |---|---|
-| `farben` | Hintergrund, Text, Akzent (`#F2C94C`), Label-Schrift, Balken |
+| `farben` | Hintergrund, Text, Akzent (`#F2C94C`), Warnfarbe für die Schlussphase (`warnung`), Label-Schrift, Ring/Balken-Hintergrund |
 | `schriften` | Pfade zu den Schriftdateien (`.ttf`) |
-| `groessen` | Schriftgrößen für Hook, Label, Rätsel (max/min), Countdown, Endkarte |
-| `zeiten` | Dauer von Hook, Lesezeit, Countdown, Endkarte, Übergängen (in Sekunden) |
-| `animation` | Einblend-Dauer, Start-Zoom, langsamer Zoom, Puls der Countdown-Zahl |
-| `countdown.stil` | `"beides"`, `"zahlen"` oder `"balken"` |
-| `texte` | Hook-Text, Endkarten-Texte, Handle (`*Sternchen*` = Akzentfarbe) |
+| `groessen` | Schriftgrößen für Hook, Hook-Unterzeile, Label, Rätsel (max/min), Countdown-Zahl und -Ring, „Zeit um“, Endkarte |
+| `zeiten` | Dauer von Hook, Lesezeit, **Countdown (Standard 10 s)**, „Zeit um“ (`0` = weglassen), Endkarte, Übergängen (in Sekunden) |
+| `animation` | Einblend-Dauer, Tempo der Wort-für-Wort-Animation, langsamer Zoom, Puls der Countdown-Zahl, ab wie vielen Sekunden es rot wird (`kritisch_ab`), Stärke von Leuchten (`glow_deckkraft`) und rotem Rand (`vignette_deckkraft`, `0` = aus) |
+| `countdown.stil` | `"ring"` (Kreis mit Zahl), `"zahlen"`, `"balken"` oder `"beides"` (Zahl + Balken) |
+| `texte` | Hook-Text, Hook-Unterzeile je Schwierigkeit (`leicht`/`mittel`/`schwer`), „Zeit um“-Text, Endkarten-Texte, Handle (`*Sternchen*` = Akzentfarbe) |
 | `wasserzeichen` | Logo-Datei, Position (`oben_links`, `oben_rechts`, `unten_links`, `unten_rechts`), Höhe, Deckkraft |
 | `safe_zone` | freie Ränder für die TikTok-Oberfläche (oben 150, unten 400, rechts 150 px) |
 | `musik` | Ordner, Lautstärke, Ein-/Ausblenden |
+| `soundeffekte` | Ticken und Gong an/aus (`aktiv`), Lautstärke |
 | `hashtags_allgemein`, `hashtags_anzahl` | immer verwendete Hashtags, Anzahl insgesamt (5–8) |
 | `kommentar_vorlage` | Aufbau des Auflösungs-Kommentars (`{loesung}`, `{erklaerung}`, …) |
 
@@ -140,7 +144,8 @@ Alles steht zentral in **`config.json`**:
 ## Logo & Musik
 
 - **Logo:** `assets/logo/logo_symbol.png` (nur Symbol) und `assets/logo/logo_komplett.png` (mit Schriftzug), PNG mit transparentem Hintergrund. Wird klein als Wasserzeichen oben links eingeblendet. Solange keine Datei da ist, steht dort `@iqknacker` als Text. Anderer Dateiname → `wasserzeichen.datei` in `config.json` anpassen.
-- **Musik:** MP3s (auch M4A/WAV/OGG) in `assets/music/` legen. Pro Video wird zufällig ein Track gewählt, auf Videolänge geschnitten (kurze Tracks werden wiederholt) und am Ende ausgeblendet. Ohne Dateien entsteht ein stilles Video (mit leerer Tonspur, damit du in der App einen Sound darunterlegen kannst).
+- **Musik:** MP3s (auch M4A/WAV/OGG) in `assets/music/` legen. Pro Video wird zufällig ein Track gewählt, auf Videolänge geschnitten (kurze Tracks werden wiederholt) und am Ende ausgeblendet. Ohne Dateien entsteht ein Video nur mit den Soundeffekten (bzw. ganz still mit `--ohne-effekte`).
+- **Soundeffekte:** Ticken pro Countdown-Sekunde und ein Gong bei „Zeit um!“ werden vom Skript selbst erzeugt, du brauchst dafür keine Dateien. Willst du in der TikTok-App einen Trend-Sound darunterlegen, nimm am besten `--ohne-effekte` oder dreh in der App den Originalton leiser.
 
 ---
 

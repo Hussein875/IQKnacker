@@ -18,7 +18,8 @@
     "akzent": "#F2C94C",
     "label_text": "#000000",
     "dezent": "#8C8C8C",
-    "balken_hintergrund": "#2B2B2B"
+    "balken_hintergrund": "#2B2B2B",
+    "warnung": "#FF4D4D"
   },
   "schriften": {
     "fett": "assets/fonts/Montserrat-ExtraBold.ttf",
@@ -27,36 +28,51 @@
   },
   "groessen": {
     "hook": 128,
+    "hook_unterzeile": 46,
     "label": 44,
     "raetsel_max": 100,
     "raetsel_min": 46,
     "zeilenabstand": 1.25,
-    "countdown_zahl": 150,
+    "countdown_zahl": 120,
+    "countdown_ring_durchmesser": 280,
+    "countdown_ring_staerke": 18,
     "countdown_balken_breite": 620,
     "countdown_balken_hoehe": 16,
+    "zeit_um": 130,
     "endkarte_1": 86,
     "endkarte_2": 62,
     "handle": 42,
     "wasserzeichen_text": 34
   },
   "zeiten": {
-    "hook": 1.5,
-    "lesezeit": 2.5,
-    "countdown": 5,
-    "endkarte": 2.0,
-    "uebergang": 0.3
+    "hook": 1.8,
+    "lesezeit": 2.0,
+    "countdown": 10,
+    "zeit_um": 0.8,
+    "endkarte": 2.2,
+    "uebergang": 0.25
   },
   "animation": {
     "einblenden_dauer": 0.5,
-    "zoom_start": 0.92,
-    "zoom_drift": 0.03,
-    "countdown_puls": 0.18
+    "wort_intervall": 0.12,
+    "wort_einblenden": 0.25,
+    "zoom_drift": 0.04,
+    "countdown_puls": 0.14,
+    "kritisch_ab": 3,
+    "glow_deckkraft": 0.13,
+    "vignette_deckkraft": 0.4
   },
   "countdown": {
-    "stil": "beides"
+    "stil": "ring"
   },
   "texte": {
     "hook": "Kannst du das *lösen?*",
+    "hook_unterzeile": {
+      "leicht": "Klingt leicht – oder? 🤔",
+      "mittel": "Die meisten tappen in die Falle 🤯",
+      "schwer": "Nur echte Genies schaffen das 🧠"
+    },
+    "zeit_um": "⏱️ ZEIT UM!",
     "endkarte_1": "Schreib deine *Lösung* in die Kommentare 👇",
     "endkarte_2": "Folge für die Auflösung",
     "handle": "@iqknacker"
@@ -74,26 +90,50 @@
     "einblenden": 0.3,
     "ausblenden": 1.5
   },
+  "soundeffekte": {
+    "aktiv": true,
+    "lautstaerke": 0.7
+  },
   "ausgabe": {
     "ordner": "output"
   },
-  "hashtags_allgemein": ["#iqknacker", "#rätsel", "#fürdich"],
+  "hashtags_allgemein": [
+    "#iqknacker",
+    "#rätsel",
+    "#fürdich"
+  ],
   "hashtags_anzahl": 7,
   "kommentar_vorlage": "✅ Auflösung: {loesung}\n{erklaerung}\nFolge @iqknacker für mehr Rätsel 🧠",
   "kategorien": {
     "iq": {
       "label": "IQ-TEST",
-      "hashtags": ["#iqtest", "#denksport", "#logikrätsel", "#knobeln", "#denkfalle", "#gehirnjogging", "#rätselspaß"],
+      "hashtags": [
+        "#iqtest",
+        "#denksport",
+        "#logikrätsel",
+        "#knobeln",
+        "#denkfalle",
+        "#gehirnjogging",
+        "#rätselspaß"
+      ],
       "captions": [
         "Die meisten tappen hier in die Falle 🤯 Du auch?",
-        "Nur 5 Sekunden – schaffst du es? 🧠",
+        "Nur {countdown} Sekunden – schaffst du es? 🧠",
         "Klingt einfach, oder? Denk lieber zweimal nach 🤔",
         "Wer das sofort löst, hat echt was drauf 🏆"
       ]
     },
     "wissen": {
       "label": "WISSEN",
-      "hashtags": ["#wissen", "#allgemeinwissen", "#quiz", "#wusstestdu", "#lernen", "#fakten", "#quizfrage"],
+      "hashtags": [
+        "#wissen",
+        "#allgemeinwissen",
+        "#quiz",
+        "#wusstestdu",
+        "#lernen",
+        "#fakten",
+        "#quizfrage"
+      ],
       "captions": [
         "Weißt du's ohne zu googeln? 🤓",
         "Allgemeinwissen-Check: Bist du dabei? 💡",
@@ -104,16 +144,30 @@
     "mathe": {
       "label": "MATHE",
       "akzent": "#6FCF97",
-      "hashtags": ["#mathe", "#matherätsel", "#kopfrechnen", "#mathetrick", "#denksport", "#knobeln"],
+      "hashtags": [
+        "#mathe",
+        "#matherätsel",
+        "#kopfrechnen",
+        "#mathetrick",
+        "#denksport",
+        "#knobeln"
+      ],
       "captions": [
         "Kopfrechnen ohne Taschenrechner – geht's? 🧠",
-        "Mathe-Check in 5 Sekunden ⏱️"
+        "Mathe-Check in {countdown} Sekunden ⏱️"
       ]
     },
     "bild": {
       "label": "BILDRÄTSEL",
       "akzent": "#56CCF2",
-      "hashtags": ["#bilderrätsel", "#suchbild", "#optischetäuschung", "#rätsel", "#knobeln", "#denksport"],
+      "hashtags": [
+        "#bilderrätsel",
+        "#suchbild",
+        "#optischetäuschung",
+        "#rätsel",
+        "#knobeln",
+        "#denksport"
+      ],
       "captions": [
         "Siehst du es auf den ersten Blick? 👀",
         "Genau hinschauen! 🎯"
