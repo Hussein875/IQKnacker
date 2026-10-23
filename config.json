@@ -1,0 +1,123 @@
+{
+  "video": {
+    "breite": 1080,
+    "hoehe": 1920,
+    "fps": 30,
+    "qualitaet_crf": 18,
+    "preset": "medium"
+  },
+  "safe_zone": {
+    "oben": 150,
+    "unten": 400,
+    "rechts": 150,
+    "links": 90
+  },
+  "farben": {
+    "hintergrund": "#000000",
+    "text": "#FFFFFF",
+    "akzent": "#F2C94C",
+    "label_text": "#000000",
+    "dezent": "#8C8C8C",
+    "balken_hintergrund": "#2B2B2B"
+  },
+  "schriften": {
+    "fett": "assets/fonts/Montserrat-ExtraBold.ttf",
+    "normal": "assets/fonts/Montserrat-Bold.ttf",
+    "emoji": "assets/fonts/NotoColorEmoji-Subset.ttf"
+  },
+  "groessen": {
+    "hook": 128,
+    "label": 44,
+    "raetsel_max": 100,
+    "raetsel_min": 46,
+    "zeilenabstand": 1.25,
+    "countdown_zahl": 150,
+    "countdown_balken_breite": 620,
+    "countdown_balken_hoehe": 16,
+    "endkarte_1": 86,
+    "endkarte_2": 62,
+    "handle": 42,
+    "wasserzeichen_text": 34
+  },
+  "zeiten": {
+    "hook": 1.5,
+    "lesezeit": 2.5,
+    "countdown": 5,
+    "endkarte": 2.0,
+    "uebergang": 0.3
+  },
+  "animation": {
+    "einblenden_dauer": 0.5,
+    "zoom_start": 0.92,
+    "zoom_drift": 0.03,
+    "countdown_puls": 0.18
+  },
+  "countdown": {
+    "stil": "beides"
+  },
+  "texte": {
+    "hook": "Kannst du das *lösen?*",
+    "endkarte_1": "Schreib deine *Lösung* in die Kommentare 👇",
+    "endkarte_2": "Folge für die Auflösung",
+    "handle": "@iqknacker"
+  },
+  "wasserzeichen": {
+    "datei": "assets/logo/logo_symbol.png",
+    "position": "oben_links",
+    "hoehe": 80,
+    "deckkraft": 0.6,
+    "text_falls_kein_logo": "@iqknacker"
+  },
+  "musik": {
+    "ordner": "assets/music",
+    "lautstaerke": 0.6,
+    "einblenden": 0.3,
+    "ausblenden": 1.5
+  },
+  "ausgabe": {
+    "ordner": "output"
+  },
+  "hashtags_allgemein": ["#iqknacker", "#rätsel", "#fürdich"],
+  "hashtags_anzahl": 7,
+  "kommentar_vorlage": "✅ Auflösung: {loesung}\n{erklaerung}\nFolge @iqknacker für mehr Rätsel 🧠",
+  "kategorien": {
+    "iq": {
+      "label": "IQ-TEST",
+      "hashtags": ["#iqtest", "#denksport", "#logikrätsel", "#knobeln", "#denkfalle", "#gehirnjogging", "#rätselspaß"],
+      "captions": [
+        "Die meisten tappen hier in die Falle 🤯 Du auch?",
+        "Nur 5 Sekunden – schaffst du es? 🧠",
+        "Klingt einfach, oder? Denk lieber zweimal nach 🤔",
+        "Wer das sofort löst, hat echt was drauf 🏆"
+      ]
+    },
+    "wissen": {
+      "label": "WISSEN",
+      "hashtags": ["#wissen", "#allgemeinwissen", "#quiz", "#wusstestdu", "#lernen", "#fakten", "#quizfrage"],
+      "captions": [
+        "Weißt du's ohne zu googeln? 🤓",
+        "Allgemeinwissen-Check: Bist du dabei? 💡",
+        "Die wenigsten kennen die Antwort 👀",
+        "Kurzer Wissenstest für dich 🧠"
+      ]
+    },
+    "mathe": {
+      "label": "MATHE",
+      "akzent": "#6FCF97",
+      "hashtags": ["#mathe", "#matherätsel", "#kopfrechnen", "#mathetrick", "#denksport", "#knobeln"],
+      "captions": [
+        "Kopfrechnen ohne Taschenrechner – geht's? 🧠",
+        "Mathe-Check in 5 Sekunden ⏱️"
+      ]
+    },
+    "bild": {
+      "label": "BILDRÄTSEL",
+      "akzent": "#56CCF2",
+      "hashtags": ["#bilderrätsel", "#suchbild", "#optischetäuschung", "#rätsel", "#knobeln", "#denksport"],
+      "captions": [
+        "Siehst du es auf den ersten Blick? 👀",
+        "Genau hinschauen! 🎯"
+      ]
+    }
+  }
+}

@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "kategorie": "iq",
+    "frage": "Ein Schläger und ein Ball kosten zusammen 1,10 €. Der Schläger kostet 1 € mehr als der Ball. Wie viel kostet der Ball?",
+    "loesung": "5 Cent",
+    "erklaerung": "Ball 0,05 € + Schläger 1,05 € = 1,10 €. Bei 10 Cent wäre es 1,20 €.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 2,
+    "kategorie": "iq",
+    "frage": "5 Maschinen brauchen 5 Minuten für 5 Teile. Wie lange brauchen 100 Maschinen für 100 Teile?",
+    "loesung": "5 Minuten",
+    "erklaerung": "Jede Maschine braucht 5 Minuten für ein Teil – egal wie viele parallel laufen.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 3,
+    "kategorie": "iq",
+    "frage": "Seerosen verdoppeln ihre Fläche jeden Tag. Nach 48 Tagen ist der See komplett bedeckt. Nach wie vielen Tagen war er halb bedeckt?",
+    "loesung": "Nach 47 Tagen",
+    "erklaerung": "Die Fläche verdoppelt sich täglich – einen Tag vor voll war er also halb voll.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 4,
+    "kategorie": "iq",
+    "frage": "Marias Vater hat fünf Töchter: Lala, Lele, Lili und Lolo. Wie heißt die fünfte Tochter?",
+    "loesung": "Maria",
+    "erklaerung": "Es ist Marias Vater – also ist Maria selbst die fünfte Tochter.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 5,
+    "kategorie": "iq",
+    "frage": "Du läufst ein Rennen und überholst die Person auf Platz 2. Auf welchem Platz bist du jetzt?",
+    "loesung": "Platz 2",
+    "erklaerung": "Du nimmst den Platz der Person ein, die du überholst – also Platz 2, nicht 1.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 6,
+    "kategorie": "iq",
+    "frage": "Welche Zahl kommt als Nächstes?\n*2 – 6 – 12 – 20 – 30 – ?*",
+    "loesung": "42",
+    "erklaerung": "Die Abstände wachsen um 2: +4, +6, +8, +10, +12. Also 30 + 12 = 42.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 7,
+    "kategorie": "iq",
+    "frage": "Ein Bauer hat 17 Schafe. Alle bis auf 9 sterben. Wie viele Schafe hat er noch?",
+    "loesung": "9 Schafe",
+    "erklaerung": "„Alle bis auf 9“ heißt: 9 überleben. Wer 17 − 9 rechnet, tappt in die Falle.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 8,
+    "kategorie": "wissen",
+    "frage": "Welches ist das einzige Säugetier, das wirklich aktiv fliegen kann?",
+    "loesung": "Die Fledermaus",
+    "erklaerung": "Flughörnchen gleiten nur – Fledermäuse fliegen wirklich aktiv mit Flügelschlag.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 9,
+    "kategorie": "wissen",
+    "frage": "Wie viele Herzen hat ein Oktopus?",
+    "loesung": "Drei",
+    "erklaerung": "Zwei Kiemenherzen und ein Körperherz, das das Blut durch den Körper pumpt.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 10,
+    "kategorie": "wissen",
+    "frage": "Wie viele Knochen hat ein erwachsener Mensch?",
+    "loesung": "206",
+    "erklaerung": "Babys haben rund 300 Knochen – viele davon wachsen im Laufe der Zeit zusammen.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  }
+]

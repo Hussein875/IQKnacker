@@ -1,0 +1,9 @@
+Montserrat-ExtraBold.ttf, Montserrat-Bold.ttf
+  Copyright 2011 The Montserrat Project Authors (https://github.com/JulietaUla/Montserrat)
+  Quelle: Google Fonts (https://fonts.google.com/specimen/Montserrat)
+
+NotoColorEmoji-Subset.ttf (Auszug mit wenigen Emojis aus Noto Color Emoji)
+  Copyright 2021 Google Inc. (https://github.com/googlefonts/noto-emoji)
+
+Beide Schriften stehen unter der SIL Open Font License, Version 1.1:
+https://openfontlicense.org/open-font-license-official-text/
