@@ -115,6 +115,16 @@ def speichere_raetsel(raetsel):
     os.replace(tmp, RAETSEL_DATEI)
 
 
+def termine_abhaken(raetsel, jetzt=None):
+    """Rätsel, deren geplanter Termin („termin“ aus --plan) vorbei ist, gelten als gepostet."""
+    jetzt = jetzt or datetime.datetime.now()
+    erledigt = [r for r in raetsel if r.get("termin") and r["status"] != "gepostet"
+                and datetime.datetime.strptime(r["termin"], "%Y-%m-%d %H:%M") <= jetzt]
+    for r in erledigt:
+        r["status"] = "gepostet"
+    return erledigt
+
+
 def pruefe_raetsel(raetsel, cfg):
     fehler, ids = [], set()
     for i, r in enumerate(raetsel):
@@ -127,6 +137,11 @@ def pruefe_raetsel(raetsel, cfg):
         ids.add(r["id"])
         if r["status"] not in GUELTIGE_STATUS:
             fehler.append(f"Rätsel {r['id']}: unbekannter Status „{r['status']}“ (erlaubt: {', '.join(GUELTIGE_STATUS)})")
+        if r.get("termin"):
+            try:
+                datetime.datetime.strptime(r["termin"], "%Y-%m-%d %H:%M")
+            except (TypeError, ValueError):
+                fehler.append(f"Rätsel {r['id']}: „termin“ muss so aussehen: 2026-10-25 18:30")
         if r.get("thema") and r["thema"] not in cfg.get("themen", {}):
             print(f"⚠ Rätsel {r['id']}: Thema „{r['thema']}“ ist nicht in config.json.")
         if r["kategorie"] not in cfg["kategorien"]:
@@ -367,10 +382,15 @@ WOCHENTAGE = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
 
 
 def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
-    """Verteilt fertige, noch nicht gepostete Videos auf Tage und Uhrzeiten – als Vorlage zum Einplanen."""
+    """Verteilt fertige, noch nicht gepostete Videos auf Tage und Uhrzeiten – als Vorlage zum Einplanen.
+    Jedes Rätsel bekommt seinen Termin; ist der vorbei, zählt es automatisch als gepostet."""
     ausgabe = os.path.join(BASIS, cfg["ausgabe"]["ordner"])
     from renderer import im_zeitraum
-    fertig = [r for r in raetsel if r["status"] != "gepostet"
+    # Termine ab dem Starttag werden neu vergeben – so kann man denselben Plan gefahrlos neu erzeugen
+    for r in raetsel:
+        if r.get("termin") and r["status"] != "gepostet" and r["termin"][:10] >= start.isoformat():
+            del r["termin"]
+    fertig = [r for r in raetsel if r["status"] != "gepostet" and not r.get("termin")
               and os.path.exists(os.path.join(ausgabe, dateiname(r) + ".mp4"))]
     themen = cfg.get("themen", {})
     zeilen = [f"POSTING-PLAN IQKnacker – {len(uhrzeiten)} Videos pro Tag", "=" * 44, ""]
@@ -386,6 +406,7 @@ def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
             r = saison[0] if saison and (i % 2 == 0 or len(saison) >= len(erlaubt)) else \
                 next((x for x in erlaubt if x not in saison), erlaubt[0])
             fertig.remove(r)
+            r["termin"] = f"{datum.isoformat()} {uhrzeit}"
             i += 1
             zeilen += [f"{WOCHENTAGE[datum.weekday()]}, {datum:%d.%m.} um {uhrzeit} Uhr  →  {dateiname(r)}.mp4"
                        f"  ({r['schwierigkeit']}{', ' + r['thema'] if r.get('thema') else ''})",
@@ -396,6 +417,7 @@ def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
     pfad = os.path.join(ausgabe, "postingplan.txt")
     with open(pfad, "w", encoding="utf-8") as f:
         f.write("\n".join(zeilen) + "\n")
+    speichere_raetsel(raetsel)
     print(f"✓ {os.path.relpath(pfad, BASIS)}: {i} Videos auf {tage} Tage verteilt ({', '.join(uhrzeiten)} Uhr)")
 
 
@@ -433,6 +455,8 @@ def main():
         cfg.setdefault("aufloesung", {})["zeigen"] = False
     raetsel = lade_json(RAETSEL_DATEI)
     pruefe_raetsel(raetsel, cfg)
+    if termine_abhaken(raetsel):
+        speichere_raetsel(raetsel)
 
     if args.neu_emoji or args.neu_finde:
         import automatik
@@ -455,6 +479,7 @@ def main():
             sys.exit(f"✗ Rätsel-ID(s) nicht gefunden: {', '.join(map(str, sorted(fehlend)))}")
         for r in treffer:
             r["status"] = "gepostet"
+            r.pop("termin", None)
         speichere_raetsel(raetsel)
         print(f"✓ Als gepostet markiert: {', '.join(str(r['id']) for r in treffer)}")
         return
@@ -469,7 +494,8 @@ def main():
         for r in raetsel:
             frage = r["frage"].replace("\n", " ").replace("*", "")
             thema = f"[{r['thema']}] " if r.get("thema") else ""
-            print(f"{r['id']:>4}  {r['status']:<9} {r['kategorie']:<7} {thema}{frage[:60]}")
+            termin = f"({r['termin']}) " if r.get("termin") and r["status"] != "gepostet" else ""
+            print(f"{r['id']:>4}  {r['status']:<9} {r['kategorie']:<7} {termin}{thema}{frage[:60]}")
         return
 
     if args.id:

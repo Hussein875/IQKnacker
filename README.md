@@ -73,12 +73,14 @@ Die neuen Rätsel landen mit Status `neu` in `raetsel.json`. Danach wie gewohnt 
 | `005_iq_caption.txt` | Caption + 7 Hashtags zum Reinkopieren |
 | `005_iq_kommentar.txt` | Kommentar zum Anpinnen („Hattest du's? ✅ oder ❌ …“ mit der Lösung) |
 
-Nach einem erfolgreichen Video wird der Status in `raetsel.json` von `neu` auf `erstellt` gesetzt. Auf `gepostet` setzt du ihn selbst, sobald das Video eingeplant oder online ist – dann taucht es in keinem neuen Posting-Plan mehr auf:
+Nach einem erfolgreichen Video wird der Status in `raetsel.json` von `neu` auf `erstellt` gesetzt. Auf `gepostet` springt er **automatisch**: `--plan` (siehe unten) trägt bei jedem Rätsel seinen Termin ein (`"termin": "2026-10-25 18:30"`), und sobald der vorbei ist, zählt das Rätsel beim nächsten Aufruf von `generate.py` als gepostet. Du musst also nichts abhaken – nur die Videos so einplanen, wie es im Plan steht.
+
+Nur wenn du ein Video **außerhalb des Plans** postest, markierst du es selbst:
 
 ```bash
 python generate.py --gepostet 36          # ein Rätsel
 python generate.py --gepostet 36 53 81    # mehrere auf einmal
-python generate.py --liste                # Status kontrollieren
+python generate.py --liste                # Status (und geplante Termine) kontrollieren
 ```
 
 **Reihenfolge:** `python generate.py` arbeitet die Rätsel in der Reihenfolge der Datei ab. Sie ist so sortiert, dass sich leicht, mittel und schwer abwechseln und nie zwei gleiche Kategorien hintereinander kommen – am besten in dieser Reihenfolge posten.
@@ -91,7 +93,7 @@ python generate.py --plan 7 --uhrzeiten 12:30,19:00  # eigene Uhrzeiten
 python generate.py --plan 7 --start 2026-11-02       # ab einem bestimmten Tag
 ```
 
-Verteilt alle fertigen, noch nicht geposteten Videos (in der Reihenfolge der Datei) auf Tage und Uhrzeiten und schreibt sie mit Caption und Kommentar in `output/postingplan.txt`. Damit planst du in **TikTok Studio** am Rechner (tiktok.com/tiktokstudio → Hochladen → „Planen“) eine ganze Woche in einem Rutsch ein.
+Verteilt alle fertigen, noch nicht geposteten Videos (in der Reihenfolge der Datei) auf Tage und Uhrzeiten, schreibt sie mit Caption und Kommentar in `output/postingplan.txt` und merkt sich die Termine in `raetsel.json`. Ein neuer Plan macht dort weiter, wo der letzte aufhört. Erzeugst du einen Plan für denselben Zeitraum noch einmal (z. B. mit anderen Uhrzeiten), werden die Termine ab dem Starttag neu vergeben – nichts geht doppelt raus. Damit planst du in **TikTok Studio** am Rechner (tiktok.com/tiktokstudio → Hochladen → „Planen“) eine ganze Woche in einem Rutsch ein.
 
 ---
 
