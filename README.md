@@ -73,7 +73,13 @@ Die neuen Rätsel landen mit Status `neu` in `raetsel.json`. Danach wie gewohnt 
 | `005_iq_caption.txt` | Caption + 7 Hashtags zum Reinkopieren |
 | `005_iq_kommentar.txt` | Kommentar zum Anpinnen („Hattest du's? ✅ oder ❌ …“ mit der Lösung) |
 
-Nach einem erfolgreichen Video wird der Status in `raetsel.json` von `neu` auf `erstellt` gesetzt. Auf `gepostet` setzt du ihn selbst, wenn das Video online ist.
+Nach einem erfolgreichen Video wird der Status in `raetsel.json` von `neu` auf `erstellt` gesetzt. Auf `gepostet` setzt du ihn selbst, sobald das Video eingeplant oder online ist – dann taucht es in keinem neuen Posting-Plan mehr auf:
+
+```bash
+python generate.py --gepostet 36          # ein Rätsel
+python generate.py --gepostet 36 53 81    # mehrere auf einmal
+python generate.py --liste                # Status kontrollieren
+```
 
 **Reihenfolge:** `python generate.py` arbeitet die Rätsel in der Reihenfolge der Datei ab. Sie ist so sortiert, dass sich leicht, mittel und schwer abwechseln und nie zwei gleiche Kategorien hintereinander kommen – am besten in dieser Reihenfolge posten.
 

@@ -411,6 +411,8 @@ def main():
     parser.add_argument("--ohne-aufloesung", action="store_true",
                         help="Lösung nicht im Video zeigen (Endkarte wie früher, z. B. zum Vergleichen)")
     parser.add_argument("--liste", action="store_true", help="alle Rätsel mit Status anzeigen")
+    parser.add_argument("--gepostet", type=int, nargs="+", metavar="ID",
+                        help="diese Rätsel-ID(s) als gepostet markieren")
     parser.add_argument("--check", action="store_true", help="Installation prüfen")
     parser.add_argument("--neu-emoji", type=int, metavar="ANZAHL", help="neue Emoji-Gleichungen anlegen")
     parser.add_argument("--neu-finde", type=int, metavar="ANZAHL", help="neue „Finde die 9“-Rätsel anlegen")
@@ -444,6 +446,17 @@ def main():
             frage = r["frage"].replace("\n", "  |  ").replace("*", "")
             print(f"+ {r['id']:>3} {r['kategorie']:<6} {r['schwierigkeit']:<7} {frage}  →  {r['loesung']}")
         print(f"{len(neu)} Rätsel angelegt. Videos erzeugen mit: python generate.py")
+        return
+
+    if args.gepostet:
+        treffer = [r for r in raetsel if r["id"] in args.gepostet]
+        fehlend = set(args.gepostet) - {r["id"] for r in treffer}
+        if fehlend:
+            sys.exit(f"✗ Rätsel-ID(s) nicht gefunden: {', '.join(map(str, sorted(fehlend)))}")
+        for r in treffer:
+            r["status"] = "gepostet"
+        speichere_raetsel(raetsel)
+        print(f"✓ Als gepostet markiert: {', '.join(str(r['id']) for r in treffer)}")
         return
 
     if args.plan:
