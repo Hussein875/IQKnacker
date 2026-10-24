@@ -29,7 +29,7 @@ Ideen für später – erst angehen, wenn die ersten Zahlen aus TikTok Studio da
   Zahlen-, Emoji- und Suchrätsel lassen sich fast 1:1 übernehmen; Wort- und Buchstabenrätsel brauchen eigene Versionen
   (z. B. „J – F – M – A – M“ funktioniert auf Englisch, „E – Z – D – V“ nicht).
 
-## Zweiter Kanal: „Geld-Duell“ (@geldduell, Geld & Alltag) – Konzept steht, Start nach der IQKnacker-Testphase
+## Zweiter Kanal: „Lohnt sich?“ (Geld & Alltag) – Konzept steht, Start nach der IQKnacker-Testphase
 
 - **Ziel:** viral gehen. Junge, breite Zielgruppe (ca. 16–35), frecher Ton, aber immer echte, nachgerechnete Zahlen.
 - **Format:** Faktenvideos, kein Quiz. Hauptformat **A vs. B** (wie das Kaffee-Muster): zwei Karten, Preis pro Stück,
@@ -42,7 +42,9 @@ Ideen für später – erst angehen, wenn die ersten Zahlen aus TikTok Studio da
   Immer zusätzlich Text im Bild (Instagram läuft oft stumm). Bei KI-Stimme „KI-generiert“ aktivieren.
 - **Technik:** eigenes Repository, eigener Drive-Ordner, zweite Marke in Metricool (Starter erlaubt 5),
   eigene Cloud-Aufgaben. Prototyp: `prototypen/lohntsich.py` (Muster Kaffee + Döner, mit Test-Stimme; Marke dort noch „LOHNTSICH?“).
-- **Name:** „Geld-Duell“, Handle `@geldduell` (frei auf TikTok). Verworfen: @lohntsich (vergeben), @lohntsichdas
-  (BR-Format „Lohnt sich das?“ – Verwechslungsgefahr), @zahlenduell (vergeben). Jedes Video = eine Duell-Runde A vs. B.
-- **To-do vor dem Start:** @geldduell auch auf Instagram/YouTube sichern, ElevenLabs-Konto + deutsche Stimme
+- **Name:** Anzeigename „Lohnt sich?“ (ohne „das“ – Abgrenzung zum BR-Format „Lohnt sich das?“ @lohntsichdas).
+  Handle: der erste freie aus `@lohntsichoder` → `@lohntsichecht` → `@lohntsichmehr` (auf TikTok, Instagram und YouTube gleich).
+  Eigener Look (Gold auf Schwarz, Balken/Waage, gesichtslos mit Stimme), kein „LSD?“-Kürzel. Der Name ist für den Erfolg
+  zweitrangig – entscheidend sind Hook, Format und Stimme; ändern lässt er sich später noch.
+- **To-do vor dem Start:** Handle auf allen drei Plattformen sichern, ElevenLabs-Konto + deutsche Stimme
   aussuchen, API-Schlüssel lokal auf dem Mac hinterlegen (nie in den Chat oder ins Repo).
