@@ -2,3 +2,5 @@ Pillow>=10.0
 numpy>=1.22
 # Liefert eine fertige FFmpeg-Datei mit, falls FFmpeg nicht systemweit installiert ist
 imageio-ffmpeg>=0.4.9
+# Für den Posting-Plan als Excel-Datei
+openpyxl>=3.0

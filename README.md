@@ -93,7 +93,7 @@ python generate.py --plan 7 --uhrzeiten 12:30,19:00  # eigene Uhrzeiten
 python generate.py --plan 7 --start 2026-11-02       # ab einem bestimmten Tag
 ```
 
-Verteilt alle fertigen, noch nicht geposteten Videos (in der Reihenfolge der Datei) auf Tage und Uhrzeiten, schreibt sie mit Caption und Kommentar in `output/postingplan.txt` und merkt sich die Termine in `raetsel.json`. Ein neuer Plan macht dort weiter, wo der letzte aufhört. Erzeugst du einen Plan für denselben Zeitraum noch einmal (z. B. mit anderen Uhrzeiten), werden die Termine ab dem Starttag neu vergeben – nichts geht doppelt raus. Damit planst du in **TikTok Studio** am Rechner (tiktok.com/tiktokstudio → Hochladen → „Planen“) eine ganze Woche in einem Rutsch ein.
+Verteilt alle fertigen, noch nicht geposteten Videos (in der Reihenfolge der Datei) auf Tage und Uhrzeiten, schreibt sie mit Caption, YouTube-Titel und Kommentar in `output/postingplan.txt` – und als Tabelle in `output/postingplan.xlsx` (öffnet in Excel oder Numbers, mit Spalte „Eingeplant ✓“ zum Abhaken) – und merkt sich die Termine in `raetsel.json`. Ein neuer Plan macht dort weiter, wo der letzte aufhört. Erzeugst du einen Plan für denselben Zeitraum noch einmal (z. B. mit anderen Uhrzeiten), werden die Termine ab dem Starttag neu vergeben – nichts geht doppelt raus. Damit planst du in **Metricool** (Kalender → Beitrag erstellen → Reel, TikTok, Short) eine ganze Woche in einem Rutsch ein.
 
 ---
 

@@ -381,6 +381,41 @@ def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False, ohne_effekte=F
 WOCHENTAGE = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
 
 
+def youtube_titel(caption):
+    """Erste Caption-Zeile + #shorts – YouTube erlaubt höchstens 100 Zeichen und kein < oder >."""
+    titel = caption.strip().split("\n")[0].replace("<", "").replace(">", "").strip()
+    return titel + " #shorts" if len(titel) + 8 < 100 else titel[:99]
+
+
+def plan_als_excel(pfad, zeilen):
+    try:
+        import openpyxl
+    except ImportError:
+        pip_installieren()
+        import openpyxl
+    from openpyxl.styles import Alignment, Font, PatternFill
+    mappe = openpyxl.Workbook()
+    blatt = mappe.active
+    blatt.title = "Posting-Plan"
+    spalten = [("Datum", 12), ("Tag", 5), ("Uhrzeit", 8), ("Video", 22), ("Schwierigkeit", 13),
+               ("Thema", 12), ("YouTube-Titel", 45), ("Caption", 70), ("Lösung", 18), ("Eingeplant ✓", 13)]
+    blatt.append([name for name, _ in spalten])
+    for i, (_, breite) in enumerate(spalten, start=1):
+        blatt.column_dimensions[openpyxl.utils.get_column_letter(i)].width = breite
+    for zelle in blatt[1]:
+        zelle.font = Font(bold=True, color="FFFFFF")
+        zelle.fill = PatternFill("solid", fgColor="2D1B2E")
+    for zeile in zeilen:
+        blatt.append(zeile)
+    for zeile in blatt.iter_rows(min_row=2):
+        zeile[0].number_format = "DD.MM.YYYY"
+        for zelle in zeile:
+            zelle.alignment = Alignment(vertical="top", wrap_text=True)
+    blatt.freeze_panes = "A2"
+    blatt.auto_filter.ref = blatt.dimensions
+    mappe.save(pfad)
+
+
 def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
     """Verteilt fertige, noch nicht gepostete Videos auf Tage und Uhrzeiten – als Vorlage zum Einplanen.
     Jedes Rätsel bekommt seinen Termin; ist der vorbei, zählt es automatisch als gepostet."""
@@ -394,6 +429,7 @@ def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
               and os.path.exists(os.path.join(ausgabe, dateiname(r) + ".mp4"))]
     themen = cfg.get("themen", {})
     zeilen = [f"POSTING-PLAN IQKnacker – {len(uhrzeiten)} Videos pro Tag", "=" * 44, ""]
+    tabelle = []
     i = 0
     for tag in range(tage):
         datum = start + datetime.timedelta(days=tag)
@@ -407,18 +443,24 @@ def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
                 next((x for x in erlaubt if x not in saison), erlaubt[0])
             fertig.remove(r)
             r["termin"] = f"{datum.isoformat()} {uhrzeit}"
+            caption = caption_text(r, cfg).strip()
+            tabelle.append([datum, WOCHENTAGE[datum.weekday()], uhrzeit, f"{dateiname(r)}.mp4", r["schwierigkeit"],
+                            r.get("thema") or "", youtube_titel(caption), caption, str(r["loesung"]), ""])
             i += 1
             zeilen += [f"{WOCHENTAGE[datum.weekday()]}, {datum:%d.%m.} um {uhrzeit} Uhr  →  {dateiname(r)}.mp4"
                        f"  ({r['schwierigkeit']}{', ' + r['thema'] if r.get('thema') else ''})",
-                       "", "Caption:", caption_text(r, cfg).strip(), "",
+                       "", "Caption:", caption, "", "YouTube-Titel:", youtube_titel(caption), "",
                        "Kommentar zum Anpinnen:", kommentar_text(r, cfg).strip(), "", "-" * 44, ""]
     if i < tage * len(uhrzeiten):
         zeilen.append(f"Hinweis: Nur {i} fertige Videos vorhanden – vorher python generate.py ausführen.")
     pfad = os.path.join(ausgabe, "postingplan.txt")
     with open(pfad, "w", encoding="utf-8") as f:
         f.write("\n".join(zeilen) + "\n")
+    excel = os.path.join(ausgabe, "postingplan.xlsx")
+    plan_als_excel(excel, tabelle)
     speichere_raetsel(raetsel)
-    print(f"✓ {os.path.relpath(pfad, BASIS)}: {i} Videos auf {tage} Tage verteilt ({', '.join(uhrzeiten)} Uhr)")
+    print(f"✓ {os.path.relpath(pfad, BASIS)} und {os.path.basename(excel)}: "
+          f"{i} Videos auf {tage} Tage verteilt ({', '.join(uhrzeiten)} Uhr)")
 
 
 # ---------------------------------------------------------------- Kommandozeile
