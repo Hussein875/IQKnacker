@@ -185,7 +185,8 @@
     "lautheit_lufs": -14
   },
   "ausgabe": {
-    "ordner": "output"
+    "ordner": "output",
+    "drive_ordner": "IQKnacker Videos"
   },
   "hashtags_allgemein": [
     "#iqknacker",

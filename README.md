@@ -85,6 +85,15 @@ python generate.py --liste                # Status (und geplante Termine) kontro
 
 **Reihenfolge:** `python generate.py` arbeitet die Rätsel in der Reihenfolge der Datei ab. Sie ist so sortiert, dass sich leicht, mittel und schwer abwechseln und nie zwei gleiche Kategorien hintereinander kommen – am besten in dieser Reihenfolge posten.
 
+### Google Drive
+
+Mit **Google Drive für Desktop** landet jedes fertige Video automatisch zusätzlich im Drive-Ordner `IQKnacker Videos` (einstellbar in `config.json` → `ausgabe.drive_ordner`, Name in „Meine Ablage“ oder kompletter Pfad; leer lassen schaltet es ab). Von dort holt sich Metricool die Videos beim CSV-Import.
+
+```bash
+python generate.py --drive    # schon vorhandene Videos einmalig nach Drive kopieren
+python generate.py --check    # zeigt, ob der Drive-Ordner gefunden wird
+```
+
 ### Posting-Plan
 
 ```bash

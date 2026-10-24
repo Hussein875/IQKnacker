@@ -24,6 +24,7 @@ import shutil
 import subprocess
 import sys
 import datetime
+import glob
 import time
 import wave
 
@@ -97,7 +98,38 @@ def check():
         info = f"keine Tracks in {cfg['musik']['ordner']} – Videos ohne Musik"
     print(f"Musik:   {info}")
     logo = os.path.join(BASIS, cfg["wasserzeichen"]["datei"])
+    if cfg["ausgabe"].get("drive_ordner"):
+        drive = drive_ordner(cfg)
+        print(f"Drive:   {'✓ ' + drive if drive else '✗ Ordner „' + cfg['ausgabe']['drive_ordner'] + '“ nicht gefunden – Google Drive für Desktop installiert?'}")
     print(f"Logo:    {'✓ ' + cfg['wasserzeichen']['datei'] if os.path.exists(logo) else '– nicht gefunden, nutze Text-Wasserzeichen'}")
+
+
+# ---------------------------------------------------------------- Google Drive
+
+def drive_ordner(cfg):
+    """Ordner in Google Drive für Desktop, in den fertige Videos kopiert werden – oder None.
+    In config.json reicht der Ordnername ("IQKnacker Videos"); er wird in Mein Drive gesucht."""
+    wert = cfg["ausgabe"].get("drive_ordner")
+    if not wert:
+        return None
+    pfad = os.path.expanduser(wert)
+    if os.path.isabs(pfad):
+        return pfad if os.path.isdir(pfad) else None
+    muster = [os.path.expanduser(f"~/Library/CloudStorage/GoogleDrive-*/*/{wert}"),  # macOS
+              os.path.expanduser(f"~/Google Drive/{wert}"), os.path.expanduser(f"~/Google Drive/*/{wert}"),
+              f"G:/*/{wert}"]  # Windows
+    treffer = [t for m in muster for t in glob.glob(m) if os.path.isdir(t)]
+    return treffer[0] if treffer else None
+
+
+def nach_drive(video, ziel):
+    """Kopiert ein Video in den Drive-Ordner, wenn es dort fehlt oder sich geändert hat."""
+    kopie = os.path.join(ziel, os.path.basename(video))
+    if os.path.exists(kopie) and os.path.getsize(kopie) == os.path.getsize(video) \
+            and os.path.getmtime(kopie) >= os.path.getmtime(video):
+        return False
+    shutil.copy2(video, kopie)
+    return True
 
 
 # ---------------------------------------------------------------- Daten
@@ -362,6 +394,9 @@ def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False, ohne_effekte=F
             if hilfsdatei and os.path.exists(hilfsdatei):
                 os.remove(hilfsdatei)
     os.replace(tmp, video)
+    drive = drive_ordner(cfg)
+    if drive:
+        nach_drive(video, drive)
 
     with open(os.path.join(ausgabe, f"{name}_caption.txt"), "w", encoding="utf-8") as f:
         f.write(caption_text(r, cfg))
@@ -372,7 +407,8 @@ def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False, ohne_effekte=F
     musik_info = "erzeugte Musik" if musik_generiert else os.path.basename(musik) if musik else "ohne Musik"
     musik_info += ", mit Soundeffekten" if effekte else ""
     print(f"  ✓ {os.path.relpath(video, BASIS)}  ({renderer.dauer:.1f} s, {musik_info}, "
-          f"Schriftgröße {renderer.raetsel_schriftgroesse}, {time.time() - start:.1f} s Renderzeit)")
+          f"Schriftgröße {renderer.raetsel_schriftgroesse}, {time.time() - start:.1f} s Renderzeit"
+          f"{', in Google Drive kopiert' if drive else ''})")
     laenge = len(kommentar.strip().encode("utf-16-le")) // 2  # Emojis zählen hier doppelt – wie bei TikTok
     if laenge > KOMMENTAR_MAX:
         print(f"  ⚠ Auflösungs-Kommentar hat {laenge} Zeichen – TikTok erlaubt {KOMMENTAR_MAX}. Erklärung kürzen!")
@@ -516,6 +552,8 @@ def main():
     parser.add_argument("--ohne-aufloesung", action="store_true",
                         help="Lösung nicht im Video zeigen (Endkarte wie früher, z. B. zum Vergleichen)")
     parser.add_argument("--liste", action="store_true", help="alle Rätsel mit Status anzeigen")
+    parser.add_argument("--drive", action="store_true",
+                        help="alle fertigen Videos in den Google-Drive-Ordner kopieren")
     parser.add_argument("--gepostet", type=int, nargs="+", metavar="ID",
                         help="diese Rätsel-ID(s) als gepostet markieren")
     parser.add_argument("--check", action="store_true", help="Installation prüfen")
@@ -553,6 +591,18 @@ def main():
             frage = r["frage"].replace("\n", "  |  ").replace("*", "")
             print(f"+ {r['id']:>3} {r['kategorie']:<6} {r['schwierigkeit']:<7} {frage}  →  {r['loesung']}")
         print(f"{len(neu)} Rätsel angelegt. Videos erzeugen mit: python generate.py")
+        return
+
+    if args.drive:
+        drive = drive_ordner(cfg)
+        if not drive:
+            sys.exit(f"✗ Drive-Ordner „{cfg['ausgabe'].get('drive_ordner')}“ nicht gefunden. "
+                     "Ist Google Drive für Desktop installiert und angemeldet?")
+        ausgabe = os.path.join(BASIS, cfg["ausgabe"]["ordner"])
+        # nur Videos aktueller Rätsel – alte aus dem Archiv bleiben draußen
+        videos = [v for v in (os.path.join(ausgabe, dateiname(r) + ".mp4") for r in raetsel) if os.path.exists(v)]
+        neu = sum(nach_drive(v, drive) for v in videos)
+        print(f"✓ {neu} von {len(videos)} Videos nach {drive} kopiert (der Rest war schon da)")
         return
 
     if args.gepostet:
