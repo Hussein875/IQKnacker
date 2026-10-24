@@ -1,7 +1,7 @@
 """Erzeugt automatisch neue Rätsel, deren Lösung das Skript selbst ausrechnet – also garantiert stimmt.
 
-- Emoji-Gleichungen: drei Symbole, drei Hinweis-Gleichungen, eine Frage. Bei „schwer“ steckt in
-  der Frage eine Punkt-vor-Strich-Falle, und die typische Falsch-Antwort steht als Option zur Wahl.
+- Emoji-Gleichungen: drei Symbole, drei Hinweis-Gleichungen, eine Frage. Bei „schwer“ muss man in
+  den Hinweisen teilen und in der Frage an Punkt vor Strich denken.
 - „Finde die 9“: ein Gitter aus gleichen Zeichen mit genau einem abweichenden.
 """
 
@@ -40,14 +40,6 @@ def rechne(werte, operatoren):
     return ergebnis
 
 
-def rechne_von_links(werte, operatoren):
-    """Die typische Falsch-Rechnung: stur von links nach rechts."""
-    ergebnis = werte[0]
-    for op, wert in zip(operatoren, werte[1:]):
-        ergebnis = ergebnis * wert if op == "×" else ergebnis + wert if op == "+" else ergebnis - wert
-    return ergebnis
-
-
 def zeile(symbole, operatoren):
     teile = [symbole[0]]
     for op, sym in zip(operatoren, symbole[1:]):
@@ -57,15 +49,19 @@ def zeile(symbole, operatoren):
 
 def emoji_gleichung(zufall, schwierigkeit, neue_id):
     a_sym, b_sym, c_sym = zufall.sample(EMOJI_SYMBOLE, 3)
+    min_c = 2 if schwierigkeit == "schwer" else 1  # mit 1 wäre die Punkt-vor-Strich-Falle wirkungslos
     while True:
-        a, b, c = zufall.randint(2, 9), zufall.randint(2, 9), zufall.randint(1, 8)
+        a, b, c = zufall.randint(2, 9), zufall.randint(2, 9), zufall.randint(min_c, 8)
         if len({a, b, c}) == 3 and b > c:
             break
     wert = {a_sym: a, b_sym: b, c_sym: c}
 
     n = zufall.choice([2, 3])
-    hinweise = [f"{zeile([a_sym] * n, ['+'] * (n - 1))} = {n * a}",
-                f"{zeile([a_sym, b_sym, b_sym], ['+', '+'])} = {a + 2 * b}"]
+    hinweise = [f"{zeile([a_sym] * n, ['+'] * (n - 1))} = {n * a}"]
+    if schwierigkeit == "schwer":
+        hinweise.append(f"{zeile([a_sym, b_sym], ['×'])} = {a * b}")
+    else:
+        hinweise.append(f"{zeile([a_sym, b_sym, b_sym], ['+', '+'])} = {a + 2 * b}")
     if schwierigkeit == "leicht":
         hinweise.append(f"{zeile([c_sym, c_sym], ['+'])} = {2 * c}")
     else:
@@ -76,7 +72,7 @@ def emoji_gleichung(zufall, schwierigkeit, neue_id):
     elif schwierigkeit == "mittel":
         symbole, ops = [a_sym, c_sym, b_sym], ["×", "+"]
     else:
-        symbole, ops = [c_sym, a_sym, b_sym], ["+", "×"]  # Punkt-vor-Strich-Falle
+        symbole, ops = [a_sym, b_sym, c_sym], ["+", "×"]  # Punkt-vor-Strich-Falle
     werte = [wert[s] for s in symbole]
     loesung = rechne(werte, ops)
 
@@ -91,13 +87,6 @@ def emoji_gleichung(zufall, schwierigkeit, neue_id):
         "schwierigkeit": schwierigkeit,
         "status": "neu",
     }
-    if schwierigkeit == "schwer":
-        falsch = rechne_von_links(werte, ops)
-        dritte = sum(werte)
-        if len({loesung, falsch, dritte}) < 3:
-            dritte = loesung + zufall.choice([-2, 2, 10])
-        if len({loesung, falsch, dritte}) == 3 and min(loesung, falsch, dritte) > 0:
-            raetsel["optionen"] = [str(x) for x in sorted([loesung, falsch, dritte])]
     return raetsel
 
 

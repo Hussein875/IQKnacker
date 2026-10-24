@@ -1,0 +1,184 @@
+[
+  {
+    "id": 16,
+    "kategorie": "iq",
+    "frage": "Ein Ziegelstein wiegt 1 kg plus einen halben Ziegelstein. Wie schwer ist ein ganzer Ziegelstein?",
+    "optionen": [
+      "1,5 kg",
+      "2 kg",
+      "3 kg"
+    ],
+    "loesung": "2 kg",
+    "erklaerung": "Der halbe Stein wiegt genau 1 kg – also wiegt der ganze 2 kg.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 21,
+    "kategorie": "mathe",
+    "frage": "Ein Seil liegt straff um den Äquator. Du machst es *1 Meter* länger. Passt eine Katze darunter?",
+    "optionen": [
+      "Nein",
+      "Ja, knapp 1 mm",
+      "Ja, ca. 16 cm"
+    ],
+    "loesung": "Ja, ca. 16 cm",
+    "erklaerung": "Radius +1 m ÷ 2π ≈ 16 cm – egal wie groß die Kugel ist.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 22,
+    "kategorie": "mathe",
+    "frage": "Wie viele Leute braucht ein Raum, damit zwei davon mit über *50 %* Chance am selben Tag Geburtstag haben?",
+    "optionen": [
+      "23",
+      "183",
+      "365"
+    ],
+    "loesung": "23",
+    "erklaerung": "Bei 23 Personen gibt es schon 253 mögliche Paare – die Chance liegt bei 50,7 %.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 23,
+    "kategorie": "wort",
+    "frage": "Ein Wort passt zu beiden:\n*BRIEF___*\n*___ZEICHEN*",
+    "loesung": "Marke",
+    "erklaerung": "Briefmarke und Markenzeichen.",
+    "tipp": "Klebt auf jedem Brief",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 24,
+    "kategorie": "wort",
+    "frage": "Ein Wort passt zu beiden:\n*HAND___*\n*___KARTON*",
+    "loesung": "Schuh",
+    "erklaerung": "Handschuh und Schuhkarton.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 25,
+    "kategorie": "wort",
+    "frage": "Ein Wort passt zu beiden:\n*WASSER___*\n*___SCHIRM*",
+    "loesung": "Fall",
+    "erklaerung": "Wasserfall und Fallschirm.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 26,
+    "kategorie": "wissen",
+    "frage": "Was liegt weiter südlich: Rom oder der südlichste Punkt *Kanadas?*",
+    "optionen": [
+      "Rom",
+      "Kanada",
+      "Gleich weit"
+    ],
+    "loesung": "Kanada",
+    "erklaerung": "Kanadas Südspitze liegt auf ca. 41,7° Nord – Rom auf ca. 41,9° Nord.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 27,
+    "kategorie": "wissen",
+    "frage": "Welches Land hat die *meisten Zeitzonen* der Welt?",
+    "optionen": [
+      "Russland",
+      "USA",
+      "Frankreich"
+    ],
+    "loesung": "Frankreich",
+    "erklaerung": "Dank der Überseegebiete 12 Zeitzonen – Russland hat nur 11.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 28,
+    "kategorie": "wissen",
+    "frage": "An wie viele Länder grenzt *Deutschland?*",
+    "optionen": [
+      "8",
+      "9",
+      "10"
+    ],
+    "loesung": "9",
+    "erklaerung": "DK, PL, CZ, AT, CH, FR, LU, BE und NL.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 29,
+    "kategorie": "wissen",
+    "frage": "Was liegt weiter nördlich: *Berlin* oder *London?*",
+    "optionen": [
+      "Berlin",
+      "London",
+      "Gleich weit"
+    ],
+    "loesung": "Berlin",
+    "erklaerung": "Berlin liegt auf ca. 52,5° Nord, London auf ca. 51,5° Nord.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 30,
+    "kategorie": "wissen",
+    "frage": "Wie viel Blei steckt in einem *Bleistift?*",
+    "optionen": [
+      "Ein bisschen",
+      "Ziemlich viel",
+      "Gar keins"
+    ],
+    "loesung": "Gar keins",
+    "erklaerung": "Die Mine besteht aus Graphit und Ton – Blei war nie drin.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 31,
+    "kategorie": "wissen",
+    "frage": "Was ist länger: die *Chinesische Mauer* oder der *Durchmesser der Erde?*",
+    "optionen": [
+      "Die Mauer",
+      "Die Erde",
+      "Etwa gleich"
+    ],
+    "loesung": "Die Mauer",
+    "erklaerung": "Alle Abschnitte der Mauer: ca. 21.000 km. Erddurchmesser: ca. 12.700 km.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 32,
+    "kategorie": "wissen",
+    "frage": "Welches Land hat die *meisten Inseln* der Welt?",
+    "optionen": [
+      "Indonesien",
+      "Philippinen",
+      "Schweden"
+    ],
+    "loesung": "Schweden",
+    "erklaerung": "Über 260.000 Inseln – mehr als Norwegen, Finnland oder Indonesien.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 33,
+    "kategorie": "wissen",
+    "frage": "Welches Land hat als einziges *keine viereckige* Flagge?",
+    "optionen": [
+      "Nepal",
+      "Schweiz",
+      "Vatikan"
+    ],
+    "loesung": "Nepal",
+    "erklaerung": "Nepals Flagge besteht aus zwei Dreiecken. Schweiz und Vatikan: quadratisch.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  }
+]

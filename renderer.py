@@ -286,6 +286,17 @@ def buchstaben_text(anzahl):
     return ", ".join(buchstaben[:-1]) + " oder " + buchstaben[-1]
 
 
+def countdown_fuer(cfg, raetsel):
+    """Countdown-Länge: eigener Wert im Rätsel (`countdown`), sonst je Schwierigkeit aus der Config."""
+    if raetsel.get("countdown"):
+        return float(raetsel["countdown"])
+    wert = cfg["zeiten"]["countdown"]
+    if isinstance(wert, dict):
+        stufe = str(raetsel.get("schwierigkeit", "")).lower()
+        wert = wert.get(stufe, wert.get("standard", 10))
+    return float(wert)
+
+
 def waehle(wert, zufall, schwierigkeit=None):
     """Texte dürfen ein String, eine Liste (zufällige Auswahl) oder ein Dict je Schwierigkeit sein."""
     if isinstance(wert, dict):
@@ -333,7 +344,7 @@ class RaetselRenderer:
 
         z = config["zeiten"]
         self.t_lesen = z["lesezeit"]
-        self.t_countdown = z["countdown"]
+        self.t_countdown = countdown_fuer(config, raetsel)
         self.t_raetsel = self.t_lesen + self.t_countdown
         self.t_zeit_um = z.get("zeit_um", 0)
         self.t_end = z["endkarte"]
@@ -342,7 +353,8 @@ class RaetselRenderer:
         self.dauer = self.t_raetsel + self.t_zeit_um + self.t_end
 
         self.anim = config["animation"]
-        self.kritisch_ab = self.anim.get("kritisch_ab", 3)
+        # Schlussphase: höchstens `kritisch_ab` Sekunden, bei kurzen Countdowns entsprechend kürzer
+        self.kritisch_ab = min(self.anim.get("kritisch_ab", 3), max(2, round(self.t_countdown * 0.4)))
 
         self._layout()
         self._ebenen_vorbereiten()
@@ -479,17 +491,18 @@ class RaetselRenderer:
             self.banner.append((0.0, self._einzeilig(self.setzer_fett, hook, groesse, textbreite,
                                                      self.akzent, self.textfarbe)))
         self._tipp_start = None
+        frueheste = self.t_lesen + 1.5  # der Hook soll mindestens so lange stehen bleiben
         if self.raetsel.get("tipp"):
-            self._tipp_start = self.t_raetsel - a.get("tipp_ab", 5)
+            self._tipp_start = max(frueheste, self.t_raetsel - min(a.get("tipp_ab", 5), self.t_countdown / 2))
             tipp = (self.texte.get("tipp_prefix") or "") + self.raetsel["tipp"]
             self.banner.append((self._tipp_start, self._einzeilig(self.setzer_fett, tipp, groesse, textbreite,
                                                                   self.textfarbe, self.akzent)))
         else:
             mitte = self._text("spruch_mitte")
-            if mitte:
-                self.banner.append((self.t_raetsel - a.get("spruch_mitte_ab", 6),
-                                    self._einzeilig(self.setzer_fett, mitte, groesse, textbreite,
-                                                    self.textfarbe, self.akzent)))
+            mitte_start = max(frueheste, self.t_raetsel - a.get("spruch_mitte_ab", 6))
+            if mitte and mitte_start < self.t_raetsel - self.kritisch_ab - 1.0:  # bei kurzen Countdowns weglassen
+                self.banner.append((mitte_start, self._einzeilig(self.setzer_fett, mitte, groesse, textbreite,
+                                                                 self.textfarbe, self.akzent)))
             schluss = self._text("spruch_kritisch")
             if schluss:
                 self.banner.append((self.t_raetsel - self.kritisch_ab,

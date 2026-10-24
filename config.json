@@ -53,7 +53,12 @@
   },
   "zeiten": {
     "lesezeit": 1.0,
-    "countdown": 10,
+    "countdown": {
+      "leicht": 5,
+      "mittel": 7,
+      "schwer": 10,
+      "standard": 7
+    },
     "zeit_um": 0.8,
     "endkarte": 2.2,
     "uebergang": 0.25,
@@ -78,14 +83,15 @@
   "texte": {
     "hook": {
       "leicht": [
-        "Klingt leicht – oder? 🤔",
         "Aufwärmrunde für dein Gehirn 🧠",
-        "Das schaffst du locker… oder? 😏"
+        "Nur {countdown} Sekunden ⏱️",
+        "Klingt leicht. Ist es aber nicht 😏"
       ],
       "mittel": [
         "Die meisten liegen hier falsch 🤯",
         "Denk lieber zweimal nach 🤔",
-        "Hier tappen viele in die Falle 😬"
+        "Hier tappen viele in die Falle 😬",
+        "Nur {countdown} Sekunden ⏱️"
       ],
       "schwer": [
         "Nur echte Genies schaffen das 🧠",
@@ -95,10 +101,10 @@
       "standard": "Kannst du das *lösen?*"
     },
     "spruch_mitte": [
-      "Schon eine Idee? 🤔",
       "Denk nach… 🧠",
+      "Nicht raten – denken! 🧠",
       "Bleib dran! 👀",
-      "Hast du's schon? 😏"
+      "Konzentrier dich! 🎯"
     ],
     "spruch_kritisch": [
       "Jetzt wird's knapp! 😬",
@@ -240,10 +246,16 @@
         "#gehirnjogging"
       ],
       "captions": [
-        "Welches Wort passt? Nur echte Wortprofis sehen es sofort 🧠",
-        "Worträtsel-Check: Wie schnell bist du? ⏱️",
-        "Ein Wort, zwei Begriffe – findest du es? 🤔"
-      ]
+        "Ein Wort passt zu allen drei – findest du es? 🧠",
+        "Worträtsel für echte Sprachprofis 🔥",
+        "Drei Begriffe, ein Wort 🤔"
+      ],
+      "texte": {
+        "hook": [
+          "Ein Wort passt zu allen drei 🧠",
+          "Nur Sprachprofis sehen es sofort 🔥"
+        ]
+      }
     },
     "emoji": {
       "label": "IQ-TEST",
@@ -267,11 +279,11 @@
         "hook": {
           "leicht": [
             "Rechne mit! 🧮",
-            "Wie schnell bist du? ⏱️"
+            "Nur {countdown} Sekunden ⏱️"
           ],
           "mittel": [
             "Kopfrechnen ohne Taschenrechner 🧠",
-            "Schaffst du das in {countdown} Sekunden? ⏱️"
+            "Nur {countdown} Sekunden ⏱️"
           ],
           "schwer": [
             "Die meisten rechnen hier falsch 🤯",
@@ -301,11 +313,11 @@
         "hook": [
           "Nur Adleraugen finden es sofort 🦅",
           "Konzentrationstest 🔍",
-          "Findest du es in {countdown} Sekunden? 👀"
+          "Nur {countdown} Sekunden ⏱️"
         ],
         "spruch_mitte": [
-          "Schon gefunden? 👀",
-          "Schau genau hin! 🔍"
+          "Schau genau hin! 🔍",
+          "Zeile für Zeile… 👀"
         ],
         "endkarte_1": [
           "Gefunden? *Reihe & Spalte* in die Kommentare 👇"

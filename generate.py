@@ -153,7 +153,8 @@ def caption_text(r, cfg):
     kat = cfg["kategorien"].get(r["kategorie"], {})
     zufall = random.Random(f"{r['id']}-{r['kategorie']}")  # gleiche ID → gleiche Caption
     captions = kat.get("captions") or ["Kannst du das lösen? 🧠"]
-    caption = zufall.choice(captions).replace("{countdown}", str(round(cfg["zeiten"]["countdown"])))
+    from renderer import countdown_fuer
+    caption = zufall.choice(captions).replace("{countdown}", str(round(countdown_fuer(cfg, r))))
 
     allgemein = list(cfg.get("hashtags_allgemein", []))
     eigene = [h for h in kat.get("hashtags", []) if h not in allgemein]
