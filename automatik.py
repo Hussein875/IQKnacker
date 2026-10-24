@@ -21,8 +21,12 @@ FINDE_GITTER = {"leicht": (7, 7), "mittel": (8, 8), "schwer": (10, 10)}  # (Spal
 SCHWIERIGKEITEN = ["leicht", "mittel", "schwer"]
 
 
-def naechste_id(raetsel):
-    return max((int(r["id"]) for r in raetsel), default=0) + 1
+CLOUD_ID_AB = 1000  # IDs ab 1000 vergibt die Cloud (neue_raetsel.json), darunter der Mac – so gibt's keine Doppelten
+
+
+def naechste_id(raetsel, cloud=False):
+    ab, bis = (CLOUD_ID_AB, float("inf")) if cloud else (1, CLOUD_ID_AB)
+    return max((int(r["id"]) for r in raetsel if ab <= int(r["id"]) < bis), default=ab - 1) + 1
 
 
 def rechne(werte, operatoren):
@@ -118,14 +122,14 @@ def finde_raetsel(zufall, schwierigkeit, neue_id):
     }
 
 
-def erzeuge(art, anzahl, raetsel, schwierigkeit=None, saat=None):
+def erzeuge(art, anzahl, raetsel, schwierigkeit=None, saat=None, cloud=False):
     """Hängt `anzahl` neue Rätsel der Art "emoji" oder "finde" an die Liste an und gibt sie zurück."""
     zufall = random.Random(saat)
     bauer = {"emoji": emoji_gleichung, "finde": finde_raetsel}[art]
     neu = []
     for i in range(anzahl):
         stufe = schwierigkeit or SCHWIERIGKEITEN[i % len(SCHWIERIGKEITEN)]
-        eintrag = bauer(zufall, stufe, naechste_id(raetsel))
+        eintrag = bauer(zufall, stufe, naechste_id(raetsel, cloud))
         raetsel.append(eintrag)
         neu.append(eintrag)
     return neu

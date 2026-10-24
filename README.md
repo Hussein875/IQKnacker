@@ -97,6 +97,19 @@ python generate.py --plan 7 --nur-drive
 - Die vergebenen Termine landen in `geplant.json` – das Gedächtnis der Cloud-Planung. `raetsel.json` bleibt unberührt; lokal werden die Termine beim nächsten Aufruf automatisch übernommen.
 - Neue Videos erzeugst du weiter am Mac; sie landen automatisch in Drive und werden ab der nächsten Woche mit eingeplant.
 
+### Neue Rätsel aus der Cloud (Trend-Themen)
+
+Jeden Freitag schreibt eine Claude-Aufgabe die Rätsel für die nächste Planungswoche in `neue_raetsel.json` (IDs ab 1000, damit nichts mit lokal angelegten Rätseln kollidiert): Trend-Rätsel zu aktuellen Anlässen (Sport, Feiertage, Wissenschaft, Kino/Games …) mit eigenem Thema (Label, Farbe, Hashtags, Zeitraum = die Woche, in der sie laufen sollen) und einem „Wusstest du?“-Fakt in der Erklärung, dazu zeitlose Logik-Rätsel. Politik, Kriege, Katastrophen und echte Personen bleiben außen vor; die Lösung kommt immer aus Logik, nicht aus Wissen.
+
+Am Mac danach nur:
+
+```bash
+git pull
+python generate.py    # übernimmt neue Rätsel aus neue_raetsel.json, rendert sie, kopiert sie nach Drive
+```
+
+Für die Cloud gibt es dazu `--in-neue`: `python generate.py --neu-emoji 5 --in-neue` legt Emoji-Gleichungen direkt in `neue_raetsel.json` an.
+
 ### Google Drive
 
 Mit **Google Drive für Desktop** landet jedes fertige Video automatisch zusätzlich im Drive-Ordner `IQKnacker Videos` (einstellbar in `config.json` → `ausgabe.drive_ordner`, Name in „Meine Ablage“ oder kompletter Pfad; leer lassen schaltet es ab). Von dort holt sich Metricool die Videos beim CSV-Import.

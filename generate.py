@@ -149,6 +149,20 @@ def speichere_raetsel(raetsel):
 
 
 GEPLANT_DATEI = os.path.join(BASIS, "geplant.json")
+NEUE_DATEI = os.path.join(BASIS, "neue_raetsel.json")
+
+
+def neue_raetsel_laden(raetsel, cfg):
+    """neue_raetsel.json ({"themen": {…}, "raetsel": […]}) füllt die wöchentliche Cloud-Aufgabe mit Trend-Rätseln
+    (IDs ab 1000). Themen kommen zur Config dazu, noch unbekannte Rätsel werden in raetsel.json übernommen."""
+    if not os.path.exists(NEUE_DATEI):
+        return 0
+    daten = lade_json(NEUE_DATEI)
+    cfg.setdefault("themen", {}).update(daten.get("themen", {}))
+    bekannt = {r.get("id") for r in raetsel}
+    neu = [dict(r) for r in daten.get("raetsel", []) if r.get("id") not in bekannt]
+    raetsel.extend(neu)
+    return len(neu)
 
 
 def geplante_termine_laden(raetsel):
@@ -686,6 +700,8 @@ def main():
                         help="für --plan ohne lokale Videos (Cloud): fertig ist, was in drive_links.json steht; "
                              "Termine landen in geplant.json")
     parser.add_argument("--start", help="erster Tag für --plan als JJJJ-MM-TT (Standard: heute, vergangene Uhrzeiten werden übersprungen)")
+    parser.add_argument("--in-neue", action="store_true",
+                        help="für --neu-emoji/--neu-finde (Cloud): in neue_raetsel.json statt raetsel.json, IDs ab 1000")
     parser.add_argument("--schwierigkeit", choices=["leicht", "mittel", "schwer"],
                         help="für --neu-emoji/--neu-finde: nur diese Stufe (sonst gemischt)")
     args = parser.parse_args()
@@ -698,19 +714,29 @@ def main():
     if args.ohne_aufloesung:
         cfg.setdefault("aufloesung", {})["zeigen"] = False
     raetsel = lade_json(RAETSEL_DATEI)
+    uebernommen = neue_raetsel_laden(raetsel, cfg)
     repariert = pruefe_raetsel(raetsel, cfg)
     geplante_termine_laden(raetsel)
-    if termine_abhaken(raetsel) or repariert:
+    if uebernommen:
+        print(f"+ {uebernommen} neue Rätsel aus {os.path.basename(NEUE_DATEI)} übernommen")
+    if termine_abhaken(raetsel) or repariert or uebernommen:
         speichere_raetsel(raetsel)
 
     if args.neu_emoji or args.neu_finde:
         import automatik
         neu = []
         if args.neu_emoji:
-            neu += automatik.erzeuge("emoji", args.neu_emoji, raetsel, args.schwierigkeit)
+            neu += automatik.erzeuge("emoji", args.neu_emoji, raetsel, args.schwierigkeit, cloud=args.in_neue)
         if args.neu_finde:
-            neu += automatik.erzeuge("finde", args.neu_finde, raetsel, args.schwierigkeit)
-        speichere_raetsel(raetsel)
+            neu += automatik.erzeuge("finde", args.neu_finde, raetsel, args.schwierigkeit, cloud=args.in_neue)
+        if args.in_neue:  # Cloud: nur neue_raetsel.json anfassen, raetsel.json gehört dem Mac
+            daten = lade_json(NEUE_DATEI) if os.path.exists(NEUE_DATEI) else {"themen": {}, "raetsel": []}
+            daten.setdefault("raetsel", []).extend(neu)
+            with open(NEUE_DATEI, "w", encoding="utf-8") as f:
+                json.dump(daten, f, ensure_ascii=False, indent=2)
+                f.write("\n")
+        else:
+            speichere_raetsel(raetsel)
         for r in neu:
             frage = r["frage"].replace("\n", "  |  ").replace("*", "")
             print(f"+ {r['id']:>3} {r['kategorie']:<6} {r['schwierigkeit']:<7} {frage}  →  {r['loesung']}")
