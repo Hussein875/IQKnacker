@@ -13,6 +13,7 @@ import hashlib
 import json
 import math
 import os
+import ssl
 import subprocess
 import sys
 import urllib.error
@@ -202,6 +203,15 @@ class Video:
 
 # ---------------------------------------------------------------- Audio
 
+def ssl_kontext():
+    """Zertifikate aus certifi – das python.org-Python auf dem Mac bringt keine eigenen mit."""
+    try:
+        import certifi
+        return ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        return ssl.create_default_context()
+
+
 def elevenlabs(satz):
     """Satz bei ElevenLabs sprechen lassen (MP3, zwischengespeichert) und als 44,1-kHz-Mono-Array zurückgeben."""
     with open(SCHLUESSEL_DATEI, encoding="utf-8") as f:
@@ -215,11 +225,14 @@ def elevenlabs(satz):
             data=json.dumps({"text": satz, "model_id": ELEVEN["modell"], "voice_settings": ELEVEN["einstellungen"]}).encode(),
             headers={"xi-api-key": schluessel, "Content-Type": "application/json", "Accept": "audio/mpeg"})
         try:
-            with urllib.request.urlopen(anfrage, timeout=60) as antwort:
+            with urllib.request.urlopen(anfrage, timeout=60, context=ssl_kontext()) as antwort:
                 daten = antwort.read()
         except urllib.error.HTTPError as fehler:
             sys.exit(f"✗ ElevenLabs meldet Fehler {fehler.code}: {fehler.read().decode(errors='replace')[:400]}\n"
                      "  401 = Schlüssel falsch · 402/429 = Kontingent/Tarif · 404/400 = Voice-ID prüfen")
+        except urllib.error.URLError as fehler:
+            sys.exit(f"✗ Keine Verbindung zu ElevenLabs: {fehler.reason}\n"
+                     "  Bei CERTIFICATE_VERIFY_FAILED: pip install certifi (oder pip install -r requirements.txt)")
         with open(mp3 + ".tmp", "wb") as f:
             f.write(daten)
         os.replace(mp3 + ".tmp", mp3)

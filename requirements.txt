@@ -4,3 +4,5 @@ numpy>=1.22
 imageio-ffmpeg>=0.4.9
 # Für den Posting-Plan als Excel-Datei
 openpyxl>=3.0
+# Sichere Verbindungen (ElevenLabs) mit dem python.org-Python auf dem Mac
+certifi>=2023.0
