@@ -19,22 +19,29 @@
     "label_text": "#000000",
     "dezent": "#8C8C8C",
     "balken_hintergrund": "#2B2B2B",
-    "warnung": "#FF4D4D"
+    "warnung": "#FF4D4D",
+    "option_hintergrund": "#141414",
+    "option_rand": "#464646"
   },
   "schriften": {
     "fett": "assets/fonts/Montserrat-ExtraBold.ttf",
     "normal": "assets/fonts/Montserrat-Bold.ttf",
-    "emoji": "assets/fonts/NotoColorEmoji-Subset.ttf"
+    "emoji": "assets/fonts/NotoColorEmoji.ttf"
   },
   "groessen": {
-    "hook": 128,
-    "hook_unterzeile": 46,
+    "banner": 50,
+    "banner_abstand": 95,
     "label": 44,
     "raetsel_max": 100,
     "raetsel_min": 46,
     "zeilenabstand": 1.25,
+    "option_hoehe": 112,
+    "option_abstand": 20,
+    "option_text": 54,
+    "finde_frage": 64,
     "countdown_zahl": 120,
     "countdown_ring_durchmesser": 280,
+    "countdown_ring_klein": 200,
     "countdown_ring_staerke": 18,
     "countdown_balken_breite": 620,
     "countdown_balken_hoehe": 16,
@@ -45,36 +52,78 @@
     "wasserzeichen_text": 34
   },
   "zeiten": {
-    "hook": 1.8,
-    "lesezeit": 2.0,
+    "lesezeit": 1.0,
     "countdown": 10,
     "zeit_um": 0.8,
     "endkarte": 2.2,
-    "uebergang": 0.25
+    "uebergang": 0.25,
+    "loop": 0.3
   },
   "animation": {
-    "einblenden_dauer": 0.5,
-    "wort_intervall": 0.12,
-    "wort_einblenden": 0.25,
+    "einstieg_zoom": 1.06,
+    "einstieg_dauer": 0.45,
     "zoom_drift": 0.04,
+    "banner_wechsel": 0.35,
+    "tipp_ab": 5,
+    "spruch_mitte_ab": 6,
     "countdown_puls": 0.14,
     "kritisch_ab": 3,
     "glow_deckkraft": 0.13,
-    "vignette_deckkraft": 0.4
+    "vignette_deckkraft": 0.4,
+    "partikel": 40
   },
   "countdown": {
     "stil": "ring"
   },
   "texte": {
-    "hook": "Kannst du das *lösen?*",
-    "hook_unterzeile": {
-      "leicht": "Klingt leicht – oder? 🤔",
-      "mittel": "Die meisten tappen in die Falle 🤯",
-      "schwer": "Nur echte Genies schaffen das 🧠"
+    "hook": {
+      "leicht": [
+        "Klingt leicht – oder? 🤔",
+        "Aufwärmrunde für dein Gehirn 🧠",
+        "Das schaffst du locker… oder? 😏"
+      ],
+      "mittel": [
+        "Die meisten liegen hier falsch 🤯",
+        "Denk lieber zweimal nach 🤔",
+        "Hier tappen viele in die Falle 😬"
+      ],
+      "schwer": [
+        "Nur echte Genies schaffen das 🧠",
+        "Das knacken die wenigsten 🔥",
+        "Level: Genie 😈"
+      ],
+      "standard": "Kannst du das *lösen?*"
     },
-    "zeit_um": "⏱️ ZEIT UM!",
-    "endkarte_1": "Schreib deine *Lösung* in die Kommentare 👇",
-    "endkarte_2": "Folge für die Auflösung",
+    "spruch_mitte": [
+      "Schon eine Idee? 🤔",
+      "Denk nach… 🧠",
+      "Bleib dran! 👀",
+      "Hast du's schon? 😏"
+    ],
+    "spruch_kritisch": [
+      "Jetzt wird's knapp! 😬",
+      "Schnell! ⏱️",
+      "Letzte Chance! 🔥",
+      "Gleich ist die Zeit um! ⏰"
+    ],
+    "tipp_prefix": "💡 *Tipp:* ",
+    "zeit_um": [
+      "⏱️ ZEIT UM!",
+      "⏱️ STOPP!",
+      "⏰ ZEIT IST UM!"
+    ],
+    "endkarte_1": [
+      "Schreib deine *Lösung* in die Kommentare 👇",
+      "Was hast du raus? Ab in die *Kommentare* 👇"
+    ],
+    "endkarte_1_optionen": [
+      "*{buchstaben}?* Schreib's in die Kommentare 👇",
+      "Welche Antwort? *{buchstaben}* in die Kommentare 👇"
+    ],
+    "endkarte_2": [
+      "Folge für die Auflösung",
+      "Folge für mehr Rätsel 🧠"
+    ],
     "handle": "@iqknacker"
   },
   "wasserzeichen": {
@@ -85,14 +134,18 @@
     "text_falls_kein_logo": "@iqknacker"
   },
   "musik": {
+    "modus": "auto",
     "ordner": "assets/music",
-    "lautstaerke": 0.6,
+    "lautstaerke": 0.5,
     "einblenden": 0.3,
     "ausblenden": 1.5
   },
   "soundeffekte": {
     "aktiv": true,
     "lautstaerke": 0.7
+  },
+  "audio": {
+    "lautheit_lufs": -14
   },
   "ausgabe": {
     "ordner": "output"
@@ -103,6 +156,8 @@
     "#fürdich"
   ],
   "hashtags_anzahl": 7,
+  "caption_aufruf": "Schreib deine Antwort in die Kommentare 👇",
+  "caption_aufruf_optionen": "{buchstaben}? Schreib's in die Kommentare 👇",
   "kommentar_vorlage": "✅ Auflösung: {loesung}\n{erklaerung}\nFolge @iqknacker für mehr Rätsel 🧠",
   "kategorien": {
     "iq": {
@@ -189,6 +244,73 @@
         "Worträtsel-Check: Wie schnell bist du? ⏱️",
         "Ein Wort, zwei Begriffe – findest du es? 🤔"
       ]
+    },
+    "emoji": {
+      "label": "IQ-TEST",
+      "zeilenabstand": 1.5,
+      "raetsel_max": 104,
+      "hashtags": [
+        "#matherätsel",
+        "#emojirätsel",
+        "#punktvorstrich",
+        "#kopfrechnen",
+        "#knobeln",
+        "#denksport",
+        "#iqtest"
+      ],
+      "captions": [
+        "Die meisten rechnen hier falsch 🤯",
+        "Kopfrechnen-Check: Was kommt raus? 🧠",
+        "Nur echte Rechenprofis schaffen das 🔥"
+      ],
+      "texte": {
+        "hook": {
+          "leicht": [
+            "Rechne mit! 🧮",
+            "Wie schnell bist du? ⏱️"
+          ],
+          "mittel": [
+            "Kopfrechnen ohne Taschenrechner 🧠",
+            "Schaffst du das in {countdown} Sekunden? ⏱️"
+          ],
+          "schwer": [
+            "Die meisten rechnen hier falsch 🤯",
+            "Nur echte Rechenprofis schaffen das 🔥"
+          ]
+        }
+      }
+    },
+    "finde": {
+      "label": "KONZENTRATION",
+      "hashtags": [
+        "#konzentration",
+        "#suchbild",
+        "#konzentrationstest",
+        "#gehirnjogging",
+        "#denksport",
+        "#rätsel",
+        "#iqtest"
+      ],
+      "captions": [
+        "Findest du es in {countdown} Sekunden? 👀",
+        "Nur echte Adleraugen finden es sofort 🦅",
+        "Konzentrationstest: Wie schnell bist du? 🔍"
+      ],
+      "caption_aufruf": "Gefunden? Schreib Reihe & Spalte in die Kommentare 👇",
+      "texte": {
+        "hook": [
+          "Nur Adleraugen finden es sofort 🦅",
+          "Konzentrationstest 🔍",
+          "Findest du es in {countdown} Sekunden? 👀"
+        ],
+        "spruch_mitte": [
+          "Schon gefunden? 👀",
+          "Schau genau hin! 🔍"
+        ],
+        "endkarte_1": [
+          "Gefunden? *Reihe & Spalte* in die Kommentare 👇"
+        ]
+      }
     }
   }
 }

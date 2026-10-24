@@ -5,6 +5,7 @@
     "frage": "Welche Zahl fehlt?\n8 + 8 = 4\n5 + 5 = 10\n9 + 9 = 6\n*7 + 7 = ?*",
     "loesung": "2",
     "erklaerung": "Es geht um Uhrzeiten: 7 Uhr + 7 Stunden = 14 Uhr = 2 Uhr. Genauso 16 → 4 und 18 → 6.",
+    "tipp": "Denk an eine Uhr 🕐",
     "schwierigkeit": "schwer",
     "status": "neu"
   },
@@ -14,6 +15,7 @@
     "frage": "Welche Zahl kommt als Nächstes?\n*1 – 4 – 9 – 61 – 52 – ?*",
     "loesung": "63",
     "erklaerung": "Quadratzahlen rückwärts gelesen: 16 → 61, 25 → 52, 36 → 63.",
+    "tipp": "Lies die Zahlen rückwärts",
     "schwierigkeit": "schwer",
     "status": "neu"
   },
@@ -23,6 +25,7 @@
     "frage": "Welcher Buchstabe kommt als Nächstes?\n*E Z D V F S S A ?*",
     "loesung": "N",
     "erklaerung": "Die Anfangsbuchstaben der Zahlen: Eins, Zwei, Drei … Sieben, Acht – Neun.",
+    "tipp": "Zähl mal laut mit",
     "schwierigkeit": "mittel",
     "status": "neu"
   },
@@ -32,6 +35,7 @@
     "frage": "Welche Zahl kommt als Nächstes?\n*1\n11\n21\n1211\n111221\n?*",
     "loesung": "312211",
     "erklaerung": "Jede Zeile beschreibt die vorige: 111221 = „drei 1, zwei 2, eine 1“ → 312211.",
+    "tipp": "Lies jede Zeile laut vor",
     "schwierigkeit": "schwer",
     "status": "neu"
   },
@@ -39,8 +43,14 @@
     "id": 15,
     "kategorie": "iq",
     "frage": "Eine Uhr schlägt um 6 Uhr sechsmal – das dauert 5 Sekunden. Wie lange dauern die 12 Schläge um 12 Uhr?",
+    "optionen": [
+      "10 Sekunden",
+      "11 Sekunden",
+      "12 Sekunden"
+    ],
     "loesung": "11 Sekunden",
     "erklaerung": "6 Schläge = 5 Pausen à 1 s. 12 Schläge = 11 Pausen = 11 Sekunden.",
+    "tipp": "Zähl die Pausen",
     "schwierigkeit": "schwer",
     "status": "neu"
   },
@@ -48,6 +58,11 @@
     "id": 16,
     "kategorie": "iq",
     "frage": "Ein Ziegelstein wiegt 1 kg plus einen halben Ziegelstein. Wie schwer ist ein ganzer Ziegelstein?",
+    "optionen": [
+      "1,5 kg",
+      "2 kg",
+      "3 kg"
+    ],
     "loesung": "2 kg",
     "erklaerung": "Der halbe Stein wiegt genau 1 kg – also wiegt der ganze 2 kg.",
     "schwierigkeit": "mittel",
@@ -57,8 +72,14 @@
     "id": 17,
     "kategorie": "iq",
     "frage": "Wie oft liegen Stunden- und Minutenzeiger an einem Tag genau übereinander?",
+    "optionen": [
+      "22-mal",
+      "23-mal",
+      "24-mal"
+    ],
     "loesung": "22-mal",
     "erklaerung": "Nur 11-mal in 12 Stunden – zwischen 11 und 1 Uhr nur einmal (um 12). 2 × 11 = 22.",
+    "tipp": "Was passiert zwischen 11 und 1 Uhr?",
     "schwierigkeit": "schwer",
     "status": "neu"
   },
@@ -66,8 +87,14 @@
     "id": 18,
     "kategorie": "mathe",
     "frage": "Wie oft kommt die Ziffer *9* in allen Zahlen von 1 bis 100 vor?",
+    "optionen": [
+      "11-mal",
+      "19-mal",
+      "20-mal"
+    ],
     "loesung": "20-mal",
     "erklaerung": "10-mal als Einer (9, 19 … 99) und 10-mal als Zehner (90–99) = 20.",
+    "tipp": "Vergiss die 90er nicht",
     "schwierigkeit": "mittel",
     "status": "neu"
   },
@@ -75,6 +102,11 @@
     "id": 19,
     "kategorie": "mathe",
     "frage": "Heute ist Montag. Welcher Wochentag ist in *100 Tagen?*",
+    "optionen": [
+      "Dienstag",
+      "Mittwoch",
+      "Donnerstag"
+    ],
     "loesung": "Mittwoch",
     "erklaerung": "100 Tage = 14 Wochen + 2 Tage. Montag + 2 Tage = Mittwoch.",
     "schwierigkeit": "mittel",
@@ -86,6 +118,7 @@
     "frage": "Wie viele Quadrate gibt es auf einem Schachbrett?",
     "loesung": "204",
     "erklaerung": "Nicht nur 64! Auch 2×2, 3×3 … 8×8: 64+49+36+25+16+9+4+1 = 204.",
+    "tipp": "Auch 2×2-Quadrate zählen",
     "schwierigkeit": "schwer",
     "status": "neu"
   },
@@ -93,8 +126,13 @@
     "id": 21,
     "kategorie": "mathe",
     "frage": "Ein Seil liegt straff um den Äquator. Du machst es *1 Meter* länger. Passt eine Katze darunter?",
-    "loesung": "Ja, locker (ca. 16 cm Spalt)",
-    "erklaerung": "Der Radius wächst um 1 m ÷ 2π ≈ 16 cm – egal wie groß die Kugel ist.",
+    "optionen": [
+      "Nein",
+      "Ja, knapp 1 mm",
+      "Ja, ca. 16 cm"
+    ],
+    "loesung": "Ja, ca. 16 cm",
+    "erklaerung": "Radius +1 m ÷ 2π ≈ 16 cm – egal wie groß die Kugel ist.",
     "schwierigkeit": "schwer",
     "status": "neu"
   },
@@ -102,6 +140,11 @@
     "id": 22,
     "kategorie": "mathe",
     "frage": "Wie viele Leute braucht ein Raum, damit zwei davon mit über *50 %* Chance am selben Tag Geburtstag haben?",
+    "optionen": [
+      "23",
+      "183",
+      "365"
+    ],
     "loesung": "23",
     "erklaerung": "Bei 23 Personen gibt es schon 253 mögliche Paare – die Chance liegt bei 50,7 %.",
     "schwierigkeit": "schwer",
@@ -113,6 +156,7 @@
     "frage": "Ein Wort passt zu beiden:\n*BRIEF___*\n*___ZEICHEN*",
     "loesung": "Marke",
     "erklaerung": "Briefmarke und Markenzeichen.",
+    "tipp": "Klebt auf jedem Brief",
     "schwierigkeit": "mittel",
     "status": "neu"
   },
@@ -138,6 +182,11 @@
     "id": 26,
     "kategorie": "wissen",
     "frage": "Was liegt weiter südlich: Rom oder der südlichste Punkt *Kanadas?*",
+    "optionen": [
+      "Rom",
+      "Kanada",
+      "Gleich weit"
+    ],
     "loesung": "Kanada",
     "erklaerung": "Kanadas Südspitze liegt auf ca. 41,7° Nord – Rom auf ca. 41,9° Nord.",
     "schwierigkeit": "schwer",
@@ -147,6 +196,11 @@
     "id": 27,
     "kategorie": "wissen",
     "frage": "Welches Land hat die *meisten Zeitzonen* der Welt?",
+    "optionen": [
+      "Russland",
+      "USA",
+      "Frankreich"
+    ],
     "loesung": "Frankreich",
     "erklaerung": "Dank der Überseegebiete 12 Zeitzonen – Russland hat nur 11.",
     "schwierigkeit": "schwer",
@@ -156,6 +210,11 @@
     "id": 28,
     "kategorie": "wissen",
     "frage": "An wie viele Länder grenzt *Deutschland?*",
+    "optionen": [
+      "8",
+      "9",
+      "10"
+    ],
     "loesung": "9",
     "erklaerung": "DK, PL, CZ, AT, CH, FR, LU, BE und NL.",
     "schwierigkeit": "mittel",
@@ -165,6 +224,11 @@
     "id": 29,
     "kategorie": "wissen",
     "frage": "Was liegt weiter nördlich: *Berlin* oder *London?*",
+    "optionen": [
+      "Berlin",
+      "London",
+      "Gleich weit"
+    ],
     "loesung": "Berlin",
     "erklaerung": "Berlin liegt auf ca. 52,5° Nord, London auf ca. 51,5° Nord.",
     "schwierigkeit": "mittel",
@@ -174,6 +238,11 @@
     "id": 30,
     "kategorie": "wissen",
     "frage": "Wie viel Blei steckt in einem *Bleistift?*",
+    "optionen": [
+      "Ein bisschen",
+      "Ziemlich viel",
+      "Gar keins"
+    ],
     "loesung": "Gar keins",
     "erklaerung": "Die Mine besteht aus Graphit und Ton – Blei war nie drin.",
     "schwierigkeit": "mittel",
@@ -182,9 +251,14 @@
   {
     "id": 31,
     "kategorie": "wissen",
-    "frage": "Was ist länger: die Chinesische Mauer oder der *Durchmesser der Erde?*",
-    "loesung": "Die Chinesische Mauer",
-    "erklaerung": "Alle Abschnitte zusammen ca. 21.000 km – die Erde misst ca. 12.700 km.",
+    "frage": "Was ist länger: die *Chinesische Mauer* oder der *Durchmesser der Erde?*",
+    "optionen": [
+      "Die Mauer",
+      "Die Erde",
+      "Etwa gleich"
+    ],
+    "loesung": "Die Mauer",
+    "erklaerung": "Alle Abschnitte der Mauer: ca. 21.000 km. Erddurchmesser: ca. 12.700 km.",
     "schwierigkeit": "schwer",
     "status": "neu"
   },
@@ -192,6 +266,11 @@
     "id": 32,
     "kategorie": "wissen",
     "frage": "Welches Land hat die *meisten Inseln* der Welt?",
+    "optionen": [
+      "Indonesien",
+      "Philippinen",
+      "Schweden"
+    ],
     "loesung": "Schweden",
     "erklaerung": "Über 260.000 Inseln – mehr als Norwegen, Finnland oder Indonesien.",
     "schwierigkeit": "schwer",
@@ -201,9 +280,132 @@
     "id": 33,
     "kategorie": "wissen",
     "frage": "Welches Land hat als einziges *keine viereckige* Flagge?",
+    "optionen": [
+      "Nepal",
+      "Schweiz",
+      "Vatikan"
+    ],
     "loesung": "Nepal",
-    "erklaerung": "Die Flagge Nepals besteht aus zwei übereinanderliegenden Dreiecken.",
+    "erklaerung": "Nepals Flagge besteht aus zwei Dreiecken. Schweiz und Vatikan: quadratisch.",
     "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 34,
+    "kategorie": "emoji",
+    "frage": "🐔 + 🐔 = 10\n🐔 + 🍐 + 🍐 = 23\n🥝 + 🥝 = 6\n*🥝 + 🐔 + 🍐 = ?*",
+    "loesung": "17",
+    "erklaerung": "🐔 = 5, 🍐 = 9, 🥝 = 3 → 3 + 5 + 9 = 17.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 35,
+    "kategorie": "emoji",
+    "frage": "🍕 + 🍕 = 8\n🍕 + 🥝 + 🥝 = 16\n🥝 − 🍑 = 5\n*🍕 × 🍑 + 🥝 = ?*",
+    "loesung": "10",
+    "erklaerung": "🍕 = 4, 🥝 = 6, 🍑 = 1 → 4 × 1 + 6 = 10.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 36,
+    "kategorie": "emoji",
+    "frage": "🍕 + 🍕 = 4\n🍕 + 🥝 + 🥝 = 14\n🥝 − 🐼 = 2\n*🐼 + 🍕 × 🥝 = ?*",
+    "loesung": "16",
+    "erklaerung": "🍕 = 2, 🥝 = 6, 🐼 = 4 → 4 + 2 × 6 = 16. Punkt vor Strich!",
+    "schwierigkeit": "schwer",
+    "status": "neu",
+    "optionen": [
+      "12",
+      "16",
+      "36"
+    ]
+  },
+  {
+    "id": 37,
+    "kategorie": "emoji",
+    "frage": "🎈 + 🎈 + 🎈 = 15\n🎈 + ⚽ + ⚽ = 23\n🍕 + 🍕 = 4\n*🍕 + 🎈 + ⚽ = ?*",
+    "loesung": "16",
+    "erklaerung": "🎈 = 5, ⚽ = 9, 🍕 = 2 → 2 + 5 + 9 = 16.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 38,
+    "kategorie": "emoji",
+    "frage": "🦊 + 🦊 = 14\n🦊 + 🥝 + 🥝 = 19\n🥝 − 🍌 = 4\n*🦊 × 🍌 + 🥝 = ?*",
+    "loesung": "20",
+    "erklaerung": "🦊 = 7, 🥝 = 6, 🍌 = 2 → 7 × 2 + 6 = 20.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 39,
+    "kategorie": "emoji",
+    "frage": "🍦 + 🍦 + 🍦 = 27\n🍦 + 🍕 + 🍕 = 15\n🍕 − 🐱 = 2\n*🐱 + 🍦 × 🍕 = ?*",
+    "loesung": "28",
+    "erklaerung": "🍦 = 9, 🍕 = 3, 🐱 = 1 → 1 + 9 × 3 = 28. Punkt vor Strich!",
+    "schwierigkeit": "schwer",
+    "status": "neu",
+    "optionen": [
+      "13",
+      "28",
+      "30"
+    ]
+  },
+  {
+    "id": 40,
+    "kategorie": "finde",
+    "typ": "finde",
+    "frage": "Finde die *9*!",
+    "zeichen": "6",
+    "ziel": "9",
+    "spalten": 7,
+    "zeilen": 7,
+    "position": [
+      3,
+      5
+    ],
+    "loesung": "Reihe 3, Spalte 5",
+    "erklaerung": "Die 9 versteckt sich in Reihe 3, Spalte 5 – gezählt von oben links.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 41,
+    "kategorie": "finde",
+    "typ": "finde",
+    "frage": "Finde das *N*!",
+    "zeichen": "M",
+    "ziel": "N",
+    "spalten": 8,
+    "zeilen": 8,
+    "position": [
+      6,
+      4
+    ],
+    "loesung": "Reihe 6, Spalte 4",
+    "erklaerung": "Das N versteckt sich in Reihe 6, Spalte 4 – gezählt von oben links.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 42,
+    "kategorie": "finde",
+    "typ": "finde",
+    "frage": "Finde die *2*!",
+    "zeichen": "Z",
+    "ziel": "2",
+    "spalten": 10,
+    "zeilen": 10,
+    "position": [
+      9,
+      4
+    ],
+    "loesung": "Reihe 9, Spalte 4",
+    "erklaerung": "Die 2 versteckt sich in Reihe 9, Spalte 4 – gezählt von oben links.",
+    "schwierigkeit": "schwer",
     "status": "neu"
   }
 ]
