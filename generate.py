@@ -16,6 +16,7 @@ Beispiele:
 
 import argparse
 import array
+import csv
 import json
 import math
 import os
@@ -453,6 +454,88 @@ def saison_zieltage(fertig, themen, start):
     return ziele
 
 
+# Spalten exakt wie in Metricools Vorlage (Kalender → ⋮ → CSV importieren → Vorlage herunterladen)
+METRICOOL_SPALTEN = (
+    "Text,Date,Time,Draft,Facebook,Twitter/X,LinkedIn,GBP,Instagram,Pinterest,TikTok,Youtube,Threads,Bluesky,"
+    + ",".join(f"Picture Url {n}" for n in range(1, 11)) + ","
+    + ",".join(f"Alt text picture {n}" for n in range(1, 11)) + ","
+    "Document title,Shortener,Video Thumbnail Url,Video Cover Frame,Twitter/X Can reply,Twitter/X Type,"
+    "Twitter/X Poll Duration minutes,Twitter/X Poll Option 1,Twitter/X Poll Option 2,Twitter/X Poll Option 3,"
+    "Twitter/X Poll Option 4,Pinterest Board,Pinterest Pin Title,Pinterest Pin Link,Pinterest Pin New Format,"
+    "Instagram Post Type,Instagram Show Reel On Feed,Instagram Trial Reel Share Automatically,Youtube Video Title,"
+    "Youtube Video Type,Youtube Video Privacy,Youtube video for kids,Youtube AI generated content,"
+    "Youtube notify subscribers,Youtube Video Category,Youtube Video Tags,Youtube playlist,GBP Post Type,"
+    "Facebook Post Type,Facebook Title,First Comment Text,TikTok Title,TikTok disable comments,TikTok disable duet,"
+    "TikTok disable stitch,TikTok Post Privacy,TikTok Branded Content,TikTok Your Brand,TikTok Auto Add Music,"
+    "TikTok Photo Cover Index,TikTok musicId,TikTok music title,TikTok music author,TikTok music previewUrl,"
+    "TikTok music thumbnailUrl,TikTok music soundVolume,TikTok music originalVolume,TikTok music startMillis,"
+    "TikTok music endMillis,TikTok Ai generated content,LinkedIn Type,LinkedIn Poll Question,LinkedIn Poll Option 1,"
+    "LinkedIn Poll Option 2,LinkedIn Poll Option 3,LinkedIn Poll Option 4,LinkedIn Poll Duration,"
+    "LinkedIn Show link preview,LinkedIn Images as Carousel,Threads Reply Control,Threads Is Spoiler,"
+    "Threads Post Type,Brand name").split(",")
+METRICOOL_MAX = 50  # Metricool empfiehlt höchstens 50 Beiträge pro Datei
+
+
+def drive_link(cfg, r):
+    """Öffentlicher Google-Drive-Link zum Video. Die Datei-ID liest Google Drive für Desktop (macOS) als
+    Dateiattribut aus; alternativ steht sie in drive_links.json ({"034_emoji.mp4": "<ID>", …})."""
+    datei = dateiname(r) + ".mp4"
+    datei_id = None
+    drive = drive_ordner(cfg)
+    if drive and os.path.exists(os.path.join(drive, datei)) and shutil.which("xattr"):
+        try:
+            datei_id = subprocess.run(["xattr", "-p", "com.google.drivefs.item-id#S", os.path.join(drive, datei)],
+                                      capture_output=True, text=True, timeout=10).stdout.strip() or None
+        except (OSError, subprocess.SubprocessError):
+            pass
+    if not datei_id:
+        links = os.path.join(BASIS, "drive_links.json")
+        datei_id = lade_json(links).get(datei) if os.path.exists(links) else None
+    return f"https://drive.google.com/file/d/{datei_id}/view?usp=sharing" if datei_id else None
+
+
+def plan_als_metricool(ausgabe, cfg, posts):
+    """Schreibt die Posts als CSV für Metricools Import (Instagram-Reel, TikTok, YouTube-Short).
+    Gibt die geschriebenen Dateien und die Videos ohne Drive-Link zurück."""
+    mc = cfg.get("metricool", {})
+    zeilen, ohne_link = [], []
+    for r, datum, uhrzeit, caption in posts:
+        link = drive_link(cfg, r)
+        if not link:
+            ohne_link.append(dateiname(r) + ".mp4")
+            continue
+        werte = dict.fromkeys(METRICOOL_SPALTEN, "")
+        werte.update({
+            "Text": caption, "Date": datum.isoformat(), "Time": f"{uhrzeit}:00", "Draft": "false",
+            "Facebook": "false", "Twitter/X": "false", "LinkedIn": "false", "GBP": "false", "Pinterest": "false",
+            "Threads": "false", "Bluesky": "false", "Shortener": "false",
+            "Instagram": "true", "TikTok": "true", "Youtube": "true", "Picture Url 1": link,
+            "Instagram Post Type": "REEL", "Instagram Show Reel On Feed": "true",
+            "Youtube Video Title": youtube_titel(caption), "Youtube Video Type": "SHORT",
+            "Youtube Video Privacy": "PUBLIC", "Youtube video for kids": "false",
+            "Youtube AI generated content": "false", "Youtube notify subscribers": "true",
+            "Youtube Video Category": mc.get("youtube_kategorie", "EDUCATION"),
+            "Youtube Video Tags": ",".join(mc.get("youtube_tags", [])),
+            "TikTok disable comments": "false", "TikTok disable duet": "false", "TikTok disable stitch": "false",
+            "TikTok Post Privacy": "PUBLIC_TO_EVERYONE", "TikTok Branded Content": "false",
+            "TikTok Your Brand": "false", "TikTok Auto Add Music": "false", "TikTok Ai generated content": "false",
+            "Brand name": mc.get("marke", ""),
+        })
+        zeilen.append([werte[s] for s in METRICOOL_SPALTEN])
+    for alt in glob.glob(os.path.join(ausgabe, "metricool*.csv")):
+        os.remove(alt)
+    dateien = []
+    for teil in range(0, len(zeilen), METRICOOL_MAX):
+        nummer = f"_{teil // METRICOOL_MAX + 1}" if len(zeilen) > METRICOOL_MAX else ""
+        pfad = os.path.join(ausgabe, f"metricool{nummer}.csv")
+        with open(pfad, "w", encoding="utf-8-sig", newline="") as f:  # mit BOM wie Metricools Vorlage
+            schreiber = csv.writer(f)
+            schreiber.writerow(METRICOOL_SPALTEN)
+            schreiber.writerows(zeilen[teil:teil + METRICOOL_MAX])
+        dateien.append(pfad)
+    return dateien, ohne_link
+
+
 def plan_als_excel(pfad, zeilen):
     try:
         import openpyxl
@@ -497,7 +580,7 @@ def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
     jetzt, vorbei, gesetzt = datetime.datetime.now(), 0, {}
     zieltage = saison_zieltage(fertig, themen, start)
     zeilen = [f"POSTING-PLAN IQKnacker – {len(uhrzeiten)} Videos pro Tag", "=" * 44, ""]
-    tabelle = []
+    tabelle, posts = [], []
     i = 0
     for tag in range(tage):
         datum = start + datetime.timedelta(days=tag)
@@ -524,6 +607,7 @@ def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
             fertig.remove(r)
             r["termin"] = f"{datum.isoformat()} {uhrzeit}"
             caption = caption_text(r, cfg).strip()
+            posts.append((r, datum, uhrzeit, caption))
             tabelle.append([datum, WOCHENTAGE[datum.weekday()], uhrzeit, f"{dateiname(r)}.mp4", r["schwierigkeit"],
                             r.get("thema") or "", youtube_titel(caption), caption, str(r["loesung"]), ""])
             i += 1
@@ -541,6 +625,12 @@ def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
     speichere_raetsel(raetsel)
     print(f"✓ {os.path.relpath(pfad, BASIS)} und {os.path.basename(excel)}: "
           f"{i} Videos auf {tage} Tage verteilt ({', '.join(uhrzeiten)} Uhr)")
+    dateien, ohne_link = plan_als_metricool(ausgabe, cfg, posts)
+    for d in dateien:
+        print(f"✓ {os.path.relpath(d, BASIS)} – in Metricool: Kalender → ⋮ → CSV importieren")
+    if ohne_link:
+        print(f"⚠ Kein Google-Drive-Link für {len(ohne_link)} Video(s), fehlen in der CSV: {', '.join(ohne_link)}\n"
+              "  → erst python generate.py --drive, warten bis Google Drive hochgeladen hat, dann --plan erneut.")
 
 
 # ---------------------------------------------------------------- Kommandozeile

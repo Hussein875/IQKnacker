@@ -109,7 +109,9 @@ Verteilt alle fertigen, noch nicht geposteten Videos (in der Reihenfolge der Dat
 - `output/postingplan.xlsx` – dasselbe als Tabelle (Excel oder Numbers), mit Spalte „Eingeplant ✓“ zum Abhaken
 - `raetsel.json` – merkt sich die Termine. Ein neuer Plan macht dort weiter, wo der letzte aufhört. Erzeugst du einen Plan für denselben Zeitraum noch einmal (z. B. mit anderen Uhrzeiten), werden die Termine ab dem Starttag neu vergeben – nichts geht doppelt raus.
 
-Damit planst du in **Metricool** (Kalender → Beitrag erstellen → Reel, TikTok, Short) eine ganze Woche in einem Rutsch ein.
+- `output/metricool.csv` – **Import-Datei für Metricool**: Caption, Datum, Uhrzeit, Video-Link aus Google Drive, Instagram als Reel (auch im Feed), TikTok öffentlich mit Kommentaren/Duett/Stitch, YouTube als öffentlicher Short mit Titel, Kategorie und Tags (einstellbar unter `metricool` in `config.json`). Ab 50 Beiträgen wird sie aufgeteilt (`metricool_1.csv`, `metricool_2.csv` …).
+
+**Einplanen:** Metricool → Kalender → ⋮ → **CSV importieren** → `output/metricool.csv` auswählen → Vorschau prüfen → importieren. Die Video-Links funktionieren nur, wenn die Videos schon in Google Drive liegen (siehe oben) und der Drive-Ordner per Link freigegeben ist („Jeder mit dem Link“). Die Datei-ID liest der Generator über Google Drive für Desktop aus; klappt das nicht, kann man sie in `drive_links.json` eintragen (`{"034_emoji.mp4": "<Datei-ID>"}`).
 
 ---
 

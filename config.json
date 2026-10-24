@@ -188,6 +188,11 @@
     "ordner": "output",
     "drive_ordner": "IQKnacker Videos"
   },
+  "metricool": {
+    "marke": "",
+    "youtube_kategorie": "EDUCATION",
+    "youtube_tags": ["rätsel", "denksport", "iqtest", "logik", "matherätsel", "shorts"]
+  },
   "hashtags_allgemein": [
     "#iqknacker",
     "#rätsel",
