@@ -1,10 +1,11 @@
 """Prototyp „Dotchi“ – Alltags-Vergleiche als Faktenvideos (1080x1920, 30 fps), mit und ohne Stimme.
 
 Nutzt Schriften und Text-Setzer aus dem IQKnacker-Generator. Aufruf (im IQKnacker-Ordner, venv aktiv):
-    python3 prototypen/dotchi.py --stimme <VOICE_ID>            # beide Beispiele mit ElevenLabs-Stimme
-    python3 prototypen/dotchi.py --stimme <VOICE_ID> --video kaffee --name anna
+    python3 prototypen/dotchi.py                     # beide Beispiele mit Annas ElevenLabs-Stimme
+    python3 prototypen/dotchi.py --video kaffee      # nur das Kaffee-Video
+    python3 prototypen/dotchi.py --stimme <VOICE_ID> --video kaffee --name test   # andere Stimme ausprobieren
 Der ElevenLabs-API-Schlüssel steht in ~/.elevenlabs (nur der Schlüssel, nichts sonst) – nie im Repo.
-Ohne Schlüssel wird die kostenlose Piper-Test-Stimme benutzt (de-thorsten-low.onnx neben diesem Skript).
+Mit --piper wird die kostenlose Piper-Test-Stimme benutzt (de-thorsten-low.onnx neben diesem Skript).
 Gesprochene Sätze werden in prototypen/.cache zwischengespeichert – erneutes Rendern kostet keine Credits.
 """
 import argparse
@@ -34,7 +35,8 @@ EMOJI = f"{IQ}/assets/fonts/NotoColorEmoji.ttf"
 STIMME = os.path.join(HIER, "de-thorsten-low.onnx")  # Test-Stimme: github.com/rhasspy/piper/releases/download/v0.0.2/voice-de-thorsten-low.tar.gz
 SCHLUESSEL_DATEI = os.path.expanduser("~/.elevenlabs")
 CACHE = os.path.join(HIER, ".cache")
-ELEVEN = {"stimme": None, "modell": "eleven_multilingual_v2",
+ANNA = "DEZHhPbmb8LVZmWufkCh"  # ElevenLabs „Anna – Excited & Journalistic“, die Dotchi-Stimme
+ELEVEN = {"stimme": ANNA, "modell": "eleven_multilingual_v2",
           "einstellungen": {"stability": 0.4, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": True}}
 
 B, H, FPS, SR = 1080, 1920, 30, 44100
@@ -231,7 +233,8 @@ def stimme(satz, ziel):
     if ELEVEN["stimme"] and os.path.exists(SCHLUESSEL_DATEI):
         return elevenlabs(satz)
     if ELEVEN["stimme"]:
-        sys.exit(f"✗ Kein ElevenLabs-Schlüssel in {SCHLUESSEL_DATEI} gefunden.")
+        sys.exit(f"✗ Kein ElevenLabs-Schlüssel in {SCHLUESSEL_DATEI} gefunden. Speichern: Schlüssel kopieren, dann\n"
+                 "  pbpaste > ~/.elevenlabs && chmod 600 ~/.elevenlabs   (oder mit --piper die Test-Stimme nutzen)")
     subprocess.run([sys.executable, "-m", "piper", "-m", STIMME, "-f", ziel], input=satz.encode(),
                    check=True, capture_output=True)
     with wave.open(ziel) as w:
@@ -401,12 +404,13 @@ DOENER = Video("doener", [
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Dotchi-Prototyp: Beispielvideos rendern")
-    parser.add_argument("--stimme", help="ElevenLabs-Voice-ID (ohne: kostenlose Piper-Test-Stimme)")
+    parser.add_argument("--stimme", default=ANNA, help="ElevenLabs-Voice-ID (Standard: Anna)")
+    parser.add_argument("--piper", action="store_true", help="kostenlose Piper-Test-Stimme statt ElevenLabs")
     parser.add_argument("--modell", default=ELEVEN["modell"], help="ElevenLabs-Modell (Standard: %(default)s)")
     parser.add_argument("--video", choices=["kaffee", "doener", "alle"], default="alle")
     parser.add_argument("--name", help="Zusatz für die Dateinamen, z. B. --name anna → kaffee_anna_mit_stimme.mp4")
     args = parser.parse_args()
-    ELEVEN["stimme"], ELEVEN["modell"] = args.stimme, args.modell
+    ELEVEN["stimme"], ELEVEN["modell"] = (None if args.piper else args.stimme), args.modell
     ziel = os.path.join(HIER, "out")
     for v in (KAFFEE, DOENER):
         if args.video in ("alle", v.name):

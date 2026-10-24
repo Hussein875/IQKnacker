@@ -41,7 +41,8 @@ Ideen für später – erst angehen, wenn die ersten Zahlen aus TikTok Studio da
 - **Stimme:** ja – mit ElevenLabs (Starter ca. 5–6 $/Monat, ~30.000 Zeichen ≈ 90 Videos; Preise vorher prüfen).
   Immer zusätzlich Text im Bild (Instagram läuft oft stumm). Bei KI-Stimme „KI-generiert“ aktivieren.
 - **Technik:** eigenes Repository, eigener Drive-Ordner, zweite Marke in Metricool (Starter erlaubt 5),
-  eigene Cloud-Aufgaben. Prototyp: `prototypen/dotchi.py` (Muster Kaffee + Döner; ElevenLabs-Stimme über `--stimme <VOICE_ID>`, Schlüssel in `~/.elevenlabs`).
+  eigene Cloud-Aufgaben. Prototyp: `prototypen/dotchi.py` (Muster Kaffee + Döner; ElevenLabs-Stimme **Anna – Excited & Journalistic**,
+  Voice-ID `DEZHhPbmb8LVZmWufkCh`, Schlüssel in `~/.elevenlabs`).
 - **Name:** „Dotchi“ – jap. どっち, umgangssprachlich „welches von beiden?“. Handle `@dotchitv` (frei auf TikTok, Instagram
   und YouTube). Bio-Idee: „Dotchi – jap. ‚welches von beiden?‘ Wir vergleichen den Alltag. ⚖️“
   Vergleiche aus dem ganzen Alltag (Geld, Zeit, Essen, Technik, Strom …); am Ende jedes Videos ein klarer Gewinner
