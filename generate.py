@@ -137,11 +137,13 @@ def pruefe_raetsel(raetsel, cfg):
         ids.add(r["id"])
         if r["status"] not in GUELTIGE_STATUS:
             fehler.append(f"Rätsel {r['id']}: unbekannter Status „{r['status']}“ (erlaubt: {', '.join(GUELTIGE_STATUS)})")
-        if r.get("termin"):
+        if "termin" in r:
             try:
                 datetime.datetime.strptime(r["termin"], "%Y-%m-%d %H:%M")
             except (TypeError, ValueError):
-                fehler.append(f"Rätsel {r['id']}: „termin“ muss so aussehen: 2026-10-25 18:30")
+                # kaputter Termin ist kein Beinbruch – weg damit, der nächste --plan vergibt ihn neu
+                print(f"⚠ Rätsel {r['id']}: Termin „{r['termin']}“ ist ungültig und wird entfernt.")
+                del r["termin"]
         if r.get("thema") and r["thema"] not in cfg.get("themen", {}):
             print(f"⚠ Rätsel {r['id']}: Thema „{r['thema']}“ ist nicht in config.json.")
         if r["kategorie"] not in cfg["kategorien"]:
