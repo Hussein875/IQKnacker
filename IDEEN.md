@@ -29,7 +29,7 @@ Ideen für später – erst angehen, wenn die ersten Zahlen aus TikTok Studio da
   Zahlen-, Emoji- und Suchrätsel lassen sich fast 1:1 übernehmen; Wort- und Buchstabenrätsel brauchen eigene Versionen
   (z. B. „J – F – M – A – M“ funktioniert auf Englisch, „E – Z – D – V“ nicht).
 
-## Zweiter Kanal: „Lohntsich?“ (Geld & Alltag) – Konzept steht, Start nach der IQKnacker-Testphase
+## Zweiter Kanal: „Geld-Duell“ (@geldduell, Geld & Alltag) – Konzept steht, Start nach der IQKnacker-Testphase
 
 - **Ziel:** viral gehen. Junge, breite Zielgruppe (ca. 16–35), frecher Ton, aber immer echte, nachgerechnete Zahlen.
 - **Format:** Faktenvideos, kein Quiz. Hauptformat **A vs. B** (wie das Kaffee-Muster): zwei Karten, Preis pro Stück,
@@ -41,6 +41,8 @@ Ideen für später – erst angehen, wenn die ersten Zahlen aus TikTok Studio da
 - **Stimme:** ja – mit ElevenLabs (Starter ca. 5–6 $/Monat, ~30.000 Zeichen ≈ 90 Videos; Preise vorher prüfen).
   Immer zusätzlich Text im Bild (Instagram läuft oft stumm). Bei KI-Stimme „KI-generiert“ aktivieren.
 - **Technik:** eigenes Repository, eigener Drive-Ordner, zweite Marke in Metricool (Starter erlaubt 5),
-  eigene Cloud-Aufgaben. Prototyp: `prototypen/lohntsich.py` (Muster Kaffee + Döner, mit Test-Stimme).
-- **To-do vor dem Start:** Name final (Platzhalter „Lohntsich?“, Handle prüfen), ElevenLabs-Konto + deutsche Stimme
+  eigene Cloud-Aufgaben. Prototyp: `prototypen/lohntsich.py` (Muster Kaffee + Döner, mit Test-Stimme; Marke dort noch „LOHNTSICH?“).
+- **Name:** „Geld-Duell“, Handle `@geldduell` (frei auf TikTok). Verworfen: @lohntsich (vergeben), @lohntsichdas
+  (BR-Format „Lohnt sich das?“ – Verwechslungsgefahr), @zahlenduell (vergeben). Jedes Video = eine Duell-Runde A vs. B.
+- **To-do vor dem Start:** @geldduell auch auf Instagram/YouTube sichern, ElevenLabs-Konto + deutsche Stimme
   aussuchen, API-Schlüssel lokal auf dem Mac hinterlegen (nie in den Chat oder ins Repo).
