@@ -1,91 +1,208 @@
 [
   {
-    "id": 1,
+    "id": 11,
     "kategorie": "iq",
-    "frage": "Ein Schläger und ein Ball kosten zusammen 1,10 €. Der Schläger kostet 1 € mehr als der Ball. Wie viel kostet der Ball?",
-    "loesung": "5 Cent",
-    "erklaerung": "Ball 0,05 € + Schläger 1,05 € = 1,10 €. Bei 10 Cent wäre es 1,20 €.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 2,
-    "kategorie": "iq",
-    "frage": "5 Maschinen brauchen 5 Minuten für 5 Teile. Wie lange brauchen 100 Maschinen für 100 Teile?",
-    "loesung": "5 Minuten",
-    "erklaerung": "Jede Maschine braucht 5 Minuten für ein Teil – egal wie viele parallel laufen.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 3,
-    "kategorie": "iq",
-    "frage": "Seerosen verdoppeln ihre Fläche jeden Tag. Nach 48 Tagen ist der See komplett bedeckt. Nach wie vielen Tagen war er halb bedeckt?",
-    "loesung": "Nach 47 Tagen",
-    "erklaerung": "Die Fläche verdoppelt sich täglich – einen Tag vor voll war er also halb voll.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 4,
-    "kategorie": "iq",
-    "frage": "Marias Vater hat fünf Töchter: Lala, Lele, Lili und Lolo. Wie heißt die fünfte Tochter?",
-    "loesung": "Maria",
-    "erklaerung": "Es ist Marias Vater – also ist Maria selbst die fünfte Tochter.",
-    "schwierigkeit": "leicht",
-    "status": "neu"
-  },
-  {
-    "id": 5,
-    "kategorie": "iq",
-    "frage": "Du läufst ein Rennen und überholst die Person auf Platz 2. Auf welchem Platz bist du jetzt?",
-    "loesung": "Platz 2",
-    "erklaerung": "Du nimmst den Platz der Person ein, die du überholst – also Platz 2, nicht 1.",
-    "schwierigkeit": "leicht",
-    "status": "neu"
-  },
-  {
-    "id": 6,
-    "kategorie": "iq",
-    "frage": "Welche Zahl kommt als Nächstes?\n*2 – 6 – 12 – 20 – 30 – ?*",
-    "loesung": "42",
-    "erklaerung": "Die Abstände wachsen um 2: +4, +6, +8, +10, +12. Also 30 + 12 = 42.",
+    "frage": "Welche Zahl fehlt?\n8 + 8 = 4\n5 + 5 = 10\n9 + 9 = 6\n*7 + 7 = ?*",
+    "loesung": "2",
+    "erklaerung": "Es geht um Uhrzeiten: 7 Uhr + 7 Stunden = 14 Uhr = 2 Uhr. Genauso 16 → 4 und 18 → 6.",
     "schwierigkeit": "schwer",
     "status": "neu"
   },
   {
-    "id": 7,
+    "id": 12,
     "kategorie": "iq",
-    "frage": "Ein Bauer hat 17 Schafe. Alle bis auf 9 sterben. Wie viele Schafe hat er noch?",
-    "loesung": "9 Schafe",
-    "erklaerung": "„Alle bis auf 9“ heißt: 9 überleben. Wer 17 − 9 rechnet, tappt in die Falle.",
-    "schwierigkeit": "leicht",
+    "frage": "Welche Zahl kommt als Nächstes?\n*1 – 4 – 9 – 61 – 52 – ?*",
+    "loesung": "63",
+    "erklaerung": "Quadratzahlen rückwärts gelesen: 16 → 61, 25 → 52, 36 → 63.",
+    "schwierigkeit": "schwer",
     "status": "neu"
   },
   {
-    "id": 8,
-    "kategorie": "wissen",
-    "frage": "Welches ist das einzige Säugetier, das wirklich aktiv fliegen kann?",
-    "loesung": "Die Fledermaus",
-    "erklaerung": "Flughörnchen gleiten nur – Fledermäuse fliegen wirklich aktiv mit Flügelschlag.",
-    "schwierigkeit": "leicht",
-    "status": "neu"
-  },
-  {
-    "id": 9,
-    "kategorie": "wissen",
-    "frage": "Wie viele Herzen hat ein Oktopus?",
-    "loesung": "Drei",
-    "erklaerung": "Zwei Kiemenherzen und ein Körperherz, das das Blut durch den Körper pumpt.",
+    "id": 13,
+    "kategorie": "iq",
+    "frage": "Welcher Buchstabe kommt als Nächstes?\n*E Z D V F S S A ?*",
+    "loesung": "N",
+    "erklaerung": "Die Anfangsbuchstaben der Zahlen: Eins, Zwei, Drei … Sieben, Acht – Neun.",
     "schwierigkeit": "mittel",
     "status": "neu"
   },
   {
-    "id": 10,
+    "id": 14,
+    "kategorie": "iq",
+    "frage": "Welche Zahl kommt als Nächstes?\n*1\n11\n21\n1211\n111221\n?*",
+    "loesung": "312211",
+    "erklaerung": "Jede Zeile beschreibt die vorige: 111221 = „drei 1, zwei 2, eine 1“ → 312211.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 15,
+    "kategorie": "iq",
+    "frage": "Eine Uhr schlägt um 6 Uhr sechsmal – das dauert 5 Sekunden. Wie lange dauern die 12 Schläge um 12 Uhr?",
+    "loesung": "11 Sekunden",
+    "erklaerung": "6 Schläge = 5 Pausen à 1 s. 12 Schläge = 11 Pausen = 11 Sekunden.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 16,
+    "kategorie": "iq",
+    "frage": "Ein Ziegelstein wiegt 1 kg plus einen halben Ziegelstein. Wie schwer ist ein ganzer Ziegelstein?",
+    "loesung": "2 kg",
+    "erklaerung": "Der halbe Stein wiegt genau 1 kg – also wiegt der ganze 2 kg.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 17,
+    "kategorie": "iq",
+    "frage": "Wie oft liegen Stunden- und Minutenzeiger an einem Tag genau übereinander?",
+    "loesung": "22-mal",
+    "erklaerung": "Nur 11-mal in 12 Stunden – zwischen 11 und 1 Uhr nur einmal (um 12). 2 × 11 = 22.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 18,
+    "kategorie": "mathe",
+    "frage": "Wie oft kommt die Ziffer *9* in allen Zahlen von 1 bis 100 vor?",
+    "loesung": "20-mal",
+    "erklaerung": "10-mal als Einer (9, 19 … 99) und 10-mal als Zehner (90–99) = 20.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 19,
+    "kategorie": "mathe",
+    "frage": "Heute ist Montag. Welcher Wochentag ist in *100 Tagen?*",
+    "loesung": "Mittwoch",
+    "erklaerung": "100 Tage = 14 Wochen + 2 Tage. Montag + 2 Tage = Mittwoch.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 20,
+    "kategorie": "mathe",
+    "frage": "Wie viele Quadrate gibt es auf einem Schachbrett?",
+    "loesung": "204",
+    "erklaerung": "Nicht nur 64! Auch 2×2, 3×3 … 8×8: 64+49+36+25+16+9+4+1 = 204.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 21,
+    "kategorie": "mathe",
+    "frage": "Ein Seil liegt straff um den Äquator. Du machst es *1 Meter* länger. Passt eine Katze darunter?",
+    "loesung": "Ja, locker (ca. 16 cm Spalt)",
+    "erklaerung": "Der Radius wächst um 1 m ÷ 2π ≈ 16 cm – egal wie groß die Kugel ist.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 22,
+    "kategorie": "mathe",
+    "frage": "Wie viele Leute braucht ein Raum, damit zwei davon mit über *50 %* Chance am selben Tag Geburtstag haben?",
+    "loesung": "23",
+    "erklaerung": "Bei 23 Personen gibt es schon 253 mögliche Paare – die Chance liegt bei 50,7 %.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 23,
+    "kategorie": "wort",
+    "frage": "Ein Wort passt zu beiden:\n*BRIEF___*\n*___ZEICHEN*",
+    "loesung": "Marke",
+    "erklaerung": "Briefmarke und Markenzeichen.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 24,
+    "kategorie": "wort",
+    "frage": "Ein Wort passt zu beiden:\n*HAND___*\n*___KARTON*",
+    "loesung": "Schuh",
+    "erklaerung": "Handschuh und Schuhkarton.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 25,
+    "kategorie": "wort",
+    "frage": "Ein Wort passt zu beiden:\n*WASSER___*\n*___SCHIRM*",
+    "loesung": "Fall",
+    "erklaerung": "Wasserfall und Fallschirm.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 26,
     "kategorie": "wissen",
-    "frage": "Wie viele Knochen hat ein erwachsener Mensch?",
-    "loesung": "206",
-    "erklaerung": "Babys haben rund 300 Knochen – viele davon wachsen im Laufe der Zeit zusammen.",
+    "frage": "Was liegt weiter südlich: Rom oder der südlichste Punkt *Kanadas?*",
+    "loesung": "Kanada",
+    "erklaerung": "Kanadas Südspitze liegt auf ca. 41,7° Nord – Rom auf ca. 41,9° Nord.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 27,
+    "kategorie": "wissen",
+    "frage": "Welches Land hat die *meisten Zeitzonen* der Welt?",
+    "loesung": "Frankreich",
+    "erklaerung": "Dank der Überseegebiete 12 Zeitzonen – Russland hat nur 11.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 28,
+    "kategorie": "wissen",
+    "frage": "An wie viele Länder grenzt *Deutschland?*",
+    "loesung": "9",
+    "erklaerung": "DK, PL, CZ, AT, CH, FR, LU, BE und NL.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 29,
+    "kategorie": "wissen",
+    "frage": "Was liegt weiter nördlich: *Berlin* oder *London?*",
+    "loesung": "Berlin",
+    "erklaerung": "Berlin liegt auf ca. 52,5° Nord, London auf ca. 51,5° Nord.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 30,
+    "kategorie": "wissen",
+    "frage": "Wie viel Blei steckt in einem *Bleistift?*",
+    "loesung": "Gar keins",
+    "erklaerung": "Die Mine besteht aus Graphit und Ton – Blei war nie drin.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 31,
+    "kategorie": "wissen",
+    "frage": "Was ist länger: die Chinesische Mauer oder der *Durchmesser der Erde?*",
+    "loesung": "Die Chinesische Mauer",
+    "erklaerung": "Alle Abschnitte zusammen ca. 21.000 km – die Erde misst ca. 12.700 km.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 32,
+    "kategorie": "wissen",
+    "frage": "Welches Land hat die *meisten Inseln* der Welt?",
+    "loesung": "Schweden",
+    "erklaerung": "Über 260.000 Inseln – mehr als Norwegen, Finnland oder Indonesien.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 33,
+    "kategorie": "wissen",
+    "frage": "Welches Land hat als einziges *keine viereckige* Flagge?",
+    "loesung": "Nepal",
+    "erklaerung": "Die Flagge Nepals besteht aus zwei übereinanderliegenden Dreiecken.",
     "schwierigkeit": "mittel",
     "status": "neu"
   }

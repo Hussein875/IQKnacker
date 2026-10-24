@@ -78,7 +78,7 @@ Nach einem erfolgreichen Video wird der Status in `raetsel.json` von `neu` auf `
 | Feld | Bedeutung |
 |---|---|
 | `id` | eindeutige Nummer, bestimmt den Dateinamen (`011_iq.mp4`) |
-| `kategorie` | `iq`, `wissen`, `mathe`, `bild` – oder eine neue (siehe unten) |
+| `kategorie` | `iq`, `wissen`, `mathe`, `wort`, `bild` – oder eine neue (siehe unten) |
 | `frage` | Rätseltext. Wird automatisch umbrochen und in der Größe angepasst |
 | `loesung` | kommt nur in die Kommentar-Datei, nie ins Video |
 | `erklaerung` | kurze Begründung für den Kommentar |

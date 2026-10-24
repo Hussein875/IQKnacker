@@ -172,6 +172,23 @@
         "Siehst du es auf den ersten Blick? 👀",
         "Genau hinschauen! 🎯"
       ]
+    },
+    "wort": {
+      "label": "WORTRÄTSEL",
+      "hashtags": [
+        "#worträtsel",
+        "#wortspiel",
+        "#deutsch",
+        "#knobeln",
+        "#denksport",
+        "#rätselspaß",
+        "#gehirnjogging"
+      ],
+      "captions": [
+        "Welches Wort passt? Nur echte Wortprofis sehen es sofort 🧠",
+        "Worträtsel-Check: Wie schnell bist du? ⏱️",
+        "Ein Wort, zwei Begriffe – findest du es? 🤔"
+      ]
     }
   }
 }
