@@ -515,7 +515,7 @@ def drive_link(cfg, r):
     return f"https://drive.google.com/file/d/{datei_id}/view?usp=sharing" if datei_id else None
 
 
-def plan_als_metricool(ausgabe, cfg, posts):
+def plan_als_metricool(ausgabe, cfg, posts, von, bis):
     """Schreibt die Posts als CSV für Metricools Import (Instagram-Reel, TikTok, YouTube-Short).
     Gibt die geschriebenen Dateien und die Videos ohne Drive-Link zurück."""
     mc = cfg.get("metricool", {})
@@ -548,7 +548,7 @@ def plan_als_metricool(ausgabe, cfg, posts):
     dateien = []
     for teil in range(0, len(zeilen), METRICOOL_MAX):
         nummer = f"_{teil // METRICOOL_MAX + 1}" if len(zeilen) > METRICOOL_MAX else ""
-        pfad = os.path.join(ausgabe, f"metricool{nummer}.csv")
+        pfad = os.path.join(ausgabe, f"metricool_{von:%d.%m}-{bis:%d.%m}{nummer}.csv")
         with open(pfad, "w", encoding="utf-8-sig", newline="") as f:  # mit BOM wie Metricools Vorlage
             schreiber = csv.writer(f)
             schreiber.writerow(METRICOOL_SPALTEN)
@@ -595,8 +595,8 @@ def posting_plan(raetsel, cfg, tage, uhrzeiten, start, nur_drive=False):
     links_datei = os.path.join(BASIS, "drive_links.json")
     drive_links = lade_json(links_datei) if nur_drive and os.path.exists(links_datei) else {}
     # Termine ab dem Starttag werden neu vergeben – so kann man denselben Plan gefahrlos neu erzeugen
-    for r in raetsel:
-        if r.get("termin") and r["status"] != "gepostet" and r["termin"][:10] >= start.isoformat():
+    for r in raetsel:  # (nicht in der Cloud: was dort verplant ist, ist schon in Metricool importiert)
+        if not nur_drive and r.get("termin") and r["status"] != "gepostet" and r["termin"][:10] >= start.isoformat():
             del r["termin"]
     fertig = [r for r in raetsel if r["status"] != "gepostet" and not r.get("termin")
               and (dateiname(r) + ".mp4" in drive_links if nur_drive
@@ -652,7 +652,7 @@ def posting_plan(raetsel, cfg, tage, uhrzeiten, start, nur_drive=False):
           f"{i} Videos auf {tage} Tage verteilt ({', '.join(uhrzeiten)} Uhr)")
     if nur_drive:
         geplante_termine_speichern(raetsel)
-    dateien, ohne_link = plan_als_metricool(ausgabe, cfg, posts)
+    dateien, ohne_link = plan_als_metricool(ausgabe, cfg, posts, start, start + datetime.timedelta(days=tage - 1))
     for d in dateien:
         print(f"✓ {os.path.relpath(d, BASIS)} – in Metricool: Kalender → ⋮ → CSV importieren")
     if ohne_link:
@@ -744,6 +744,11 @@ def main():
 
     if args.plan:
         start = datetime.date.fromisoformat(args.start) if args.start else datetime.date.today()
+        if args.nur_drive and not args.start:
+            # Cloud: nahtlos nach dem letzten verplanten Tag weitermachen, frühestens morgen
+            letzter = max((r["termin"][:10] for r in raetsel if r.get("termin")), default="")
+            start = max(datetime.date.today() + datetime.timedelta(days=1),
+                        datetime.date.fromisoformat(letzter) + datetime.timedelta(days=1) if letzter else start)
         try:
             uhrzeiten = [f"{datetime.datetime.strptime(u.strip(), '%H:%M'):%H:%M}"
                          for u in args.uhrzeiten.split(",") if u.strip()]

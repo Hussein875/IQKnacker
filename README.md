@@ -90,10 +90,10 @@ python generate.py --liste                # Status (und geplante Termine) kontro
 Jeden Sonntagmorgen plant eine Claude-Aufgabe automatisch die nächste Woche (Mo–So) und legt die fertige `metricool_….csv` in den Drive-Ordner `IQKnacker Videos` – du musst sie nur noch in Metricool importieren. Dafür braucht sie keine lokalen Videos:
 
 ```bash
-python generate.py --plan 7 --start 2026-11-02 --nur-drive
+python generate.py --plan 7 --nur-drive
 ```
 
-- `--nur-drive` nimmt nur Rätsel, deren Video in `drive_links.json` steht (Dateiname → Google-Drive-Datei-ID).
+- `--nur-drive` macht nahtlos nach dem letzten verplanten Tag weiter (frühestens morgen) und nimmt nur Rätsel, deren Video in `drive_links.json` steht (Dateiname → Google-Drive-Datei-ID).
 - Die vergebenen Termine landen in `geplant.json` – das Gedächtnis der Cloud-Planung. `raetsel.json` bleibt unberührt; lokal werden die Termine beim nächsten Aufruf automatisch übernommen.
 - Neue Videos erzeugst du weiter am Mac; sie landen automatisch in Drive und werden ab der nächsten Woche mit eingeplant.
 
@@ -121,9 +121,9 @@ Verteilt alle fertigen, noch nicht geposteten Videos (in der Reihenfolge der Dat
 - `output/postingplan.xlsx` – dasselbe als Tabelle (Excel oder Numbers), mit Spalte „Eingeplant ✓“ zum Abhaken
 - `raetsel.json` – merkt sich die Termine. Ein neuer Plan macht dort weiter, wo der letzte aufhört. Erzeugst du einen Plan für denselben Zeitraum noch einmal (z. B. mit anderen Uhrzeiten), werden die Termine ab dem Starttag neu vergeben – nichts geht doppelt raus.
 
-- `output/metricool.csv` – **Import-Datei für Metricool**: Caption, Datum, Uhrzeit, Video-Link aus Google Drive, Instagram als Reel (auch im Feed), TikTok öffentlich mit Kommentaren/Duett/Stitch, YouTube als öffentlicher Short mit Titel, Kategorie und Tags (einstellbar unter `metricool` in `config.json`). Ab 50 Beiträgen wird sie aufgeteilt (`metricool_1.csv`, `metricool_2.csv` …).
+- `output/metricool_TT.MM-TT.MM.csv` – **Import-Datei für Metricool**: Caption, Datum, Uhrzeit, Video-Link aus Google Drive, Instagram als Reel (auch im Feed), TikTok öffentlich mit Kommentaren/Duett/Stitch, YouTube als öffentlicher Short mit Titel, Kategorie und Tags (einstellbar unter `metricool` in `config.json`). Ab 50 Beiträgen wird sie aufgeteilt (`…_1.csv`, `…_2.csv`).
 
-**Einplanen:** Metricool → Kalender → ⋮ → **CSV importieren** → `output/metricool.csv` auswählen → Vorschau prüfen → importieren. Die Video-Links funktionieren nur, wenn die Videos schon in Google Drive liegen (siehe oben) und der Drive-Ordner per Link freigegeben ist („Jeder mit dem Link“). Die Datei-ID liest der Generator über Google Drive für Desktop aus; klappt das nicht, kann man sie in `drive_links.json` eintragen (`{"034_emoji.mp4": "<Datei-ID>"}`).
+**Einplanen:** Metricool → Kalender → ⋮ → **CSV importieren** → die CSV aus `output` auswählen → Vorschau prüfen → importieren. Die Video-Links funktionieren nur, wenn die Videos schon in Google Drive liegen (siehe oben) und der Drive-Ordner per Link freigegeben ist („Jeder mit dem Link“). Die Datei-ID liest der Generator über Google Drive für Desktop aus; klappt das nicht, kann man sie in `drive_links.json` eintragen (`{"034_emoji.mp4": "<Datei-ID>"}`).
 
 ---
 
