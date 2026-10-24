@@ -3,3 +3,6 @@ __pycache__/
 .DS_Store
 output/*
 !output/.gitkeep
+prototypen/out/
+prototypen/.cache/
+prototypen/*.onnx*

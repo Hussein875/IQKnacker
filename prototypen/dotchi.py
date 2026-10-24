@@ -1,12 +1,21 @@
-"""Prototyp „Lohntsich?“ – Geld-&-Alltag-Faktenvideos (1080x1920, 30 fps), mit und ohne Stimme.
+"""Prototyp „Dotchi“ – Alltags-Vergleiche als Faktenvideos (1080x1920, 30 fps), mit und ohne Stimme.
 
-Nutzt Schriften und Text-Setzer aus dem IQKnacker-Generator. Aufruf:
-    python3 lohntsich.py            # beide Beispiele, je mit und ohne Stimme
+Nutzt Schriften und Text-Setzer aus dem IQKnacker-Generator. Aufruf (im IQKnacker-Ordner, venv aktiv):
+    python3 prototypen/dotchi.py --stimme <VOICE_ID>            # beide Beispiele mit ElevenLabs-Stimme
+    python3 prototypen/dotchi.py --stimme <VOICE_ID> --video kaffee
+Der ElevenLabs-API-Schlüssel steht in ~/.elevenlabs (nur der Schlüssel, nichts sonst) – nie im Repo.
+Ohne Schlüssel wird die kostenlose Piper-Test-Stimme benutzt (de-thorsten-low.onnx neben diesem Skript).
+Gesprochene Sätze werden in prototypen/.cache zwischengespeichert – erneutes Rendern kostet keine Credits.
 """
+import argparse
+import hashlib
+import json
 import math
 import os
 import subprocess
 import sys
+import urllib.error
+import urllib.request
 import wave
 
 import numpy as np
@@ -23,6 +32,10 @@ FETT = f"{IQ}/assets/fonts/Montserrat-ExtraBold.ttf"
 NORMAL = f"{IQ}/assets/fonts/Montserrat-Bold.ttf"
 EMOJI = f"{IQ}/assets/fonts/NotoColorEmoji.ttf"
 STIMME = os.path.join(HIER, "de-thorsten-low.onnx")  # Test-Stimme: github.com/rhasspy/piper/releases/download/v0.0.2/voice-de-thorsten-low.tar.gz
+SCHLUESSEL_DATEI = os.path.expanduser("~/.elevenlabs")
+CACHE = os.path.join(HIER, ".cache")
+ELEVEN = {"stimme": None, "modell": "eleven_multilingual_v2",
+          "einstellungen": {"stability": 0.4, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": True}}
 
 B, H, FPS, SR = 1080, 1920, 30, 44100
 WEISS, GRAU = (255, 255, 255), (170, 172, 185)
@@ -156,7 +169,7 @@ class Video:
         pille = Image.new("RGBA", (420, 96), (0, 0, 0, 0))
         ImageDraw.Draw(pille).rounded_rectangle((0, 0, 419, 95), 48, fill=GOLD + (255,))
         marke = schrift(FETT, 50)
-        ImageDraw.Draw(pille).text((210, 50), "LOHNTSICH?", font=marke, fill=(20, 20, 24), anchor="mm")
+        ImageDraw.Draw(pille).text((210, 50), "DOTCHI", font=marke, fill=(20, 20, 24), anchor="mm")
         self.marke = pille
         self.fuss_ebene = text(fuss, 34, GRAU, setzer=normal)
 
@@ -187,7 +200,38 @@ class Video:
 
 # ---------------------------------------------------------------- Audio
 
+def elevenlabs(satz):
+    """Satz bei ElevenLabs sprechen lassen (MP3, zwischengespeichert) und als 44,1-kHz-Mono-Array zurückgeben."""
+    with open(SCHLUESSEL_DATEI, encoding="utf-8") as f:
+        schluessel = f.read().strip()
+    kennung = json.dumps([ELEVEN["stimme"], ELEVEN["modell"], ELEVEN["einstellungen"], satz], sort_keys=True)
+    os.makedirs(CACHE, exist_ok=True)
+    mp3 = os.path.join(CACHE, hashlib.sha1(kennung.encode()).hexdigest() + ".mp3")
+    if not os.path.exists(mp3):
+        anfrage = urllib.request.Request(
+            f"https://api.elevenlabs.io/v1/text-to-speech/{ELEVEN['stimme']}?output_format=mp3_44100_128",
+            data=json.dumps({"text": satz, "model_id": ELEVEN["modell"], "voice_settings": ELEVEN["einstellungen"]}).encode(),
+            headers={"xi-api-key": schluessel, "Content-Type": "application/json", "Accept": "audio/mpeg"})
+        try:
+            with urllib.request.urlopen(anfrage, timeout=60) as antwort:
+                daten = antwort.read()
+        except urllib.error.HTTPError as fehler:
+            sys.exit(f"✗ ElevenLabs meldet Fehler {fehler.code}: {fehler.read().decode(errors='replace')[:400]}\n"
+                     "  401 = Schlüssel falsch · 402/429 = Kontingent/Tarif · 404/400 = Voice-ID prüfen")
+        with open(mp3 + ".tmp", "wb") as f:
+            f.write(daten)
+        os.replace(mp3 + ".tmp", mp3)
+        print(f"  🎙️ gesprochen: {satz[:60]}…")
+    roh = subprocess.run([ffmpeg(), "-loglevel", "error", "-i", mp3, "-ac", "1", "-ar", str(SR), "-f", "s16le", "-"],
+                         check=True, capture_output=True).stdout
+    return np.frombuffer(roh, dtype=np.int16).astype(np.float32) / 32768
+
+
 def stimme(satz, ziel):
+    if ELEVEN["stimme"] and os.path.exists(SCHLUESSEL_DATEI):
+        return elevenlabs(satz)
+    if ELEVEN["stimme"]:
+        sys.exit(f"✗ Kein ElevenLabs-Schlüssel in {SCHLUESSEL_DATEI} gefunden.")
     subprocess.run([sys.executable, "-m", "piper", "-m", STIMME, "-f", ziel], input=satz.encode(),
                    check=True, capture_output=True)
     with wave.open(ziel) as w:
@@ -307,7 +351,8 @@ def rendern(video, ausgabe):
         os.remove(wav)
     os.remove(roh)
     for i in range(len(video.szenen)):
-        os.remove(os.path.join(ausgabe, f".{video.name}_{i}.wav"))
+        if os.path.exists(os.path.join(ausgabe, f".{video.name}_{i}.wav")):
+            os.remove(os.path.join(ausgabe, f".{video.name}_{i}.wav"))
     print(f"✓ {video.name}: {video.dauer:.1f} s")
 
 
@@ -355,6 +400,14 @@ DOENER = Video("doener", [
 ], fuss="Beispielrechnung · 7,50 € pro Döner", farbe="#FFC83D")
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Dotchi-Prototyp: Beispielvideos rendern")
+    parser.add_argument("--stimme", help="ElevenLabs-Voice-ID (ohne: kostenlose Piper-Test-Stimme)")
+    parser.add_argument("--modell", default=ELEVEN["modell"], help="ElevenLabs-Modell (Standard: %(default)s)")
+    parser.add_argument("--video", choices=["kaffee", "doener", "alle"], default="alle")
+    args = parser.parse_args()
+    ELEVEN["stimme"], ELEVEN["modell"] = args.stimme, args.modell
     ziel = os.path.join(HIER, "out")
     for v in (KAFFEE, DOENER):
-        rendern(v, ziel)
+        if args.video in ("alle", v.name):
+            rendern(v, ziel)
+    print(f"Fertig – Videos in {os.path.relpath(ziel)}")
