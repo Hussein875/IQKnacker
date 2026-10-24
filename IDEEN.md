@@ -29,7 +29,7 @@ Ideen für später – erst angehen, wenn die ersten Zahlen aus TikTok Studio da
   Zahlen-, Emoji- und Suchrätsel lassen sich fast 1:1 übernehmen; Wort- und Buchstabenrätsel brauchen eigene Versionen
   (z. B. „J – F – M – A – M“ funktioniert auf Englisch, „E – Z – D – V“ nicht).
 
-## Zweiter Kanal: „Dotchi“ (@dotchitv, Alltags-Vergleiche) – Konzept steht, Start nach der IQKnacker-Testphase
+## Zweiter Kanal: „Dotchi“ (@dotchitv, Alltags-Vergleiche) – umgesetzt im eigenen Repo github.com/Hussein875/dotchitv
 
 - **Ziel:** viral gehen. Themen: vor allem Geld & Alltag, aber auch Zeit, Essen, Technik, Strom usw. Junge, breite Zielgruppe (ca. 16–35), frecher Ton, aber immer echte, nachgerechnete Zahlen.
 - **Format:** Faktenvideos, kein Quiz. Hauptformat **A vs. B** (wie das Kaffee-Muster): zwei Karten, Preis pro Stück,
