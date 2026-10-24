@@ -158,7 +158,8 @@ def termine_abhaken(raetsel, jetzt=None):
 
 
 def pruefe_raetsel(raetsel, cfg):
-    fehler, ids = [], set()
+    """Bricht bei Fehlern ab; gibt True zurück, wenn etwas repariert wurde (dann speichern)."""
+    fehler, ids, repariert = [], set(), False
     for i, r in enumerate(raetsel):
         fehlend = [f for f in PFLICHTFELDER if f not in r]
         if fehlend:
@@ -176,6 +177,7 @@ def pruefe_raetsel(raetsel, cfg):
                 # kaputter Termin ist kein Beinbruch – weg damit, der nächste --plan vergibt ihn neu
                 print(f"⚠ Rätsel {r['id']}: Termin „{r['termin']}“ ist ungültig und wird entfernt.")
                 del r["termin"]
+                repariert = True
         if r.get("thema") and r["thema"] not in cfg.get("themen", {}):
             print(f"⚠ Rätsel {r['id']}: Thema „{r['thema']}“ ist nicht in config.json.")
         if r["kategorie"] not in cfg["kategorien"]:
@@ -194,6 +196,7 @@ def pruefe_raetsel(raetsel, cfg):
                 fehler.append(f"Rätsel {r['id']}: „position“ liegt außerhalb des Gitters")
     if fehler:
         sys.exit("✗ Fehler in raetsel.json:\n  " + "\n  ".join(fehler))
+    return repariert
 
 
 def dateiname(r):
@@ -575,8 +578,8 @@ def main():
     if args.ohne_aufloesung:
         cfg.setdefault("aufloesung", {})["zeigen"] = False
     raetsel = lade_json(RAETSEL_DATEI)
-    pruefe_raetsel(raetsel, cfg)
-    if termine_abhaken(raetsel):
+    repariert = pruefe_raetsel(raetsel, cfg)
+    if termine_abhaken(raetsel) or repariert:
         speichere_raetsel(raetsel)
 
     if args.neu_emoji or args.neu_finde:
@@ -602,7 +605,8 @@ def main():
         # nur Videos aktueller Rätsel – alte aus dem Archiv bleiben draußen
         videos = [v for v in (os.path.join(ausgabe, dateiname(r) + ".mp4") for r in raetsel) if os.path.exists(v)]
         neu = sum(nach_drive(v, drive) for v in videos)
-        print(f"✓ {neu} von {len(videos)} Videos nach {drive} kopiert (der Rest war schon da)")
+        print(f"✓ {neu} von {len(videos)} Videos nach {drive} kopiert"
+              f"{' (der Rest war schon aktuell)' if neu < len(videos) else ''}")
         return
 
     if args.gepostet:
