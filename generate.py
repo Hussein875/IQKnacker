@@ -148,6 +148,27 @@ def speichere_raetsel(raetsel):
     os.replace(tmp, RAETSEL_DATEI)
 
 
+GEPLANT_DATEI = os.path.join(BASIS, "geplant.json")
+
+
+def geplante_termine_laden(raetsel):
+    """geplant.json ({"81": "2026-10-24 21:00", …}) ist das Gedächtnis der wöchentlichen Cloud-Planung,
+    die raetsel.json nicht anfasst. Termine von dort übernehmen, wo raetsel.json selbst keinen hat."""
+    if not os.path.exists(GEPLANT_DATEI):
+        return
+    termine = lade_json(GEPLANT_DATEI)
+    for r in raetsel:
+        if str(r["id"]) in termine and not r.get("termin") and r["status"] != "gepostet":
+            r["termin"] = termine[str(r["id"])]
+
+
+def geplante_termine_speichern(raetsel):
+    termine = {str(r["id"]): r["termin"] for r in raetsel if r.get("termin")}
+    with open(GEPLANT_DATEI, "w", encoding="utf-8") as f:
+        json.dump(termine, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+
+
 def termine_abhaken(raetsel, jetzt=None):
     """Rätsel, deren geplanter Termin („termin“ aus --plan) vorbei ist, gelten als gepostet."""
     jetzt = jetzt or datetime.datetime.now()
@@ -565,17 +586,21 @@ def plan_als_excel(pfad, zeilen):
     mappe.save(pfad)
 
 
-def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
+def posting_plan(raetsel, cfg, tage, uhrzeiten, start, nur_drive=False):
     """Verteilt fertige, noch nicht gepostete Videos auf Tage und Uhrzeiten – als Vorlage zum Einplanen.
     Jedes Rätsel bekommt seinen Termin; ist der vorbei, zählt es automatisch als gepostet."""
     ausgabe = os.path.join(BASIS, cfg["ausgabe"]["ordner"])
     from renderer import im_zeitraum
+    os.makedirs(ausgabe, exist_ok=True)
+    links_datei = os.path.join(BASIS, "drive_links.json")
+    drive_links = lade_json(links_datei) if nur_drive and os.path.exists(links_datei) else {}
     # Termine ab dem Starttag werden neu vergeben – so kann man denselben Plan gefahrlos neu erzeugen
     for r in raetsel:
         if r.get("termin") and r["status"] != "gepostet" and r["termin"][:10] >= start.isoformat():
             del r["termin"]
     fertig = [r for r in raetsel if r["status"] != "gepostet" and not r.get("termin")
-              and os.path.exists(os.path.join(ausgabe, dateiname(r) + ".mp4"))]
+              and (dateiname(r) + ".mp4" in drive_links if nur_drive
+                   else os.path.exists(os.path.join(ausgabe, dateiname(r) + ".mp4")))]
     themen = cfg.get("themen", {})
     jetzt, vorbei, gesetzt = datetime.datetime.now(), 0, {}
     zieltage = saison_zieltage(fertig, themen, start)
@@ -625,6 +650,8 @@ def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
     speichere_raetsel(raetsel)
     print(f"✓ {os.path.relpath(pfad, BASIS)} und {os.path.basename(excel)}: "
           f"{i} Videos auf {tage} Tage verteilt ({', '.join(uhrzeiten)} Uhr)")
+    if nur_drive:
+        geplante_termine_speichern(raetsel)
     dateien, ohne_link = plan_als_metricool(ausgabe, cfg, posts)
     for d in dateien:
         print(f"✓ {os.path.relpath(d, BASIS)} – in Metricool: Kalender → ⋮ → CSV importieren")
@@ -655,6 +682,9 @@ def main():
     parser.add_argument("--plan", type=int, metavar="TAGE", help="Posting-Plan für so viele Tage erstellen")
     parser.add_argument("--uhrzeiten", default="12:30,18:30,21:00",
                         help="Uhrzeiten für --plan, Komma-getrennt (Standard: 12:30,18:30,21:00)")
+    parser.add_argument("--nur-drive", action="store_true",
+                        help="für --plan ohne lokale Videos (Cloud): fertig ist, was in drive_links.json steht; "
+                             "Termine landen in geplant.json")
     parser.add_argument("--start", help="erster Tag für --plan als JJJJ-MM-TT (Standard: heute, vergangene Uhrzeiten werden übersprungen)")
     parser.add_argument("--schwierigkeit", choices=["leicht", "mittel", "schwer"],
                         help="für --neu-emoji/--neu-finde: nur diese Stufe (sonst gemischt)")
@@ -669,6 +699,7 @@ def main():
         cfg.setdefault("aufloesung", {})["zeigen"] = False
     raetsel = lade_json(RAETSEL_DATEI)
     repariert = pruefe_raetsel(raetsel, cfg)
+    geplante_termine_laden(raetsel)
     if termine_abhaken(raetsel) or repariert:
         speichere_raetsel(raetsel)
 
@@ -706,7 +737,7 @@ def main():
             sys.exit(f"✗ Rätsel-ID(s) nicht gefunden: {', '.join(map(str, sorted(fehlend)))}")
         for r in treffer:
             r["status"] = "gepostet"
-            r.pop("termin", None)
+            r["termin"] = min(r.get("termin") or "9999", f"{datetime.datetime.now():%Y-%m-%d %H:%M}")
         speichere_raetsel(raetsel)
         print(f"✓ Als gepostet markiert: {', '.join(str(r['id']) for r in treffer)}")
         return
@@ -718,7 +749,7 @@ def main():
                          for u in args.uhrzeiten.split(",") if u.strip()]
         except ValueError:
             sys.exit("✗ --uhrzeiten bitte so angeben: 12:30,18:30,21:00")
-        posting_plan(raetsel, cfg, args.plan, sorted(uhrzeiten), start)
+        posting_plan(raetsel, cfg, args.plan, sorted(uhrzeiten), start, nur_drive=args.nur_drive)
         return
 
     if args.liste:

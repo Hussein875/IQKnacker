@@ -85,6 +85,18 @@ python generate.py --liste                # Status (und geplante Termine) kontro
 
 **Reihenfolge:** `python generate.py` arbeitet die Rätsel in der Reihenfolge der Datei ab. Sie ist so sortiert, dass sich leicht, mittel und schwer abwechseln und nie zwei gleiche Kategorien hintereinander kommen – am besten in dieser Reihenfolge posten.
 
+### Wöchentliche Planung in der Cloud
+
+Jeden Sonntagmorgen plant eine Claude-Aufgabe automatisch die nächste Woche (Mo–So) und legt die fertige `metricool_….csv` in den Drive-Ordner `IQKnacker Videos` – du musst sie nur noch in Metricool importieren. Dafür braucht sie keine lokalen Videos:
+
+```bash
+python generate.py --plan 7 --start 2026-11-02 --nur-drive
+```
+
+- `--nur-drive` nimmt nur Rätsel, deren Video in `drive_links.json` steht (Dateiname → Google-Drive-Datei-ID).
+- Die vergebenen Termine landen in `geplant.json` – das Gedächtnis der Cloud-Planung. `raetsel.json` bleibt unberührt; lokal werden die Termine beim nächsten Aufruf automatisch übernommen.
+- Neue Videos erzeugst du weiter am Mac; sie landen automatisch in Drive und werden ab der nächsten Woche mit eingeplant.
+
 ### Google Drive
 
 Mit **Google Drive für Desktop** landet jedes fertige Video automatisch zusätzlich im Drive-Ordner `IQKnacker Videos` (einstellbar in `config.json` → `ausgabe.drive_ordner`, Name in „Meine Ablage“ oder kompletter Pfad; leer lassen schaltet es ab). Von dort holt sich Metricool die Videos beim CSV-Import.
