@@ -2,7 +2,7 @@
 
 Erzeugt aus einer Rätsel-Liste (`raetsel.json`) automatisch fertige Hochformat-Videos für TikTok, Reels und Shorts – ohne Stimme, mit Text, Grafik, Musik und Soundeffekten.
 
-**Ablauf jedes Videos (1080 × 1920, 30 fps, H.264, 9–14 Sekunden je nach Schwierigkeit):**
+**Ablauf jedes Videos (1080 × 1920, 30 fps, H.264, ca. 9–14 Sekunden je nach Schwierigkeit):**
 
 | Abschnitt | Dauer | Inhalt |
 |---|---|---|
@@ -10,7 +10,7 @@ Erzeugt aus einer Rätsel-Liste (`raetsel.json`) automatisch fertige Hochformat-
 | Countdown | 5 / 7 / 10 s | Ring-Countdown mit Ticken und pulsierender Musik – **leicht 5 s, mittel 7 s, schwer 10 s**. Zwischendurch wechselt der Spruch („Nicht raten – denken! 🧠“) oder ein **Tipp** erscheint („💡 Tipp: …“). |
 | Schlussphase | letzte 3 s | Ring wird rot, Zahl wackelt, Druckwellen laufen nach außen, roter Rand und Antwort-Kästen pulsieren, Musik wird doppelt so schnell, Spruch „Jetzt wird's knapp! 😬“ |
 | Zeit um! | 0,8 s | „⏱️ ZEIT UM!“ mit rotem Blitz, Einschlag und Gong |
-| Endkarte | 2,2 s | „Schreib deine Lösung in die Kommentare 👇“ + pulsierendes „Folge für die Auflösung“ – blendet am Ende in den ersten Frame über, damit das Video **nahtlos loopt** |
+| Endkarte | 2,6 s | „Schreib deine Lösung in die Kommentare 👇“ + pulsierendes „📌 Die erste richtige Antwort wird angepinnt“ + „Folge @iqknacker für mehr Rätsel“ – blendet am Ende in den ersten Frame über, damit das Video **nahtlos loopt** |
 
 Die Lösung erscheint **nie** im Video – sie landet nur in der Kommentar-Datei zum Anpinnen. Es werden auch **keine Antworten vorgegeben**: Die Zuschauer sollen rätseln, nicht raten. Die Zeit ist bewusst knapp – wer es nicht schafft, schaut nochmal (das zählt bei TikTok als Wiederholung).
 
@@ -66,9 +66,22 @@ Die neuen Rätsel landen mit Status `neu` in `raetsel.json`. Danach wie gewohnt 
 | `005_iq.mp4` | das fertige Video |
 | `005_iq.png` | Vorschaubild zur schnellen Kontrolle (auch als TikTok-Titelbild geeignet) |
 | `005_iq_caption.txt` | Caption + 7 Hashtags zum Reinkopieren |
-| `005_iq_kommentar.txt` | Auflösungs-Kommentar zum späteren Anpinnen |
+| `005_iq_kommentar.txt` | Lösungs-Text – als Antwort auf den ersten richtigen Kommentar (siehe unten) |
 
 Nach einem erfolgreichen Video wird der Status in `raetsel.json` von `neu` auf `erstellt` gesetzt. Auf `gepostet` setzt du ihn selbst, wenn das Video online ist.
+
+---
+
+## Kommentare anheizen
+
+Jedes Video verspricht auf der Endkarte und in der Caption: **„📌 Die erste richtige Antwort wird angepinnt – nicht spicken!“** Angepinnt zu werden ist eine kleine Auszeichnung, dafür schreiben Leute gern einen Kommentar – und wer zuerst sein will, muss selbst rätseln statt in den Kommentaren abzuschreiben. Das funktioniert aber nur, wenn du es **bei jedem Video wirklich machst**:
+
+1. **Erste Stunde nach dem Posten:** auf Kommentare antworten, **ohne die Lösung zu verraten**. Jede Antwort von dir zählt als weiterer Kommentar und hält die Diskussion am Laufen:
+   - auf falsche Antworten: „Knapp daneben 👀 Schau nochmal genau hin!“ · „Fast! 😏“ · „Bist du sicher? 🤔“
+   - auf richtige Antworten: „😏🔥“ · „Interessant… 👀“ (noch nicht bestätigen!)
+   - auf „Was ist die Lösung?“: „Kommt in ein paar Stunden – schreib vorher deinen Tipp 😏“
+2. **Nach 3–6 Stunden:** die **früheste richtige Antwort** suchen (am einfachsten in deinem Posteingang unter „Kommentare“, dort sind sie nach Zeit sortiert), **anpinnen** und mit dem Text aus `xxx_kommentar.txt` darauf antworten. So stehen Gewinner und Lösung ganz oben.
+3. **Hat niemand richtig gelegen:** den Text aus `xxx_kommentar.txt` als eigenen Kommentar posten und anpinnen.
 
 > Das Skript warnt, wenn ein Auflösungs-Kommentar länger als 150 Zeichen ist (TikTok-Limit). Dann einfach die `erklaerung` kürzen.
 

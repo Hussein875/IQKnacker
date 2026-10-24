@@ -60,7 +60,7 @@
       "standard": 7
     },
     "zeit_um": 0.8,
-    "endkarte": 2.2,
+    "endkarte": 2.6,
     "uebergang": 0.25,
     "loop": 0.3
   },
@@ -127,10 +127,9 @@
       "Welche Antwort? *{buchstaben}* in die Kommentare 👇"
     ],
     "endkarte_2": [
-      "Folge für die Auflösung",
-      "Folge für mehr Rätsel 🧠"
+      "📌 Die erste richtige Antwort wird angepinnt"
     ],
-    "handle": "@iqknacker"
+    "handle": "Folge *@iqknacker* für mehr Rätsel"
   },
   "wasserzeichen": {
     "datei": "assets/logo/logo_symbol.png",
@@ -162,9 +161,9 @@
     "#fürdich"
   ],
   "hashtags_anzahl": 7,
-  "caption_aufruf": "Schreib deine Antwort in die Kommentare 👇",
+  "caption_aufruf": "Schreib deine Lösung in die Kommentare 👇\n📌 Die erste richtige Antwort wird angepinnt – nicht spicken!",
   "caption_aufruf_optionen": "{buchstaben}? Schreib's in die Kommentare 👇",
-  "kommentar_vorlage": "✅ Auflösung: {loesung}\n{erklaerung}\nFolge @iqknacker für mehr Rätsel 🧠",
+  "kommentar_vorlage": "✅ Lösung: {loesung}\n{erklaerung}\nGlückwunsch an alle, die's hatten 🏆",
   "kategorien": {
     "iq": {
       "label": "IQ-TEST",
@@ -308,7 +307,7 @@
         "Nur echte Adleraugen finden es sofort 🦅",
         "Konzentrationstest: Wie schnell bist du? 🔍"
       ],
-      "caption_aufruf": "Gefunden? Schreib Reihe & Spalte in die Kommentare 👇",
+      "caption_aufruf": "Gefunden? Schreib Reihe & Spalte in die Kommentare 👇\n📌 Die erste richtige Antwort wird angepinnt – nicht spicken!",
       "texte": {
         "hook": [
           "Nur Adleraugen finden es sofort 🦅",

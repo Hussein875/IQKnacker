@@ -339,9 +339,9 @@ def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False, ohne_effekte=F
     musik_info += ", mit Soundeffekten" if effekte else ""
     print(f"  ✓ {os.path.relpath(video, BASIS)}  ({renderer.dauer:.1f} s, {musik_info}, "
           f"Schriftgröße {renderer.raetsel_schriftgroesse}, {time.time() - start:.1f} s Renderzeit)")
-    if len(kommentar.strip()) > KOMMENTAR_MAX:
-        print(f"  ⚠ Auflösungs-Kommentar hat {len(kommentar.strip())} Zeichen – TikTok erlaubt {KOMMENTAR_MAX}. "
-              f"Erklärung kürzen!")
+    laenge = len(kommentar.strip().encode("utf-16-le")) // 2  # Emojis zählen hier doppelt – wie bei TikTok
+    if laenge > KOMMENTAR_MAX:
+        print(f"  ⚠ Auflösungs-Kommentar hat {laenge} Zeichen – TikTok erlaubt {KOMMENTAR_MAX}. Erklärung kürzen!")
 
 
 # ---------------------------------------------------------------- Kommandozeile
