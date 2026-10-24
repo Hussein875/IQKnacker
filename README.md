@@ -88,12 +88,19 @@ python generate.py --liste                # Status (und geplante Termine) kontro
 ### Posting-Plan
 
 ```bash
-python generate.py --plan 7                          # 7 Tage, 3 Videos pro Tag (12:30, 18:30, 21:00)
+python generate.py --plan 7                          # ab heute 7 Tage, 3 Videos pro Tag (12:30, 18:30, 21:00)
+python generate.py --plan 2                          # Rest von heute + morgen
 python generate.py --plan 7 --uhrzeiten 12:30,19:00  # eigene Uhrzeiten
 python generate.py --plan 7 --start 2026-11-02       # ab einem bestimmten Tag
 ```
 
-Verteilt alle fertigen, noch nicht geposteten Videos (in der Reihenfolge der Datei) auf Tage und Uhrzeiten, schreibt sie mit Caption, YouTube-Titel und Kommentar in `output/postingplan.txt` – und als Tabelle in `output/postingplan.xlsx` (öffnet in Excel oder Numbers, mit Spalte „Eingeplant ✓“ zum Abhaken) – und merkt sich die Termine in `raetsel.json`. Ein neuer Plan macht dort weiter, wo der letzte aufhört. Erzeugst du einen Plan für denselben Zeitraum noch einmal (z. B. mit anderen Uhrzeiten), werden die Termine ab dem Starttag neu vergeben – nichts geht doppelt raus. Damit planst du in **Metricool** (Kalender → Beitrag erstellen → Reel, TikTok, Short) eine ganze Woche in einem Rutsch ein.
+Verteilt alle fertigen, noch nicht geposteten Videos (in der Reihenfolge der Datei) auf Tage und Uhrzeiten. Der Plan beginnt heute; Uhrzeiten, die heute schon vorbei sind, werden übersprungen.
+
+- `output/postingplan.txt` – Caption, YouTube-Titel und Kommentar pro Video
+- `output/postingplan.xlsx` – dasselbe als Tabelle (Excel oder Numbers), mit Spalte „Eingeplant ✓“ zum Abhaken
+- `raetsel.json` – merkt sich die Termine. Ein neuer Plan macht dort weiter, wo der letzte aufhört. Erzeugst du einen Plan für denselben Zeitraum noch einmal (z. B. mit anderen Uhrzeiten), werden die Termine ab dem Starttag neu vergeben – nichts geht doppelt raus.
+
+Damit planst du in **Metricool** (Kalender → Beitrag erstellen → Reel, TikTok, Short) eine ganze Woche in einem Rutsch ein.
 
 ---
 

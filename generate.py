@@ -428,12 +428,16 @@ def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
     fertig = [r for r in raetsel if r["status"] != "gepostet" and not r.get("termin")
               and os.path.exists(os.path.join(ausgabe, dateiname(r) + ".mp4"))]
     themen = cfg.get("themen", {})
+    jetzt, vorbei = datetime.datetime.now(), 0
     zeilen = [f"POSTING-PLAN IQKnacker – {len(uhrzeiten)} Videos pro Tag", "=" * 44, ""]
     tabelle = []
     i = 0
     for tag in range(tage):
         datum = start + datetime.timedelta(days=tag)
         for uhrzeit in uhrzeiten:
+            if f"{datum.isoformat()} {uhrzeit}" <= f"{jetzt:%Y-%m-%d %H:%M}":
+                vorbei += 1
+                continue  # schon vorbei – heute nur noch die restlichen Uhrzeiten
             erlaubt = [r for r in fertig if im_zeitraum(cfg, r, datum)]
             if not erlaubt:
                 break
@@ -451,7 +455,7 @@ def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
                        f"  ({r['schwierigkeit']}{', ' + r['thema'] if r.get('thema') else ''})",
                        "", "Caption:", caption, "", "YouTube-Titel:", youtube_titel(caption), "",
                        "Kommentar zum Anpinnen:", kommentar_text(r, cfg).strip(), "", "-" * 44, ""]
-    if i < tage * len(uhrzeiten):
+    if i < tage * len(uhrzeiten) - vorbei:
         zeilen.append(f"Hinweis: Nur {i} fertige Videos vorhanden – vorher python generate.py ausführen.")
     pfad = os.path.join(ausgabe, "postingplan.txt")
     with open(pfad, "w", encoding="utf-8") as f:
@@ -483,7 +487,7 @@ def main():
     parser.add_argument("--plan", type=int, metavar="TAGE", help="Posting-Plan für so viele Tage erstellen")
     parser.add_argument("--uhrzeiten", default="12:30,18:30,21:00",
                         help="Uhrzeiten für --plan, Komma-getrennt (Standard: 12:30,18:30,21:00)")
-    parser.add_argument("--start", help="erster Tag für --plan als JJJJ-MM-TT (Standard: morgen)")
+    parser.add_argument("--start", help="erster Tag für --plan als JJJJ-MM-TT (Standard: heute, vergangene Uhrzeiten werden übersprungen)")
     parser.add_argument("--schwierigkeit", choices=["leicht", "mittel", "schwer"],
                         help="für --neu-emoji/--neu-finde: nur diese Stufe (sonst gemischt)")
     args = parser.parse_args()
@@ -527,9 +531,13 @@ def main():
         return
 
     if args.plan:
-        start = datetime.date.fromisoformat(args.start) if args.start else \
-            datetime.date.today() + datetime.timedelta(days=1)
-        posting_plan(raetsel, cfg, args.plan, [u.strip() for u in args.uhrzeiten.split(",") if u.strip()], start)
+        start = datetime.date.fromisoformat(args.start) if args.start else datetime.date.today()
+        try:
+            uhrzeiten = [f"{datetime.datetime.strptime(u.strip(), '%H:%M'):%H:%M}"
+                         for u in args.uhrzeiten.split(",") if u.strip()]
+        except ValueError:
+            sys.exit("✗ --uhrzeiten bitte so angeben: 12:30,18:30,21:00")
+        posting_plan(raetsel, cfg, args.plan, sorted(uhrzeiten), start)
         return
 
     if args.liste:
