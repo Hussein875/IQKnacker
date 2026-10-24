@@ -1,20 +1,11 @@
 [
   {
-    "id": 11,
-    "kategorie": "iq",
-    "frage": "Welche Zahl fehlt?\n8 + 8 = 4\n5 + 5 = 10\n9 + 9 = 6\n*7 + 7 = ?*",
-    "loesung": "2",
-    "erklaerung": "Es geht um Uhrzeiten: 7 Uhr + 7 Stunden = 14 Uhr = 2 Uhr. Genauso 16 → 4 und 18 → 6.",
-    "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 12,
-    "kategorie": "iq",
-    "frage": "Welche Zahl kommt als Nächstes?\n*1 – 4 – 9 – 61 – 52 – ?*",
-    "loesung": "63",
-    "erklaerung": "Quadratzahlen rückwärts gelesen: 16 → 61, 25 → 52, 36 → 63.",
-    "schwierigkeit": "schwer",
+    "id": 34,
+    "kategorie": "emoji",
+    "frage": "🧁 + 🧁 = 12\n🧁 + 🐸 + 🐸 = 24\n🍔 + 🍔 = 8\n*🍔 + 🧁 + 🐸 = ?*",
+    "loesung": "19",
+    "erklaerung": "🧁 = 6, 🐸 = 9, 🍔 = 4 → 4 + 6 + 9 = 19.",
+    "schwierigkeit": "leicht",
     "status": "neu"
   },
   {
@@ -23,51 +14,6 @@
     "frage": "Welcher Buchstabe kommt als Nächstes?\n*E Z D V F S S A ?*",
     "loesung": "N",
     "erklaerung": "Die Anfangsbuchstaben der Zahlen: Eins, Zwei, Drei … Sieben, Acht – Neun.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 14,
-    "kategorie": "iq",
-    "frage": "Welche Zahl kommt als Nächstes?\n*1\n11\n21\n1211\n111221\n?*",
-    "loesung": "312211",
-    "erklaerung": "Jede Zeile beschreibt die vorige: 111221 = „drei 1, zwei 2, eine 1“ → 312211.",
-    "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 15,
-    "kategorie": "iq",
-    "frage": "Eine Uhr schlägt um 6 Uhr sechsmal – das dauert 5 Sekunden. Wie lange dauern die 12 Schläge um 12 Uhr?",
-    "loesung": "11 Sekunden",
-    "erklaerung": "6 Schläge = 5 Pausen à 1 s. 12 Schläge = 11 Pausen = 11 Sekunden.",
-    "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 17,
-    "kategorie": "iq",
-    "frage": "Wie oft liegen Stunden- und Minutenzeiger an einem Tag genau übereinander?",
-    "loesung": "22-mal",
-    "erklaerung": "Nur 11-mal in 12 Stunden – zwischen 11 und 1 Uhr nur einmal (um 12). 2 × 11 = 22.",
-    "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 18,
-    "kategorie": "mathe",
-    "frage": "Wie oft kommt die Ziffer *9* in allen Zahlen von 1 bis 100 vor?",
-    "loesung": "20-mal",
-    "erklaerung": "10-mal als Einer (9, 19 … 99) und 10-mal als Zehner (90–99) = 20.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 19,
-    "kategorie": "mathe",
-    "frage": "Heute ist Montag. Welcher Wochentag ist in *100 Tagen?*",
-    "loesung": "Mittwoch",
-    "erklaerung": "100 Tage = 14 Wochen + 2 Tage. Montag + 2 Tage = Mittwoch.",
     "schwierigkeit": "mittel",
     "status": "neu"
   },
@@ -82,57 +28,12 @@
     "status": "neu"
   },
   {
-    "id": 34,
-    "kategorie": "emoji",
-    "frage": "⭐ + ⭐ + ⭐ = 15\n⭐ + 🍐 + 🍐 = 23\n🍐 − 🐱 = 3\n*⭐ × 🐱 + 🍐 = ?*",
-    "loesung": "39",
-    "erklaerung": "⭐ = 5, 🍐 = 9, 🐱 = 6 → 5 × 6 + 9 = 39.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
     "id": 35,
     "kategorie": "emoji",
-    "frage": "🍕 + 🍕 + 🍕 = 15\n🍕 × 🐱 = 40\n🐱 − 🐼 = 6\n*🍕 + 🐱 × 🐼 = ?*",
-    "loesung": "21",
-    "erklaerung": "🍕 = 5, 🐱 = 8, 🐼 = 2 → 5 + 8 × 2 = 21. Punkt vor Strich!",
-    "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 36,
-    "kategorie": "emoji",
-    "frage": "⚽ + ⚽ + ⚽ = 12\n⚽ × 🎁 = 28\n🎁 − 🍑 = 2\n*⚽ + 🎁 × 🍑 = ?*",
-    "loesung": "39",
-    "erklaerung": "⚽ = 4, 🎁 = 7, 🍑 = 5 → 4 + 7 × 5 = 39. Punkt vor Strich!",
-    "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 37,
-    "kategorie": "emoji",
-    "frage": "🦊 + 🦊 = 10\n🦊 + 🍔 + 🍔 = 21\n🍔 − 🐸 = 4\n*🦊 × 🐸 + 🍔 = ?*",
-    "loesung": "28",
-    "erklaerung": "🦊 = 5, 🍔 = 8, 🐸 = 4 → 5 × 4 + 8 = 28.",
+    "frage": "🍎 + 🍎 + 🍎 = 21\n🍎 + 🍦 + 🍦 = 13\n🍦 − 🍌 = 1\n*🍎 × 🍌 + 🍦 = ?*",
+    "loesung": "17",
+    "erklaerung": "🍎 = 7, 🍦 = 3, 🍌 = 2 → 7 × 2 + 3 = 17.",
     "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 38,
-    "kategorie": "emoji",
-    "frage": "🍒 + 🍒 + 🍒 = 21\n🍒 × 🍩 = 28\n🍩 − 🍌 = 1\n*🍒 + 🍩 × 🍌 = ?*",
-    "loesung": "19",
-    "erklaerung": "🍒 = 7, 🍩 = 4, 🍌 = 3 → 7 + 4 × 3 = 19. Punkt vor Strich!",
-    "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 39,
-    "kategorie": "emoji",
-    "frage": "🚗 + 🚗 + 🚗 = 24\n🚗 × 🥝 = 56\n🥝 − 🧁 = 3\n*🚗 + 🥝 × 🧁 = ?*",
-    "loesung": "36",
-    "erklaerung": "🚗 = 8, 🥝 = 7, 🧁 = 4 → 8 + 7 × 4 = 36. Punkt vor Strich!",
-    "schwierigkeit": "schwer",
     "status": "neu"
   },
   {
@@ -150,6 +51,60 @@
     ],
     "loesung": "Reihe 3, Spalte 5",
     "erklaerung": "Die 9 versteckt sich in Reihe 3, Spalte 5 – gezählt von oben links.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 18,
+    "kategorie": "mathe",
+    "frage": "Wie oft kommt die Ziffer *9* in allen Zahlen von 1 bis 100 vor?",
+    "loesung": "20-mal",
+    "erklaerung": "10-mal als Einer (9, 19 … 99) und 10-mal als Zehner (90–99) = 20.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 37,
+    "kategorie": "emoji",
+    "frage": "🎈 + 🎈 = 10\n🎈 + 🍓 + 🍓 = 19\n🍋 + 🍋 = 4\n*🍋 + 🎈 + 🍓 = ?*",
+    "loesung": "14",
+    "erklaerung": "🎈 = 5, 🍓 = 7, 🍋 = 2 → 2 + 5 + 7 = 14.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 19,
+    "kategorie": "mathe",
+    "frage": "Heute ist Montag. Welcher Wochentag ist in *100 Tagen?*",
+    "loesung": "Mittwoch",
+    "erklaerung": "100 Tage = 14 Wochen + 2 Tage. Montag + 2 Tage = Mittwoch.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 11,
+    "kategorie": "iq",
+    "frage": "Welche Zahl fehlt?\n8 + 8 = 4\n5 + 5 = 10\n9 + 9 = 6\n*7 + 7 = ?*",
+    "loesung": "2",
+    "erklaerung": "Es geht um Uhrzeiten: 7 Uhr + 7 Stunden = 14 Uhr = 2 Uhr. Genauso 16 → 4 und 18 → 6.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 38,
+    "kategorie": "emoji",
+    "frage": "🎁 + 🎁 + 🎁 = 18\n🎁 + 🍉 + 🍉 = 24\n🍉 − 🍋 = 7\n*🎁 × 🍋 + 🍉 = ?*",
+    "loesung": "21",
+    "erklaerung": "🎁 = 6, 🍉 = 9, 🍋 = 2 → 6 × 2 + 9 = 21.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 69,
+    "kategorie": "iq",
+    "frage": "Welcher Buchstabe kommt als Nächstes?\n*J – F – M – A – M – ?*",
+    "loesung": "J",
+    "erklaerung": "Die Monate: Januar, Februar, März, April, Mai – und dann Juni.",
     "schwierigkeit": "leicht",
     "status": "neu"
   },
@@ -172,6 +127,294 @@
     "status": "neu"
   },
   {
+    "id": 70,
+    "kategorie": "iq",
+    "frage": "Welche Zahl kommt als Nächstes?\n*10 – 9 – 7 – 4 – ?*",
+    "loesung": "0",
+    "erklaerung": "Es wird jedes Mal 1 mehr abgezogen: −1, −2, −3 und dann −4 → 0.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 54,
+    "kategorie": "mathe",
+    "frage": "10 Leute geben sich alle gegenseitig genau einmal die Hand. *Wie viele Handschläge* sind das?",
+    "loesung": "45",
+    "erklaerung": "Jeder gibt 9 Leuten die Hand: 10 × 9 = 90. Jeder Handschlag zählt dabei doppelt → 45.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 12,
+    "kategorie": "iq",
+    "frage": "Welche Zahl kommt als Nächstes?\n*1 – 4 – 9 – 61 – 52 – ?*",
+    "loesung": "63",
+    "erklaerung": "Quadratzahlen rückwärts gelesen: 16 → 61, 25 → 52, 36 → 63.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 56,
+    "kategorie": "mathe",
+    "frage": "Ein Vater ist 4-mal so alt wie sein Sohn. In 20 Jahren ist er nur noch doppelt so alt. *Wie alt ist der Sohn heute?*",
+    "loesung": "10 Jahre",
+    "erklaerung": "Sohn 10, Vater 40. In 20 Jahren: 30 und 60 – genau doppelt so alt.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 71,
+    "kategorie": "iq",
+    "frage": "Welche Zahl kommt als Nächstes?\n*1 – 3 – 6 – 10 – 15 – ?*",
+    "loesung": "21",
+    "erklaerung": "Die Abstände wachsen um 1: +2, +3, +4, +5 und dann +6 → 21.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 58,
+    "kategorie": "mathe",
+    "frage": "Rechne im Kopf:\n*15 % von 60 + 60 % von 15*",
+    "loesung": "18",
+    "erklaerung": "Beides ist 9: 15 % von 60 = 9 und 60 % von 15 = 9. Zusammen 18.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 73,
+    "kategorie": "iq",
+    "frage": "Wie spät ist es 90 Minuten nach *22:45 Uhr?*",
+    "loesung": "0:15 Uhr",
+    "erklaerung": "22:45 + 1 Stunde = 23:45 Uhr, plus 30 Minuten = 0:15 Uhr.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 59,
+    "kategorie": "mathe",
+    "frage": "Ohne Taschenrechner:\n*99 × 99 = ?*",
+    "loesung": "9801",
+    "erklaerung": "99 × 99 = 100 × 99 − 99 = 9900 − 99 = 9801.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 15,
+    "kategorie": "iq",
+    "frage": "Eine Uhr schlägt um 6 Uhr sechsmal – das dauert 5 Sekunden. Wie lange dauern die 12 Schläge um 12 Uhr?",
+    "loesung": "11 Sekunden",
+    "erklaerung": "6 Schläge = 5 Pausen à 1 s. 12 Schläge = 11 Pausen = 11 Sekunden.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 62,
+    "kategorie": "mathe",
+    "frage": "Ohne Taschenrechner:\n*1 + 2 + 3 + … + 100 = ?*",
+    "loesung": "5050",
+    "erklaerung": "50 Paare mit je 101 (1+100, 2+99, …): 50 × 101 = 5050.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 74,
+    "kategorie": "iq",
+    "frage": "Heute ist Mittwoch. Welcher Tag ist *in 10 Tagen?*",
+    "loesung": "Samstag",
+    "erklaerung": "10 Tage = 1 Woche + 3 Tage → Mittwoch + 3 Tage = Samstag.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 63,
+    "kategorie": "mathe",
+    "frage": "Wie viele *Diagonalen* hat ein Sechseck?",
+    "loesung": "9",
+    "erklaerung": "Jede Ecke hat 3 Diagonalen: 6 × 3 = 18. Jede wird doppelt gezählt → 9.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 77,
+    "kategorie": "iq",
+    "frage": "Wie viele *Kanten* hat ein Würfel?",
+    "loesung": "12",
+    "erklaerung": "4 Kanten oben, 4 unten und 4 senkrechte dazwischen = 12.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 64,
+    "kategorie": "wort",
+    "frage": "Welches Wort passt vor alle drei?\n*___BALL*\n*___WEG*\n*___NOTE*",
+    "loesung": "Fuß",
+    "erklaerung": "Fußball, Fußweg, Fußnote.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 17,
+    "kategorie": "iq",
+    "frage": "Wie oft liegen Stunden- und Minutenzeiger an einem Tag genau übereinander?",
+    "loesung": "22-mal",
+    "erklaerung": "Nur 11-mal in 12 Stunden – zwischen 11 und 1 Uhr nur einmal (um 12). 2 × 11 = 22.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 65,
+    "kategorie": "wort",
+    "frage": "Welches Wort passt vor alle drei?\n*___TÜR*\n*___SCHLÜSSEL*\n*___BOOT*",
+    "loesung": "Haus",
+    "erklaerung": "Haustür, Hausschlüssel, Hausboot.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 72,
+    "kategorie": "mathe",
+    "frage": "Wie viele Beine haben *3 Hühner* und *2 Hunde* zusammen?",
+    "loesung": "14",
+    "erklaerung": "3 Hühner × 2 Beine = 6 und 2 Hunde × 4 Beine = 8 → zusammen 14.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 47,
+    "kategorie": "iq",
+    "frage": "Welche Zahl kommt als Nächstes?\n*3 – 6 – 18 – 72 – 360 – ?*",
+    "loesung": "2160",
+    "erklaerung": "Mal 2, mal 3, mal 4, mal 5 – jetzt mal 6: 360 × 6 = 2160.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 76,
+    "kategorie": "mathe",
+    "frage": "Du hast 6 Äpfel, isst 2 und verschenkst die Hälfte vom Rest. *Wie viele bleiben dir?*",
+    "loesung": "2",
+    "erklaerung": "6 − 2 = 4 Äpfel. Die Hälfte davon verschenkt → 2 bleiben übrig.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 48,
+    "kategorie": "iq",
+    "frage": "Ein Aufzug braucht vom 1. bis zum 4. Stock 9 Sekunden. Wie lange braucht er bei gleichem Tempo vom 1. bis zum *8. Stock?*",
+    "loesung": "21 Sekunden",
+    "erklaerung": "1.→4. Stock sind nur 3 Etagen (3 s pro Etage). Bis zum 8. sind es 7 Etagen = 21 s.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 36,
+    "kategorie": "emoji",
+    "frage": "⭐ + ⭐ = 10\n⭐ × 🍕 = 15\n🍕 − 🍩 = 1\n*⭐ + 🍕 × 🍩 = ?*",
+    "loesung": "11",
+    "erklaerung": "⭐ = 5, 🍕 = 3, 🍩 = 2 → 5 + 3 × 2 = 11. Punkt vor Strich!",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 53,
+    "kategorie": "iq",
+    "frage": "64 Spieler im K.-o.-System: Wer ein Spiel verliert, scheidet aus. Wie viele Spiele braucht es *bis zum Sieger?*",
+    "loesung": "63",
+    "erklaerung": "Jedes Spiel wirft genau einen raus – 63 müssen raus, also 63 Spiele.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 78,
+    "kategorie": "wort",
+    "frage": "Welches Wort passt hinter alle drei?\n*SCHNEE___*\n*FUSS___*\n*BASKET___*",
+    "loesung": "Ball",
+    "erklaerung": "Schneeball, Fußball, Basketball.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 55,
+    "kategorie": "iq",
+    "frage": "Du kaufst ein Pferd für 60 €, verkaufst es für 70 €, kaufst es für 80 € zurück und verkaufst es für 90 €. *Dein Gewinn?*",
+    "loesung": "20 €",
+    "erklaerung": "Ausgaben: 60 + 80 = 140 €. Einnahmen: 70 + 90 = 160 €. Gewinn: 20 €.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 79,
+    "kategorie": "mathe",
+    "frage": "Was ist mehr: *3 Dutzend* oder *40?*",
+    "loesung": "40",
+    "erklaerung": "Ein Dutzend sind 12 Stück – 3 Dutzend sind also nur 36.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 61,
+    "kategorie": "iq",
+    "frage": "Vorgestern war der Tag nach Sonntag. *Welcher Tag ist übermorgen?*",
+    "loesung": "Freitag",
+    "erklaerung": "Vorgestern war Montag → heute ist Mittwoch → übermorgen ist Freitag.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 39,
+    "kategorie": "emoji",
+    "frage": "🍇 + 🍇 = 8\n🍇 × 🐔 = 32\n🐔 − 🍪 = 6\n*🍇 + 🐔 × 🍪 = ?*",
+    "loesung": "20",
+    "erklaerung": "🍇 = 4, 🐔 = 8, 🍪 = 2 → 4 + 8 × 2 = 20. Punkt vor Strich!",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 66,
+    "kategorie": "wort",
+    "frage": "Welches Wort passt hinter alle drei?\n*MOND___*\n*TAGES___*\n*RAMPEN___*",
+    "loesung": "Licht",
+    "erklaerung": "Mondlicht, Tageslicht, Rampenlicht.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 80,
+    "kategorie": "finde",
+    "typ": "finde",
+    "frage": "Finde das *🍅*!",
+    "zeichen": "🍎",
+    "ziel": "🍅",
+    "spalten": 7,
+    "zeilen": 7,
+    "position": [
+      4,
+      4
+    ],
+    "loesung": "Reihe 4, Spalte 4",
+    "erklaerung": "Das 🍅 versteckt sich in Reihe 4, Spalte 4 – gezählt von oben links.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 67,
+    "kategorie": "wort",
+    "frage": "Welches Wort passt hinter alle drei?\n*SONNEN___*\n*REGEN___*\n*BILD___*",
+    "loesung": "Schirm",
+    "erklaerung": "Sonnenschirm, Regenschirm, Bildschirm.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 75,
+    "kategorie": "mathe",
+    "frage": "Welche Zahl passt nicht dazu?\n*3 – 5 – 7 – 9 – 11 – 13*",
+    "loesung": "9",
+    "erklaerung": "Alle anderen sind Primzahlen. Die 9 ist durch 3 teilbar.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
     "id": 42,
     "kategorie": "finde",
     "typ": "finde",
@@ -190,21 +433,20 @@
     "status": "neu"
   },
   {
+    "id": 68,
+    "kategorie": "wort",
+    "frage": "Welches Wort passt vor alle drei?\n*___FLASCHE*\n*___FALL*\n*___HAHN*",
+    "loesung": "Wasser",
+    "erklaerung": "Wasserflasche, Wasserfall, Wasserhahn.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
     "id": 43,
     "kategorie": "iq",
     "frage": "Welchen Winkel bilden die beiden Uhrzeiger um *3:15 Uhr?*",
     "loesung": "7,5°",
     "erklaerung": "Der Stundenzeiger ist schon ein Viertel Richtung 4 gewandert: 30° ÷ 4 = 7,5°.",
-    "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 44,
-    "kategorie": "iq",
-    "frage": "Welche Zahl kommt als Nächstes?\n*8 – 3 – 1 – 5 – 9*\n*0 – 6 – 7 – 4 – ?*",
-    "loesung": "2",
-    "erklaerung": "Alphabetisch sortiert: acht, drei, eins, fünf, neun, null, sechs, sieben, vier, zwei.",
-    "tipp": "Schreib die Zahlen aus ✍️",
     "schwierigkeit": "schwer",
     "status": "neu"
   },
@@ -215,213 +457,6 @@
     "loesung": "37",
     "erklaerung": "Jede Zahl ist die Summe der drei davor: 6 + 11 + 20 = 37.",
     "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 46,
-    "kategorie": "iq",
-    "frage": "Welche Zahl kommt als Nächstes?\n*1 – 4 – 27 – 256 – ?*",
-    "loesung": "3125",
-    "erklaerung": "1¹, 2², 3³, 4⁴ – also 5⁵ = 3125.",
-    "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 47,
-    "kategorie": "iq",
-    "frage": "Welche Zahl kommt als Nächstes?\n*3 – 6 – 18 – 72 – 360 – ?*",
-    "loesung": "2160",
-    "erklaerung": "Mal 2, mal 3, mal 4, mal 5 – jetzt mal 6: 360 × 6 = 2160.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 48,
-    "kategorie": "iq",
-    "frage": "Ein Aufzug braucht vom 1. bis zum 4. Stock 9 Sekunden. Wie lange braucht er bei gleichem Tempo vom 1. bis zum *8. Stock?*",
-    "loesung": "21 Sekunden",
-    "erklaerung": "1.→4. Stock sind nur 3 Etagen (3 s pro Etage). Bis zum 8. sind es 7 Etagen = 21 s.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 49,
-    "kategorie": "iq",
-    "frage": "Ein Junge hat genauso viele Brüder wie Schwestern. Seine Schwester hat doppelt so viele Brüder wie Schwestern. *Wie viele Kinder sind es?*",
-    "loesung": "7",
-    "erklaerung": "4 Jungen, 3 Mädchen: Er hat 3 Brüder und 3 Schwestern, sie hat 4 Brüder und 2 Schwestern.",
-    "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 50,
-    "kategorie": "iq",
-    "frage": "9 Münzen sehen gleich aus, eine ist schwerer. Wie oft musst du mit einer Balkenwaage *mindestens* wiegen, um sie sicher zu finden?",
-    "loesung": "2-mal",
-    "erklaerung": "3 gegen 3 wiegen → man weiß, in welcher Dreiergruppe sie ist. Dann 1 gegen 1 aus dieser Gruppe.",
-    "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 51,
-    "kategorie": "iq",
-    "frage": "Ein Würfel wird rot angemalt und in 27 gleich große Würfel zersägt. Wie viele kleine Würfel haben *genau 2* rote Seiten?",
-    "loesung": "12",
-    "erklaerung": "Genau 2 rote Seiten hat nur der mittlere Würfel jeder Kante – ein Würfel hat 12 Kanten.",
-    "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 52,
-    "kategorie": "iq",
-    "frage": "Eine Pizza, 3 gerade Schnitte von oben, nichts stapeln. Wie viele Stücke bekommst du *höchstens?*",
-    "loesung": "7",
-    "erklaerung": "Kreuzen sich alle drei Schnitte, ohne durch einen gemeinsamen Punkt zu gehen, entstehen 7 Stücke.",
-    "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 53,
-    "kategorie": "iq",
-    "frage": "64 Spieler im K.-o.-System: Wer ein Spiel verliert, scheidet aus. Wie viele Spiele braucht es *bis zum Sieger?*",
-    "loesung": "63",
-    "erklaerung": "Jedes Spiel wirft genau einen raus – 63 müssen raus, also 63 Spiele.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 54,
-    "kategorie": "mathe",
-    "frage": "10 Leute geben sich alle gegenseitig genau einmal die Hand. *Wie viele Handschläge* sind das?",
-    "loesung": "45",
-    "erklaerung": "Jeder gibt 9 Leuten die Hand: 10 × 9 = 90. Jeder Handschlag zählt dabei doppelt → 45.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 55,
-    "kategorie": "iq",
-    "frage": "Du kaufst ein Pferd für 60 €, verkaufst es für 70 €, kaufst es für 80 € zurück und verkaufst es für 90 €. *Dein Gewinn?*",
-    "loesung": "20 €",
-    "erklaerung": "Ausgaben: 60 + 80 = 140 €. Einnahmen: 70 + 90 = 160 €. Gewinn: 20 €.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 56,
-    "kategorie": "mathe",
-    "frage": "Ein Vater ist 4-mal so alt wie sein Sohn. In 20 Jahren ist er nur noch doppelt so alt. *Wie alt ist der Sohn heute?*",
-    "loesung": "10 Jahre",
-    "erklaerung": "Sohn 10, Vater 40. In 20 Jahren: 30 und 60 – genau doppelt so alt.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 57,
-    "kategorie": "mathe",
-    "frage": "Welche kleinste Zahl über 1 lässt geteilt durch 2, 3, 4, 5 und 6 *jedes Mal den Rest 1?*",
-    "loesung": "61",
-    "erklaerung": "Das kleinste gemeinsame Vielfache von 2 bis 6 ist 60 – plus 1 ergibt 61.",
-    "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 58,
-    "kategorie": "mathe",
-    "frage": "Rechne im Kopf:\n*15 % von 60 + 60 % von 15*",
-    "loesung": "18",
-    "erklaerung": "Beides ist 9: 15 % von 60 = 9 und 60 % von 15 = 9. Zusammen 18.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 59,
-    "kategorie": "mathe",
-    "frage": "Ohne Taschenrechner:\n*99 × 99 = ?*",
-    "loesung": "9801",
-    "erklaerung": "99 × 99 = 100 × 99 − 99 = 9900 − 99 = 9801.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 60,
-    "kategorie": "iq",
-    "frage": "Ich bin dreistellig. Meine Zehnerziffer ist 5 größer als meine Einerziffer und 8 größer als meine Hunderterziffer. *Wer bin ich?*",
-    "loesung": "194",
-    "erklaerung": "Die Zehnerziffer muss 9 sein, sonst wäre die Hunderterziffer kleiner als 1 → 1-9-4.",
-    "schwierigkeit": "schwer",
-    "status": "neu"
-  },
-  {
-    "id": 61,
-    "kategorie": "iq",
-    "frage": "Vorgestern war der Tag nach Sonntag. *Welcher Tag ist übermorgen?*",
-    "loesung": "Freitag",
-    "erklaerung": "Vorgestern war Montag → heute ist Mittwoch → übermorgen ist Freitag.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 62,
-    "kategorie": "mathe",
-    "frage": "Ohne Taschenrechner:\n*1 + 2 + 3 + … + 100 = ?*",
-    "loesung": "5050",
-    "erklaerung": "50 Paare mit je 101 (1+100, 2+99, …): 50 × 101 = 5050.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 63,
-    "kategorie": "mathe",
-    "frage": "Wie viele *Diagonalen* hat ein Sechseck?",
-    "loesung": "9",
-    "erklaerung": "Jede Ecke hat 3 Diagonalen: 6 × 3 = 18. Jede wird doppelt gezählt → 9.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 64,
-    "kategorie": "wort",
-    "frage": "Welches Wort passt vor alle drei?\n*___BALL*\n*___WEG*\n*___NOTE*",
-    "loesung": "Fuß",
-    "erklaerung": "Fußball, Fußweg, Fußnote.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 65,
-    "kategorie": "wort",
-    "frage": "Welches Wort passt vor alle drei?\n*___TÜR*\n*___SCHLÜSSEL*\n*___BOOT*",
-    "loesung": "Haus",
-    "erklaerung": "Haustür, Hausschlüssel, Hausboot.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 66,
-    "kategorie": "wort",
-    "frage": "Welches Wort passt hinter alle drei?\n*MOND___*\n*TAGES___*\n*RAMPEN___*",
-    "loesung": "Licht",
-    "erklaerung": "Mondlicht, Tageslicht, Rampenlicht.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 67,
-    "kategorie": "wort",
-    "frage": "Welches Wort passt hinter alle drei?\n*SONNEN___*\n*REGEN___*\n*BILD___*",
-    "loesung": "Schirm",
-    "erklaerung": "Sonnenschirm, Regenschirm, Bildschirm.",
-    "schwierigkeit": "mittel",
-    "status": "neu"
-  },
-  {
-    "id": 68,
-    "kategorie": "wort",
-    "frage": "Welches Wort passt vor alle drei?\n*___FLASCHE*\n*___FALL*\n*___HAHN*",
-    "loesung": "Wasser",
-    "erklaerung": "Wasserflasche, Wasserfall, Wasserhahn.",
-    "schwierigkeit": "mittel",
     "status": "neu"
   }
 ]

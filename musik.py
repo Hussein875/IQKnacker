@@ -3,9 +3,10 @@
 Alles ist synthetisch – keine Musikdateien, keine Lizenzfragen. Jedes Rätsel bekommt
 eine eigene Variante (Tonart und Akkordfolge), die beim erneuten Rendern gleich bleibt.
 
-Aufbau: dumpfer Schlag zum Einstieg → pulsierender Beat mit 120 BPM (jeder zweite Schlag
-fällt genau auf einen Countdown-Tick) → Schlussphase doppelt so schnell mit Anstieg →
-Einschlag bei „Zeit um!“ → ruhiger Ausklang, der nahtlos in den Loop übergeht.
+Aufbau: dumpfer Schlag zum Einstieg → ruhige Lesephase ohne Beat → pulsierender Beat mit 120 BPM
+ab dem Countdown (jeder zweite Schlag fällt genau auf einen Tick) → Schlussphase doppelt so schnell
+mit Anstieg → Einschlag bei „Zeit um!“ → Herzschlag bei „3 · 2 · 1“ → heller Dur-Klang zur
+Auflösung → ruhiger Ausklang, der nahtlos in den Loop übergeht.
 """
 
 import random
@@ -137,10 +138,25 @@ def erzeuge_musik(renderer, ziel, saat):
     flaechen = Spur(dauer)  # bekommt das „Pumpen“ im Takt
     rest = Spur(dauer)
 
-    # Einstieg: Schlag auf den ersten Frame, Fläche schwillt bis zum Countdown an
-    rest.mische(0, einschlag(rng, 1.2), 0.35)
-    flaechen.mische(0, flaeche([hz(n) for n in akkord(grund, folge[0])], max(0.1, start),
-                               attack=max(0.05, start * 0.8), release=0.3), 0.5)
+    # Lesephase: Schlag auf den ersten Frame, dann ruhige Fläche mit leisem Arpeggio – noch ohne Beat.
+    # Die Takte liegen rückwärts vom Countdown-Start aus, damit alles im selben Raster bleibt; der
+    # letzte Takt vor dem Countdown ist der vierte Akkord der Folge, der Countdown beginnt mit dem ersten.
+    rest.mische(0, einschlag(rng, 1.2), 0.3)
+    takte, t = [], start
+    while t > 1e-6:
+        takte.append((max(0.0, t - TAKT), t))
+        t -= TAKT
+    for k, (a_start, a_ende) in enumerate(reversed(takte)):
+        toene = akkord(grund, folge[(k - len(takte)) % len(folge)])
+        flaechen.mische(a_start, flaeche([hz(n) for n in toene], a_ende - a_start, attack=0.6 if k == 0 else 0.1),
+                        0.45)
+        muster = [toene[0] + 12, toene[1] + 12, toene[2] + 12, toene[1] + 12]
+        noten, t0 = [], a_ende - SCHLAG / 2
+        while t0 >= a_start - 1e-6:
+            noten.append(t0)
+            t0 -= SCHLAG / 2
+        for j, t0 in enumerate(reversed(noten)):
+            rest.mische(t0, zupfen(hz(muster[j % 4])), 0.035, pan=0.3 if j % 2 else -0.3)
 
     # Countdown in Takten, die Schlussphase liegt auf dem Spannungsakkord
     abschnitte, t, i = [], start, 0
@@ -186,11 +202,38 @@ def erzeuge_musik(renderer, ziel, saat):
 
     rest.mische(kritisch_ab, anstieg(rng, ende - kritisch_ab, hz(grund), hz(grund + 12)), 0.12)
 
-    # „Zeit um!“: Einschlag, danach ruhiger Ausklang bis zum Loop
+    # „Zeit um!“: Einschlag
     rest.mische(ende, einschlag(rng), 0.7)
-    ausklang = max(0.1, dauer - ende - 0.75)
-    flaechen.mische(ende + 0.15, flaeche([hz(n) for n in akkord(grund, folge[0])], ausklang,
-                                         attack=0.3, release=0.6), 0.45)
+    aufloesung = renderer.aufloesung_zeitpunkt()
+    if aufloesung is None:  # ohne Auflösung im Video: ruhiger Ausklang bis zum Loop
+        ausklang = max(0.1, dauer - ende - 0.75)
+        flaechen.mische(ende + 0.15, flaeche([hz(n) for n in akkord(grund, folge[0])], ausklang,
+                                             attack=0.3, release=0.6), 0.45)
+    else:
+        # Spannung bis zur Auflösung: leise Dominante, Herzschlag auf „3 · 2 · 1“, kurzer Anstieg
+        flaechen.mische(ende + 0.15, flaeche([hz(n) for n in akkord(grund, SPANNUNGSAKKORD)],
+                                             max(0.1, aufloesung - ende - 0.15), attack=0.2, release=0.15), 0.35)
+        for t0 in renderer.pause_ticks():
+            rest.mische(t0, kick(), 0.32)
+        if aufloesung - ende > 1.0:
+            rest.mische(aufloesung - 0.8, anstieg(rng, 0.8, hz(grund), hz(grund + 12)), 0.08)
+        # Auflösung: heller Dur-Akkord mit aufsteigendem Glitzern – klingt nach „gelöst!“
+        dur = [grund, grund + 4, grund + 7]
+        for k, n in enumerate([dur[0] + 12, dur[1] + 12, dur[2] + 12, dur[0] + 24]):
+            rest.mische(aufloesung + k * 0.06, zupfen(hz(n), 0.6), 0.10)
+        rest.mische(aufloesung, bass(hz(grund - 12), 0.6), 0.25)
+        # ruhiger Ausklang in Dur (I – IV) mit leisem Arpeggio, endet kurz vor Schluss für den Loop
+        t, k = aufloesung, 0
+        while t < dauer - 0.8:
+            toene = dur if k % 2 == 0 else [grund + 5, grund + 9, grund + 12]
+            laenge = min(TAKT, dauer - 0.8 - t)
+            flaechen.mische(t, flaeche([hz(n) for n in toene], laenge, attack=0.05 if k == 0 else 0.15,
+                                       release=0.6), 0.42)
+            for j in range(int(laenge / (SCHLAG / 2))):
+                rest.mische(t + j * SCHLAG / 2, zupfen(hz([toene[0] + 12, toene[1] + 12, toene[2] + 12,
+                                                          toene[1] + 12][j % 4])), 0.03, pan=0.3 if j % 2 else -0.3)
+            t += TAKT
+            k += 1
 
     # Pumpen im Takt (wie Sidechain-Kompression): Fläche wird nach jedem Schlag kurz leiser
     t = np.arange(flaechen.n) / RATE

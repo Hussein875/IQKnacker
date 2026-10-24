@@ -297,6 +297,17 @@ def countdown_fuer(cfg, raetsel):
     return float(wert)
 
 
+def lesezeit_fuer(cfg, raetsel):
+    """Zeit zum Lesen, bevor der Countdown startet – je länger der Rätseltext, desto mehr Zeit."""
+    if raetsel.get("lesezeit"):
+        return float(raetsel["lesezeit"])
+    wert = cfg["zeiten"]["lesezeit"]
+    if not isinstance(wert, dict):
+        return float(wert)
+    zeichen = len(str(raetsel["frage"]).replace("*", ""))
+    return clamp(zeichen / wert.get("zeichen_pro_sekunde", 14), wert.get("min", 1.5), wert.get("max", 10))
+
+
 def waehle(wert, zufall, schwierigkeit=None):
     """Texte dürfen ein String, eine Liste (zufällige Auswahl) oder ein Dict je Schwierigkeit sein."""
     if isinstance(wert, dict):
@@ -307,8 +318,10 @@ def waehle(wert, zufall, schwierigkeit=None):
 
 
 class RaetselRenderer:
-    """Ablauf: Rätsel ab dem ersten Frame (mit wechselnden Sprüchen) → Countdown → „Zeit um!“ →
-    Endkarte → Überblendung zurück zum ersten Frame, damit das Video nahtlos loopt."""
+    """Ablauf: Rätsel ab dem ersten Frame (mit wechselnden Sprüchen) → Lesezeit → Countdown (Denkzeit) →
+    „Zeit um!“ → Kommentar-Pause „Auflösung in 3·2·1“ → Auflösung mit Erklärung → Abschluss
+    („Hattest du's?“) → Überblendung zurück zum ersten Frame, damit das Video nahtlos loopt.
+    Ohne Auflösung (`aufloesung.zeigen = false`) folgt auf „Zeit um!“ die Endkarte."""
 
     def __init__(self, config, raetsel, basis_pfad):
         self.cfg = config
@@ -343,13 +356,28 @@ class RaetselRenderer:
         self.setzer_normal = TextSetzer(self.normal_pfad, emoji_pfad)
 
         z = config["zeiten"]
-        self.t_lesen = z["lesezeit"]
-        self.t_countdown = countdown_fuer(config, raetsel)
+        self.t_lesen = lesezeit_fuer(config, raetsel)          # ohne Zeitdruck: noch kein Countdown
+        self.t_countdown = countdown_fuer(config, raetsel)     # reine Denkzeit
         self.t_raetsel = self.t_lesen + self.t_countdown
         self.t_zeit_um = z.get("zeit_um", 0)
-        self.t_end = z["endkarte"]
         self.t_uebergang = z["uebergang"]
-        self.t_loop = min(z.get("loop", 0), self.t_end)
+        self.aufl = config.get("aufloesung", {})
+        self.mit_aufloesung = bool(self.aufl.get("zeigen"))
+        if self.mit_aufloesung:
+            self.t_pause = self.aufl.get("pause", 2.1)
+            if self.typ == "finde":
+                self.t_aufloesung = self.aufl.get("min_dauer", 3.5)
+            else:  # so lange, dass man die Erklärung in Ruhe lesen kann
+                lesen = len(str(raetsel.get("erklaerung", ""))) / self.aufl.get("zeichen_pro_sekunde", 14)
+                self.t_aufloesung = clamp(self.aufl.get("grunddauer", 1.8) + lesen,
+                                          self.aufl.get("min_dauer", 3.5), self.aufl.get("max_dauer", 8))
+            self.t_abschluss = z.get("abschluss", 2.4)
+            self.t_end = self.t_pause + self.t_aufloesung + self.t_abschluss
+            letzte_szene = self.t_abschluss
+        else:
+            self.t_end = z["endkarte"]
+            letzte_szene = self.t_end
+        self.t_loop = min(z.get("loop", 0), letzte_szene)
         self.dauer = self.t_raetsel + self.t_zeit_um + self.t_end
 
         self.anim = config["animation"]
@@ -382,6 +410,18 @@ class RaetselRenderer:
     def zeit_um_zeitpunkt(self):
         return self.t_raetsel
 
+    def pause_start(self):
+        return self.t_raetsel + self.t_zeit_um
+
+    def pause_ticks(self):
+        """Zeitpunkte der Zahlen 3 · 2 · 1 vor der Auflösung."""
+        if not self.mit_aufloesung:
+            return []
+        return [self.pause_start() + i * self.t_pause / 3 for i in range(3)]
+
+    def aufloesung_zeitpunkt(self):
+        return self.pause_start() + self.t_pause if self.mit_aufloesung else None
+
     def tipp_zeitpunkt(self):
         return self._tipp_start
 
@@ -393,6 +433,10 @@ class RaetselRenderer:
     def vorschau_zeitpunkt(self):
         """Zeitpunkt für das Vorschaubild: alles eingeblendet, Countdown läuft gerade an."""
         return self.t_lesen + 0.5
+
+    def aufloesung_vorschau_zeitpunkt(self):
+        """Zeitpunkt für das zweite Vorschaubild: Lösung und Erklärung vollständig sichtbar."""
+        return self.aufloesung_zeitpunkt() + min(2.2, self.t_aufloesung - 0.3) if self.mit_aufloesung else None
 
     # ---- Layout innerhalb der TikTok-Safe-Zones
     def _layout(self):
@@ -441,13 +485,17 @@ class RaetselRenderer:
         if self.t_zeit_um > 0 and zeit_um:
             self.zeit_um_ebene = self._einzeilig(self.setzer_fett, zeit_um, g.get("zeit_um", 130), textbreite,
                                                  self.warnung, self.textfarbe, 70)
-        end1 = (self._text("endkarte_1_optionen") if self.optionen else None) or self._text("endkarte_1")
-        self.end1_ebene = self.setzer_fett.block(end1, g["endkarte_1"], textbreite, self.textfarbe, self.akzent, 1.2)
-        self.end2_ebene = self.setzer_fett.block(self._text("endkarte_2"), g["endkarte_2"], textbreite,
-                                                 self.akzent, self.textfarbe, 1.2)
         handle = self.texte.get("handle")
         self.handle_ebene = self.setzer_normal.block(handle, g["handle"], textbreite, self.dezent,
                                                      self.akzent, 1.2) if handle else None
+        if self.mit_aufloesung:
+            self._aufloesung_vorbereiten(textbreite)
+        else:
+            end1 = (self._text("endkarte_1_optionen") if self.optionen else None) or self._text("endkarte_1")
+            self.end1_ebene = self.setzer_fett.block(end1, g["endkarte_1"], textbreite, self.textfarbe,
+                                                     self.akzent, 1.2)
+            self.end2_ebene = self.setzer_fett.block(self._text("endkarte_2"), g["endkarte_2"], textbreite,
+                                                     self.akzent, self.textfarbe, 1.2)
 
         # Hintergrund: weiches Leuchten hinter dem Inhalt, roter Rand für die Schlussphase
         a = self.anim
@@ -462,17 +510,85 @@ class RaetselRenderer:
         self._wasserzeichen_vorbereiten()
 
     def _label_vorbereiten(self):
+        self.label_ebene = self._pille(self.kat.get("label") or self.raetsel["kategorie"].upper(), self.akzent)
+
+    def _pille(self, text, farbe):
+        """Gefüllte Plakette mit Text, z. B. „IQ-TEST“ oder „AUFLÖSUNG“."""
         g = self.cfg["groessen"]
-        label_text = self.kat.get("label") or self.raetsel["kategorie"].upper()
         f = schrift(self.fett_pfad, g["label"])
-        box = f.getbbox(label_text, anchor="ls")
+        box = f.getbbox(text, anchor="ls")
         pad_x, pad_y = round(g["label"] * 0.7), round(g["label"] * 0.45)
         w = (box[2] - box[0]) + 2 * pad_x
         h = (box[3] - box[1]) + 2 * pad_y
-        self.label_ebene = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-        d = ImageDraw.Draw(self.label_ebene)
-        d.rounded_rectangle((0, 0, w - 1, h - 1), radius=h // 2, fill=self.akzent)
-        d.text((pad_x - box[0], pad_y - box[1]), label_text, font=f, fill=self.label_textfarbe, anchor="ls")
+        ebene = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        d = ImageDraw.Draw(ebene)
+        d.rounded_rectangle((0, 0, w - 1, h - 1), radius=h // 2, fill=farbe)
+        d.text((pad_x - box[0], pad_y - box[1]), text, font=f, fill=self.label_textfarbe, anchor="ls")
+        return ebene
+
+    def _stapel(self, zeilen):
+        """Ebenen (mit Abstand danach) untereinander, als Gruppe senkrecht mittig: Liste der Mittelpunkte (y)."""
+        hoehe = sum(e.height + abstand for e, abstand in zeilen) - (zeilen[-1][1] if zeilen else 0)
+        y, mitten = self.mitte_y - hoehe / 2, []
+        for ebene, abstand in zeilen:
+            mitten.append(y + ebene.height / 2)
+            y += ebene.height + abstand
+        return mitten
+
+    def _aufloesung_vorbereiten(self, textbreite):
+        """Ebenen für Kommentar-Pause, Auflösung und Abschluss."""
+        g = self.cfg["groessen"]
+        r = self.raetsel
+        self.loesungsfarbe = hex_zu_rgb(self.cfg["farben"].get("loesung", "#6FCF97")) + (255,)
+
+        self.pause_zeilen = [
+            (self.setzer_fett.block(self._text("pause_1"), g.get("pause_1", 84), textbreite,
+                                    self.textfarbe, self.akzent, 1.15), 30),
+            (self.setzer_fett.block(self._text("pause_2"), g.get("pause_2", 52), textbreite,
+                                    self.textfarbe, self.akzent, 1.25), 110),
+            (self.setzer_fett.block(self._text("pause_3"), g.get("pause_3", 52), textbreite,
+                                    self.dezent, self.akzent, 1.2), 10),
+        ]
+        self.pause_zahlen = {n: self.setzer_fett.block(str(n), g.get("pause_zahl", 200), 400, self.akzent,
+                                                       self.akzent, 1.0) for n in (1, 2, 3)}
+        self.pause_mitten = self._stapel(self.pause_zeilen + [(self.pause_zahlen[3], 0)])
+
+        self.loesung_label = self._pille(self._text("aufloesung_label") or "AUFLÖSUNG", self.loesungsfarbe)
+        loesung = str(r["loesung"])
+        if self.typ == "finde":
+            self.loesung_ebene = self._einzeilig(self.setzer_fett, loesung, g.get("loesung_finde", 72), textbreite,
+                                                 self.akzent, self.akzent, 40)
+        else:
+            self.kontext_ebene = mit_deckkraft(self.setzer_normal.block(
+                r["frage"], g.get("kontext", 38), textbreite, self.dezent, self.dezent, 1.25), 0.85)
+            groesse = self.setzer_fett.passende_groesse(loesung, textbreite, g.get("loesung", 150) * 2.3,
+                                                        g.get("loesung", 150), 60, 1.05)
+            self.loesung_ebene = self.setzer_fett.block(loesung, groesse, textbreite, self.akzent, self.akzent, 1.05)
+            platz = (self.inhalt_unten - 40) - self.bereich_oben - self.kontext_ebene.height \
+                - self.loesung_ebene.height - 50 - 40
+            groesse = self.setzer_fett.passende_groesse(r["erklaerung"], textbreite, platz,
+                                                        g.get("erklaerung", 56), 32, 1.3)
+            self.erklaerung_ebene = self.setzer_fett.block(r["erklaerung"], groesse, textbreite, self.textfarbe,
+                                                          self.akzent, 1.3)
+            hoehe = self.kontext_ebene.height + 50 + self.loesung_ebene.height + 40 + self.erklaerung_ebene.height
+            y = (self.bereich_oben + self.inhalt_unten - 40) / 2 - hoehe / 2
+            self.kontext_y = y + self.kontext_ebene.height / 2
+            y += self.kontext_ebene.height + 50
+            self.loesung_y = y + self.loesung_ebene.height / 2
+            y += self.loesung_ebene.height + 40
+            self.erklaerung_y = y + self.erklaerung_ebene.height / 2
+
+        self.abschluss_zeilen = [
+            (self.setzer_fett.block(self._text("abschluss_1"), g.get("abschluss_1", 110), textbreite,
+                                    self.textfarbe, self.akzent, 1.1), 50),
+            (self.setzer_fett.block(self._text("abschluss_2"), g.get("abschluss_2", 70), textbreite,
+                                    self.textfarbe, self.akzent, 1.25), 40),
+            (self.setzer_fett.block(self._text("abschluss_3"), g.get("abschluss_3", 52), textbreite,
+                                    self.akzent, self.textfarbe, 1.2), 50),
+        ]
+        if self.handle_ebene:
+            self.abschluss_zeilen.append((self.handle_ebene, 0))
+        self.abschluss_mitten = self._stapel(self.abschluss_zeilen)
 
     def _einzeilig(self, setzer, text, groesse, breite, farbe, akzent, min_groesse=28):
         """Text so klein wie nötig setzen, damit er in eine Zeile passt."""
@@ -600,29 +716,44 @@ class RaetselRenderer:
         groesse = max(18, round(zelle * 0.74))
         self.raetsel_schriftgroesse = groesse
 
-        def glyphe(zeichen):
-            ebene = self.setzer_fett.block(str(zeichen), groesse, zelle * 4, self.textfarbe, self.akzent, 1.0)
+        def glyphe(zeichen, farbe):
+            ebene = self.setzer_fett.block(str(zeichen), groesse, zelle * 4, farbe, farbe, 1.0)
             box = ebene.getbbox()
             return ebene.crop(box) if box else ebene
 
-        normal, ziel = glyphe(r["zeichen"]), glyphe(r["ziel"])
-        breite = 2 * rand + spalten * zelle  # rechts gleich viel Rand wie links → Gitter wirkt mittig
-        gitter = Image.new("RGBA", (breite, rand + zeilen * zelle), (0, 0, 0, 0))
-        d = ImageDraw.Draw(gitter)
-        nummer = schrift(self.normal_pfad, max(16, min(30, round(zelle * 0.34))))
-        for s in range(spalten):
-            d.text((rand + s * zelle + zelle / 2, rand / 2), str(s + 1), font=nummer, fill=self.dezent, anchor="mm")
-        for z in range(zeilen):
-            d.text((rand / 2, rand + z * zelle + zelle / 2), str(z + 1), font=nummer, fill=self.dezent, anchor="mm")
+        def gitter_bauen(aufloesung):
+            """aufloesung=True: alle anderen Zeichen blass, das gesuchte farbig und eingekreist."""
+            normal = glyphe(r["zeichen"], self.textfarbe)
+            ziel = glyphe(r["ziel"], self.akzent if aufloesung else self.textfarbe)
+            if aufloesung:
+                normal = mit_deckkraft(normal, 0.25)
+            breite = 2 * rand + spalten * zelle  # rechts gleich viel Rand wie links → Gitter wirkt mittig
+            gitter = Image.new("RGBA", (breite, rand + zeilen * zelle), (0, 0, 0, 0))
+            d = ImageDraw.Draw(gitter)
+            nummer = schrift(self.normal_pfad, max(16, min(30, round(zelle * 0.34))))
             for s in range(spalten):
-                bild = ziel if (z + 1, s + 1) == (ziel_reihe, ziel_spalte) else normal
-                gitter.alpha_composite(bild, (round(rand + s * zelle + (zelle - bild.width) / 2),
-                                              round(rand + z * zelle + (zelle - bild.height) / 2)))
-        gesamt = Image.new("RGBA", (max(frage.width, gitter.width), frage.height + abstand + gitter.height),
-                           (0, 0, 0, 0))
-        gesamt.alpha_composite(frage, ((gesamt.width - frage.width) // 2, 0))
-        gesamt.alpha_composite(gitter, ((gesamt.width - gitter.width) // 2, frage.height + abstand))
-        return gesamt
+                farbe = self.akzent if aufloesung and s + 1 == ziel_spalte else self.dezent
+                d.text((rand + s * zelle + zelle / 2, rand / 2), str(s + 1), font=nummer, fill=farbe, anchor="mm")
+            for z in range(zeilen):
+                farbe = self.akzent if aufloesung and z + 1 == ziel_reihe else self.dezent
+                d.text((rand / 2, rand + z * zelle + zelle / 2), str(z + 1), font=nummer, fill=farbe, anchor="mm")
+                for s in range(spalten):
+                    bild = ziel if (z + 1, s + 1) == (ziel_reihe, ziel_spalte) else normal
+                    gitter.alpha_composite(bild, (round(rand + s * zelle + (zelle - bild.width) / 2),
+                                                  round(rand + z * zelle + (zelle - bild.height) / 2)))
+            if aufloesung:
+                cx, cy = rand + (ziel_spalte - 0.5) * zelle, rand + (ziel_reihe - 0.5) * zelle
+                radius = zelle * 0.48
+                d.ellipse((cx - radius, cy - radius, cx + radius, cy + radius), outline=self.akzent,
+                          width=max(4, round(zelle * 0.07)))
+            gesamt = Image.new("RGBA", (max(frage.width, gitter.width), frage.height + abstand + gitter.height),
+                               (0, 0, 0, 0))
+            gesamt.alpha_composite(frage, ((gesamt.width - frage.width) // 2, 0))
+            gesamt.alpha_composite(gitter, ((gesamt.width - gitter.width) // 2, frage.height + abstand))
+            return gesamt
+
+        self.finde_aufloesung_ebene = gitter_bauen(True)
+        return gitter_bauen(False)
 
     def _wasserzeichen_vorbereiten(self):
         wz = self.cfg["wasserzeichen"]
@@ -665,7 +796,15 @@ class RaetselRenderer:
         elif t < self.t_raetsel + self.t_zeit_um:
             self._szene_zeit_um(bild, t - self.t_raetsel)
         else:
-            self._szene_ende(bild, t - self.t_raetsel - self.t_zeit_um)
+            u = t - self.t_raetsel - self.t_zeit_um
+            if not self.mit_aufloesung:
+                self._szene_ende(bild, u)
+            elif u < self.t_pause:
+                self._szene_pause(bild, u)
+            elif u < self.t_pause + self.t_aufloesung:
+                self._szene_aufloesung(bild, u - self.t_pause)
+            else:
+                self._szene_abschluss(bild, u - self.t_pause - self.t_aufloesung)
         if self.wasserzeichen:
             ebene, pos = self.wasserzeichen
             bild.alpha_composite(ebene, dest=pos)
@@ -762,6 +901,10 @@ class RaetselRenderer:
         stil = self.cfg["countdown"].get("stil", "ring")
         rest = clamp(1 - max(c, 0) / self.t_countdown)
         farbe = farbmix(self.akzent, self.warnung, warn_anteil)
+        if c < 0:
+            return  # Lesephase: noch kein Zeitdruck
+        raus *= ease_out(c / 0.2)
+        punch = 0.6 + 0.4 * ease_out_back(c / 0.35)
         wackeln = 0.0
         if kritisch:
             wackeln = 9 * math.sin(2 * math.pi * 16 * in_sekunde) * (1 - ease_out(in_sekunde / 0.35))
@@ -786,7 +929,7 @@ class RaetselRenderer:
             fuell = round(bb * rest)
             if fuell >= bh:
                 d.rounded_rectangle((0, 0, fuell - 1, bh - 1), radius=bh // 2, fill=farbe)
-            einfuegen(bild, balken, (self.mitte_x, self.balken_y), raus)
+            einfuegen(bild, balken, (self.mitte_x, self.balken_y), raus, punch)
 
     def _ring(self, rest, farbe):
         """Kreisförmiger Timer; doppelt so groß gezeichnet und verkleinert für glatte Kanten."""
@@ -852,3 +995,50 @@ class RaetselRenderer:
         if self.handle_ebene:
             y += h2 + abstand * 0.6
             einfuegen(bild, self.handle_ebene, (self.mitte_x, y + h3 / 2), ease_out((t - 0.5) / 0.4))
+
+
+    def _szene_pause(self, bild, t):
+        """„Jetzt kommentieren! Auflösung in 3 · 2 · 1“ – damit sich alle vorher festlegen."""
+        self._glow(bild, t, self.mitte_y, 0.9)
+        raus = self._ausblenden(t, self.t_pause)
+        for i, ((ebene, _), y) in enumerate(zip(self.pause_zeilen, self.pause_mitten)):
+            p = ease_out((t - 0.08 * i) / 0.3)
+            einfuegen(bild, ebene, (self.mitte_x, y + 20 * (1 - p)), p * raus)
+        schritt = self.t_pause / 3
+        stufe = min(2, int(t / schritt))
+        lokal = t - stufe * schritt
+        einfuegen(bild, self.pause_zahlen[3 - stufe], (self.mitte_x, self.pause_mitten[-1]),
+                  ease_out(lokal / 0.12) * raus, 1.35 - 0.35 * ease_out_back(lokal / 0.3))
+
+    def _szene_aufloesung(self, bild, t):
+        raus = self._ausblenden(t, self.t_aufloesung)
+        p_label = ease_out(t / 0.25)
+        einfuegen(bild, self.loesung_label, (self.mitte_x, self.label_y), p_label * raus,
+                  0.8 + 0.2 * ease_out_back(t / 0.35))
+        if self.typ == "finde":
+            self._glow(bild, t, self.inhalt_y, raus)
+            p = ease_out(t / 0.4)
+            einfuegen(bild, self.inhalt_ebene, (self.mitte_x, self.inhalt_y), (1 - p) * raus)
+            einfuegen(bild, self.finde_aufloesung_ebene, (self.mitte_x, self.inhalt_y), p * raus,
+                      1 + 0.04 * (1 - ease_out(t / 0.6)))
+            q = (t - 0.3) / 0.35
+            if q > 0:
+                einfuegen(bild, self.loesung_ebene, (self.mitte_x, self.countdown_y), ease_out(q * 2) * raus,
+                          0.8 + 0.2 * ease_out_back(q))
+            return
+        self._glow(bild, t, self.loesung_y, raus)
+        einfuegen(bild, self.kontext_ebene, (self.mitte_x, self.kontext_y), ease_out(t / 0.3) * raus)
+        q = (t - 0.15) / 0.35
+        if q > 0:  # die Lösung „knallt“ rein
+            einfuegen(bild, self.loesung_ebene, (self.mitte_x, self.loesung_y), ease_out(q * 2) * raus,
+                      1.4 - 0.4 * ease_out_back(q))
+        q = ease_out((t - 0.6) / 0.4)
+        einfuegen(bild, self.erklaerung_ebene, (self.mitte_x, self.erklaerung_y + 20 * (1 - q)), q * raus)
+
+    def _szene_abschluss(self, bild, t):
+        """„Hattest du's? ✅ oder ❌“ – der einfachste Kommentar überhaupt."""
+        self._glow(bild, t, self.mitte_y, ease_out(t / 0.4))
+        for i, ((ebene, _), y) in enumerate(zip(self.abschluss_zeilen, self.abschluss_mitten)):
+            p = (t - 0.12 * i) / 0.4
+            if p > 0:
+                einfuegen(bild, ebene, (self.mitte_x, y), ease_out(p * 2), 0.75 + 0.25 * ease_out_back(p))

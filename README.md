@@ -2,17 +2,19 @@
 
 Erzeugt aus einer Rätsel-Liste (`raetsel.json`) automatisch fertige Hochformat-Videos für TikTok, Reels und Shorts – ohne Stimme, mit Text, Grafik, Musik und Soundeffekten.
 
-**Ablauf jedes Videos (1080 × 1920, 30 fps, H.264, ca. 9–14 Sekunden je nach Schwierigkeit):**
+**Ablauf jedes Videos (1080 × 1920, 30 fps, H.264, ca. 15–28 Sekunden – im Schnitt 18 s leicht, 21 s mittel, 24 s schwer):**
 
 | Abschnitt | Dauer | Inhalt |
 |---|---|---|
-| Einstieg | ab Frame 1 | Das Rätsel ist **sofort** zu sehen und zoomt kurz heran, darüber ein Spruch passend zur Schwierigkeit („Die meisten liegen hier falsch 🤯“). |
-| Countdown | 5 / 7 / 10 s | Ring-Countdown mit Ticken und pulsierender Musik – **leicht 5 s, mittel 7 s, schwer 10 s**. Zwischendurch wechselt der Spruch („Nicht raten – denken! 🧠“) oder ein **Tipp** erscheint („💡 Tipp: …“). |
-| Schlussphase | letzte 3 s | Ring wird rot, Zahl wackelt, Druckwellen laufen nach außen, roter Rand und Antwort-Kästen pulsieren, Musik wird doppelt so schnell, Spruch „Jetzt wird's knapp! 😬“ |
-| Zeit um! | 0,8 s | „⏱️ ZEIT UM!“ mit rotem Blitz, Einschlag und Gong |
-| Endkarte | 2,6 s | „Schreib deine Lösung in die Kommentare 👇“ + pulsierendes „📌 Die erste richtige Antwort wird angepinnt“ + „Folge @iqknacker für mehr Rätsel“ – blendet am Ende in den ersten Frame über, damit das Video **nahtlos loopt** |
+| Lesen | je nach Textlänge | Das Rätsel ist **sofort** zu sehen und zoomt kurz heran, darüber ein Spruch passend zur Schwierigkeit („Die meisten liegen hier falsch 🤯“). Noch **kein Countdown** – erst in Ruhe lesen (ca. 14 Zeichen pro Sekunde, 1,5–10 s). |
+| Denkzeit | 5 / 7 / 10 s | Der Ring-Countdown erscheint, Ticken und Beat setzen ein – **leicht 5 s, mittel 7 s, schwer 10 s**. Zwischendurch wechselt der Spruch („Nicht raten – denken! 🧠“) oder ein **Tipp** erscheint. |
+| Schlussphase | letzte 2–3 s | Ring wird rot, Zahl wackelt, Druckwellen, roter Rand, Musik doppelt so schnell, Spruch „Jetzt wird's knapp! 😬“ |
+| Zeit um! | 0,7 s | „⏱️ ZEIT UM!“ mit rotem Blitz, Einschlag und Gong |
+| Kommentar-Pause | 2,1 s | „**Jetzt kommentieren!** Deine Antwort in die Kommentare 👇 – Auflösung in 3 · 2 · 1“ |
+| Auflösung | 3,5–8 s | Grünes „AUFLÖSUNG“, die Lösung groß, darunter die Erklärung (so lange, dass man sie lesen kann). Bei Suchrätseln wird das gesuchte Zeichen eingekreist. |
+| Abschluss | 2,2 s | „Hattest du's? Schreib ✅ oder ❌ in die Kommentare 👇 – Und bei welcher Sekunde? ⏱️“ – blendet dann in den ersten Frame über, damit das Video **nahtlos loopt** |
 
-Die Lösung erscheint **nie** im Video – sie landet nur in der Kommentar-Datei zum Anpinnen. Es werden auch **keine Antworten vorgegeben**: Die Zuschauer sollen rätseln, nicht raten. Die Zeit ist bewusst knapp – wer es nicht schafft, schaut nochmal (das zählt bei TikTok als Wiederholung).
+Es werden **keine Antworten vorgegeben**: Die Zuschauer sollen rätseln, nicht raten. Mit `--ohne-aufloesung` entstehen Videos ohne Lösung (stattdessen eine Endkarte „📌 Die erste richtige Antwort wird angepinnt“) – praktisch, um beide Varianten zu vergleichen.
 
 ---
 
@@ -41,6 +43,7 @@ python generate.py --alle         # alle Rätsel erzeugen
 python generate.py --vorschau     # nur Vorschaubilder, schnell zum Kontrollieren
 python generate.py --ohne-musik   # Videos ohne Musik (z. B. für Trend-Sounds in der App)
 python generate.py --ohne-effekte # ohne Ticken, Tipp-Pling und Gong
+python generate.py --ohne-aufloesung # Lösung nicht im Video zeigen (Vergleichs-Variante)
 python generate.py --liste        # Übersicht aller Rätsel mit Status
 ```
 
@@ -55,7 +58,7 @@ python generate.py --neu-emoji 3 --schwierigkeit schwer
 ```
 
 - **Emoji-Gleichungen** (`🍎 + 🍎 = 4 …`): Bei *mittel* wird multipliziert, bei *schwer* muss man in den Hinweisen teilen und in der Frage an Punkt vor Strich denken – wer stur von links rechnet, liegt falsch. Das sorgt für Diskussionen in den Kommentaren.
-- **Finde die 9:** Ein Gitter aus gleichen Zeichen mit genau einem abweichenden (je schwerer, desto größer das Gitter und desto ähnlicher die Zeichen). Reihen und Spalten sind nummeriert, damit man die Antwort kommentieren kann.
+- **Finde die 9:** Ein Gitter aus gleichen Zeichen mit genau einem abweichenden (je schwerer, desto größer das Gitter und desto ähnlicher die Zeichen). Reihen und Spalten sind nummeriert; in der Auflösung wird das Zeichen eingekreist.
 
 Die neuen Rätsel landen mit Status `neu` in `raetsel.json`. Danach wie gewohnt `python generate.py`.
 
@@ -64,26 +67,29 @@ Die neuen Rätsel landen mit Status `neu` in `raetsel.json`. Danach wie gewohnt 
 | Datei | Inhalt |
 |---|---|
 | `005_iq.mp4` | das fertige Video |
-| `005_iq.png` | Vorschaubild zur schnellen Kontrolle (auch als TikTok-Titelbild geeignet) |
+| `005_iq.png` | Vorschaubild des Rätsels (auch als TikTok-Titelbild geeignet) |
+| `005_iq_aufloesung.png` | Vorschaubild der Auflösung – zum Kontrollieren von Lösung und Erklärung |
 | `005_iq_caption.txt` | Caption + 7 Hashtags zum Reinkopieren |
-| `005_iq_kommentar.txt` | Lösungs-Text – als Antwort auf den ersten richtigen Kommentar (siehe unten) |
+| `005_iq_kommentar.txt` | Kommentar zum Anpinnen („Hattest du's? ✅ oder ❌ …“ mit der Lösung) |
 
 Nach einem erfolgreichen Video wird der Status in `raetsel.json` von `neu` auf `erstellt` gesetzt. Auf `gepostet` setzt du ihn selbst, wenn das Video online ist.
+
+**Reihenfolge:** `python generate.py` arbeitet die Rätsel in der Reihenfolge der Datei ab. Sie ist so sortiert, dass sich leicht, mittel und schwer abwechseln und nie zwei gleiche Kategorien hintereinander kommen – am besten in dieser Reihenfolge posten.
 
 ---
 
 ## Kommentare anheizen
 
-Jedes Video verspricht auf der Endkarte und in der Caption: **„📌 Die erste richtige Antwort wird angepinnt – nicht spicken!“** Angepinnt zu werden ist eine kleine Auszeichnung, dafür schreiben Leute gern einen Kommentar – und wer zuerst sein will, muss selbst rätseln statt in den Kommentaren abzuschreiben. Das funktioniert aber nur, wenn du es **bei jedem Video wirklich machst**:
+Das Video fordert zweimal zum Kommentieren auf: **vor der Auflösung** („Jetzt kommentieren!“ – wer sich vorher festlegt, will danach wissen, ob er recht hatte) und **danach** („Hattest du's? ✅ oder ❌ – und bei welcher Sekunde?“). Ein ✅ ist der einfachste Kommentar überhaupt, und mit der Sekunde können die Leute angeben. Bei Fallen-Rätseln diskutieren sie außerdem, ob die Lösung stimmt („Warum 11 und nicht 16?“).
 
-1. **Erste Stunde nach dem Posten:** auf Kommentare antworten, **ohne die Lösung zu verraten**. Jede Antwort von dir zählt als weiterer Kommentar und hält die Diskussion am Laufen:
-   - auf falsche Antworten: „Knapp daneben 👀 Schau nochmal genau hin!“ · „Fast! 😏“ · „Bist du sicher? 🤔“
-   - auf richtige Antworten: „😏🔥“ · „Interessant… 👀“ (noch nicht bestätigen!)
-   - auf „Was ist die Lösung?“: „Kommt in ein paar Stunden – schreib vorher deinen Tipp 😏“
-2. **Nach 3–6 Stunden:** die **früheste richtige Antwort** suchen (am einfachsten in deinem Posteingang unter „Kommentare“, dort sind sie nach Zeit sortiert), **anpinnen** und mit dem Text aus `xxx_kommentar.txt` darauf antworten. So stehen Gewinner und Lösung ganz oben.
-3. **Hat niemand richtig gelegen:** den Text aus `xxx_kommentar.txt` als eigenen Kommentar posten und anpinnen.
+1. **Direkt nach dem Posten:** den Text aus `xxx_kommentar.txt` als eigenen Kommentar posten und **anpinnen**.
+2. **Erste Stunde:** auf Kommentare antworten – jede Antwort von dir zählt als weiterer Kommentar:
+   - auf ✅ mit Sekunde: „Krass schnell 🔥“ · „Respekt! 🧠“
+   - auf ❌: „Nächstes Mal klappt's 💪“ · „Die war auch fies 😅“
+   - auf Diskussionen über die Lösung: kurz den Rechenweg erklären – und die Diskussion laufen lassen
+3. **Falls die Vergleichs-Variante ohne Auflösung läuft** (`--ohne-aufloesung`): nach 3–6 Stunden die früheste richtige Antwort anpinnen (im Posteingang unter „Kommentare“ nach Zeit sortiert) und mit der Lösung antworten – so verspricht es die Endkarte.
 
-> Das Skript warnt, wenn ein Auflösungs-Kommentar länger als 150 Zeichen ist (TikTok-Limit). Dann einfach die `erklaerung` kürzen.
+> Das Skript warnt, wenn ein Kommentar länger als 150 Zeichen ist (TikTok-Limit, Emojis zählen doppelt).
 
 ---
 
@@ -132,7 +138,7 @@ Danach `python generate.py --vorschau` ausführen und die PNGs in `output/` ansc
 
 ### Archiv
 
-`raetsel_archiv.json` enthält zurückgestellte Rätsel – vor allem die Wissensfragen. Zum Wiederverwenden einen Eintrag einfach zurück in `raetsel.json` kopieren.
+`raetsel_archiv.json` enthält zurückgestellte Rätsel – die Wissensfragen und die sehr schweren bzw. sehr textlastigen Rätsel. Zum Wiederverwenden einen Eintrag einfach zurück in `raetsel.json` kopieren.
 
 ### Neue Kategorie anlegen
 
@@ -169,8 +175,10 @@ Alle Sprüche stehen in `config.json` unter `texte`. Jeder Eintrag darf ein einz
 | `spruch_kritisch` | in der Schlussphase (letzte 2–3 Sekunden), in Rot (nur ohne `tipp`) |
 | `tipp_prefix` | Text vor jedem Tipp, Standard „💡 *Tipp:* “ |
 | `zeit_um` | große Einblendung, wenn die Zeit abgelaufen ist |
-| `endkarte_1` | Aufruf auf der Endkarte (`endkarte_1_optionen` gilt nur für Rätsel mit Antwortvorgaben) |
-| `endkarte_2` | zweite Zeile der Endkarte |
+| `pause_1` – `pause_3` | Kommentar-Pause vor der Auflösung („*Jetzt* kommentieren!“ …) |
+| `aufloesung_label` | Text der grünen Plakette („AUFLÖSUNG“) |
+| `abschluss_1` – `abschluss_3` | Abschluss nach der Auflösung („Hattest du's?“ …) |
+| `endkarte_1`, `endkarte_2` | Endkarte – nur bei Videos ohne Auflösung (`--ohne-aufloesung`) |
 
 Platzhalter: `{countdown}` → Countdown-Sekunden, `{buchstaben}` → „A, B oder C“. `*Sternchen*` heben Wörter farbig hervor.
 
@@ -185,7 +193,8 @@ Alles steht zentral in **`config.json`**:
 | `farben` | Hintergrund, Text, Akzent (`#F2C94C`), Warnfarbe für die Schlussphase (`warnung`), Label-Schrift, Ring-Hintergrund, Antwort-Kästen (`option_hintergrund`, `option_rand`) |
 | `schriften` | Pfade zu den Schriftdateien (`.ttf`) |
 | `groessen` | Schriftgrößen für Spruch (`banner`), Label, Rätsel (max/min), Antwort-Kästen, Suchrätsel-Frage, Countdown-Zahl und -Ring (`countdown_ring_klein` mit Antworten oder Gitter), „Zeit um“, Endkarte |
-| `zeiten` | Lesezeit vor dem Countdown, **Countdown je Schwierigkeit** (`leicht` 5, `mittel` 7, `schwer` 10 s – oder eine Zahl für alle), „Zeit um“ (`0` = weglassen), Endkarte, Übergänge, `loop` (Überblendung zum Anfang, `0` = aus) |
+| `zeiten` | **Lesezeit** (`zeichen_pro_sekunde`, `min`, `max` – oder eine feste Zahl), **Denkzeit je Schwierigkeit** (`countdown`: leicht 5, mittel 7, schwer 10 s), „Zeit um“, Abschluss, Endkarte, Übergänge, `loop` (Überblendung zum Anfang, `0` = aus). Einzelne Rätsel können `lesezeit` und `countdown` selbst festlegen. |
+| `aufloesung` | `zeigen` (Lösung im Video an/aus), Länge der Kommentar-Pause, Lesetempo und Mindest-/Höchstdauer der Auflösung |
 | `animation` | Start-Zoom, langsamer Zoom, Spruch-Wechsel, wann Tipp und Sprüche kommen, Puls der Countdown-Zahl, ab wann es rot wird (`kritisch_ab`), Leuchten (`glow_deckkraft`), roter Rand (`vignette_deckkraft`), Anzahl der Lichtpunkte im Hintergrund (`partikel`, `0` = aus) |
 | `countdown.stil` | `"ring"` (Kreis mit Zahl), `"zahlen"`, `"balken"` oder `"beides"` (Zahl + Balken) |
 | `wasserzeichen` | Logo-Datei, Position (`oben_links`, `oben_rechts`, `unten_links`, `unten_rechts`), Höhe, Deckkraft |
@@ -194,8 +203,8 @@ Alles steht zentral in **`config.json`**:
 | `soundeffekte` | Ticken, Tipp-Pling und Gong an/aus (`aktiv`), Lautstärke |
 | `audio.lautheit_lufs` | Gesamtlautheit des Tons (Standard −14 LUFS, üblich für Social Media) |
 | `hashtags_allgemein`, `hashtags_anzahl` | immer verwendete Hashtags, Anzahl insgesamt (5–8) |
-| `caption_aufruf` | Aufforderung in der Caption („Schreib deine Antwort in die Kommentare 👇“) |
-| `kommentar_vorlage` | Aufbau des Auflösungs-Kommentars (`{loesung}`, `{erklaerung}`, …) |
+| `caption_aufruf_aufloesung`, `caption_aufruf` | Aufforderung in der Caption – mit bzw. ohne Auflösung im Video |
+| `kommentar_vorlage_aufloesung`, `kommentar_vorlage` | Text der Kommentar-Datei – mit bzw. ohne Auflösung im Video (`{loesung}`, `{erklaerung}`, …) |
 
 **Andere Schrift:** `.ttf` von [Google Fonts](https://fonts.google.com) herunterladen (z. B. *Anton*), in `assets/fonts/` legen und in `config.json` unter `schriften.fett` eintragen.
 
@@ -206,11 +215,11 @@ Alles steht zentral in **`config.json`**:
 ## Musik, Soundeffekte & Logo
 
 - **Musik (`musik.modus`):**
-  - `"auto"` *(Standard)*: Liegen MP3s (auch M4A/WAV/OGG) in `assets/music/`, wird pro Video zufällig einer gewählt, auf Videolänge geschnitten und ausgeblendet. **Ohne Dateien erzeugt das Skript die Musik selbst** – eine spannende Hintergrundmusik, die im Takt zum Countdown pulsiert (jeder zweite Schlag fällt auf einen Tick), in der Schlussphase doppelt so schnell wird, bei „Zeit um!“ mit einem Einschlag endet und zum Loop hin ausklingt. Jedes Rätsel bekommt eine eigene Tonart und Akkordfolge. Keine Lizenzfragen.
+  - `"auto"` *(Standard)*: Liegen MP3s (auch M4A/WAV/OGG) in `assets/music/`, wird pro Video zufällig einer gewählt, auf Videolänge geschnitten und ausgeblendet. **Ohne Dateien erzeugt das Skript die Musik selbst** – ruhig während der Lesezeit, ab dem Countdown mit Beat im Takt der Ticks, in der Schlussphase doppelt so schnell, Einschlag bei „Zeit um!“, Herzschlag bei „3 · 2 · 1“, ein heller Dur-Klang zur Auflösung und ein ruhiger Ausklang bis zum Loop. Jedes Rätsel bekommt eine eigene Tonart und Akkordfolge. Keine Lizenzfragen.
   - `"generiert"`: immer die selbst erzeugte Musik, auch wenn Dateien da sind
   - `"dateien"`: nur deine Tracks (ohne Dateien keine Musik)
   - `"aus"`: keine Musik
-- **Soundeffekte:** Ticken pro Countdown-Sekunde (in der Schlussphase höher und doppelt), ein helles Pling beim Tipp und ein Gong bei „Zeit um!“ – alles vom Skript erzeugt.
+- **Soundeffekte:** Ticken pro Countdown-Sekunde (in der Schlussphase höher und doppelt), ein helles Pling beim Tipp, ein Gong bei „Zeit um!“, leises Ticken bei „3 · 2 · 1“ und ein heller Klang, wenn die Lösung erscheint – alles vom Skript erzeugt.
 - **Trend-Sound in der App:** Videos mit `--ohne-musik` erzeugen (Ticken bleibt) oder mit `--ohne-musik --ohne-effekte` ganz ohne Ton.
 - **Logo:** `assets/logo/logo_symbol.png` (nur Symbol) und `assets/logo/logo_komplett.png` (mit Schriftzug), PNG mit transparentem Hintergrund. Wird klein als Wasserzeichen oben links eingeblendet. Solange keine Datei da ist, steht dort `@iqknacker` als Text. `assets/logo/profilbild.png` ist das Profilbild für den Account.
 
@@ -226,7 +235,7 @@ IQKnacker/
 ├── automatik.py       # baut Emoji-Gleichungen und Suchrätsel samt Lösung
 ├── config.json        # Design, Zeiten, Sprüche, Kategorien
 ├── raetsel.json       # deine Rätsel
-├── raetsel_archiv.json # zurückgestellte Rätsel (z. B. Wissensfragen)
+├── raetsel_archiv.json # zurückgestellte Rätsel (Wissensfragen, sehr schwere)
 ├── requirements.txt
 ├── assets/
 │   ├── fonts/         # Montserrat ExtraBold/Bold + Noto Color Emoji

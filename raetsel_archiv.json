@@ -180,5 +180,87 @@
     "erklaerung": "Nepals Flagge besteht aus zwei Dreiecken. Schweiz und Vatikan: quadratisch.",
     "schwierigkeit": "mittel",
     "status": "neu"
+  },
+  {
+    "id": 14,
+    "kategorie": "iq",
+    "frage": "Welche Zahl kommt als Nächstes?\n*1\n11\n21\n1211\n111221\n?*",
+    "loesung": "312211",
+    "erklaerung": "Jede Zeile beschreibt die vorige: 111221 = „drei 1, zwei 2, eine 1“ → 312211.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 44,
+    "kategorie": "iq",
+    "frage": "Welche Zahl kommt als Nächstes?\n*8 – 3 – 1 – 5 – 9*\n*0 – 6 – 7 – 4 – ?*",
+    "loesung": "2",
+    "erklaerung": "Alphabetisch sortiert: acht, drei, eins, fünf, neun, null, sechs, sieben, vier, zwei.",
+    "tipp": "Schreib die Zahlen aus ✍️",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 46,
+    "kategorie": "iq",
+    "frage": "Welche Zahl kommt als Nächstes?\n*1 – 4 – 27 – 256 – ?*",
+    "loesung": "3125",
+    "erklaerung": "1¹, 2², 3³, 4⁴ – also 5⁵ = 3125.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 49,
+    "kategorie": "iq",
+    "frage": "Ein Junge hat genauso viele Brüder wie Schwestern. Seine Schwester hat doppelt so viele Brüder wie Schwestern. *Wie viele Kinder sind es?*",
+    "loesung": "7",
+    "erklaerung": "4 Jungen, 3 Mädchen: Er hat 3 Brüder und 3 Schwestern, sie hat 4 Brüder und 2 Schwestern.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 50,
+    "kategorie": "iq",
+    "frage": "9 Münzen sehen gleich aus, eine ist schwerer. Wie oft musst du mit einer Balkenwaage *mindestens* wiegen, um sie sicher zu finden?",
+    "loesung": "2-mal",
+    "erklaerung": "3 gegen 3 wiegen → man weiß, in welcher Dreiergruppe sie ist. Dann 1 gegen 1 aus dieser Gruppe.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 51,
+    "kategorie": "iq",
+    "frage": "Ein Würfel wird rot angemalt und in 27 gleich große Würfel zersägt. Wie viele kleine Würfel haben *genau 2* rote Seiten?",
+    "loesung": "12",
+    "erklaerung": "Genau 2 rote Seiten hat nur der mittlere Würfel jeder Kante – ein Würfel hat 12 Kanten.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 52,
+    "kategorie": "iq",
+    "frage": "Eine Pizza, 3 gerade Schnitte von oben, nichts stapeln. Wie viele Stücke bekommst du *höchstens?*",
+    "loesung": "7",
+    "erklaerung": "Kreuzen sich alle drei Schnitte, ohne durch einen gemeinsamen Punkt zu gehen, entstehen 7 Stücke.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 57,
+    "kategorie": "mathe",
+    "frage": "Welche kleinste Zahl über 1 lässt geteilt durch 2, 3, 4, 5 und 6 *jedes Mal den Rest 1?*",
+    "loesung": "61",
+    "erklaerung": "Das kleinste gemeinsame Vielfache von 2 bis 6 ist 60 – plus 1 ergibt 61.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 60,
+    "kategorie": "iq",
+    "frage": "Ich bin dreistellig. Meine Zehnerziffer ist 5 größer als meine Einerziffer und 8 größer als meine Hunderterziffer. *Wer bin ich?*",
+    "loesung": "194",
+    "erklaerung": "Die Zehnerziffer muss 9 sein, sonst wäre die Hunderterziffer kleiner als 1 → 1-9-4.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
   }
 ]

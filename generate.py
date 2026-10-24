@@ -163,7 +163,9 @@ def caption_text(r, cfg):
     hashtags = (allgemein[:1] + zusatz + allgemein[1:])[:anzahl]
 
     aufruf = kat.get("caption_aufruf") or cfg.get("caption_aufruf", "Schreib deine Antwort in die Kommentare 👇")
-    if r.get("optionen"):
+    if cfg.get("aufloesung", {}).get("zeigen"):
+        aufruf = kat.get("caption_aufruf_aufloesung") or cfg.get("caption_aufruf_aufloesung") or aufruf
+    elif r.get("optionen"):
         from renderer import buchstaben_text
         aufruf = kat.get("caption_aufruf_optionen") or cfg.get("caption_aufruf_optionen") or aufruf
         aufruf = aufruf.replace("{buchstaben}", buchstaben_text(len(r["optionen"])))
@@ -175,7 +177,10 @@ def kommentar_text(r, cfg):
     optionen = [str(o) for o in r.get("optionen") or []]
     if str(r["loesung"]) in optionen:  # bei A/B/C den Buchstaben mit angeben
         werte["loesung"] = f"{'ABCD'[optionen.index(str(r['loesung']))]} – {r['loesung']}"
-    return cfg["kommentar_vorlage"].format(**werte).strip() + "\n"
+    vorlage = cfg["kommentar_vorlage"]
+    if cfg.get("aufloesung", {}).get("zeigen"):  # Lösung steht schon im Video → Kommentar fragt nach ✅/❌
+        vorlage = cfg.get("kommentar_vorlage_aufloesung") or vorlage
+    return vorlage.format(**werte).strip() + "\n"
 
 
 # ---------------------------------------------------------------- Musik & Rendering
@@ -207,6 +212,10 @@ def soundeffekte_schreiben(renderer, ziel, rate=44100):
             ton(zeit + 0.5, 0.05, [(1320, 1.0)], 0.2, 70)
         else:
             ton(zeit, 0.06, [(1200, 1.0), (2400, 0.25)], 0.28, 70)
+    for zeit in renderer.pause_ticks():  # leises Ticken bei „Auflösung in 3 · 2 · 1“
+        ton(zeit, 0.06, [(990, 1.0)], 0.2, 60)
+    if renderer.aufloesung_zeitpunkt() is not None:  # heller Dur-Klang, wenn die Lösung erscheint
+        ton(renderer.aufloesung_zeitpunkt(), 1.2, [(1046.5, 1.0), (1318.5, 0.7), (1568, 0.5)], 0.25, 4)
     if renderer.tipp_zeitpunkt() is not None:  # helles „Pling“, wenn der Tipp erscheint
         ton(renderer.tipp_zeitpunkt(), 0.6, [(1568, 1.0), (2349, 0.45)], 0.22, 8)
     if renderer.t_zeit_um > 0:
@@ -292,6 +301,8 @@ def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False, ohne_effekte=F
 
     vorschau = os.path.join(ausgabe, f"{name}.png")
     renderer.frame(renderer.vorschau_zeitpunkt()).save(vorschau)
+    if renderer.mit_aufloesung:
+        renderer.frame(renderer.aufloesung_vorschau_zeitpunkt()).save(os.path.join(ausgabe, f"{name}_aufloesung.png"))
 
     if nur_vorschau:
         print(f"  ✓ Vorschau: {os.path.relpath(vorschau, BASIS)} (Schriftgröße {renderer.raetsel_schriftgroesse})")
@@ -353,6 +364,8 @@ def main():
     parser.add_argument("--vorschau", action="store_true", help="nur Vorschaubilder, kein Video, Status bleibt")
     parser.add_argument("--ohne-musik", action="store_true", help="Video ohne Musik erzeugen")
     parser.add_argument("--ohne-effekte", action="store_true", help="ohne Ticken und Gong")
+    parser.add_argument("--ohne-aufloesung", action="store_true",
+                        help="Lösung nicht im Video zeigen (Endkarte wie früher, z. B. zum Vergleichen)")
     parser.add_argument("--liste", action="store_true", help="alle Rätsel mit Status anzeigen")
     parser.add_argument("--check", action="store_true", help="Installation prüfen")
     parser.add_argument("--neu-emoji", type=int, metavar="ANZAHL", help="neue Emoji-Gleichungen anlegen")
@@ -366,6 +379,8 @@ def main():
         return
 
     cfg = lade_json(CONFIG_DATEI)
+    if args.ohne_aufloesung:
+        cfg.setdefault("aufloesung", {})["zeigen"] = False
     raetsel = lade_json(RAETSEL_DATEI)
     pruefe_raetsel(raetsel, cfg)
 

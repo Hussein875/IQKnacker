@@ -21,7 +21,8 @@
     "balken_hintergrund": "#2B2B2B",
     "warnung": "#FF4D4D",
     "option_hintergrund": "#141414",
-    "option_rand": "#464646"
+    "option_rand": "#464646",
+    "loesung": "#6FCF97"
   },
   "schriften": {
     "fett": "assets/fonts/Montserrat-ExtraBold.ttf",
@@ -49,17 +50,33 @@
     "endkarte_1": 86,
     "endkarte_2": 62,
     "handle": 42,
-    "wasserzeichen_text": 34
+    "wasserzeichen_text": 34,
+    "pause_1": 84,
+    "pause_2": 52,
+    "pause_3": 52,
+    "pause_zahl": 200,
+    "kontext": 38,
+    "loesung": 150,
+    "loesung_finde": 72,
+    "erklaerung": 56,
+    "abschluss_1": 110,
+    "abschluss_2": 70,
+    "abschluss_3": 52
   },
   "zeiten": {
-    "lesezeit": 1.0,
+    "lesezeit": {
+      "zeichen_pro_sekunde": 14,
+      "min": 1.5,
+      "max": 10
+    },
     "countdown": {
       "leicht": 5,
       "mittel": 7,
       "schwer": 10,
       "standard": 7
     },
-    "zeit_um": 0.8,
+    "zeit_um": 0.7,
+    "abschluss": 2.2,
     "endkarte": 2.6,
     "uebergang": 0.25,
     "loop": 0.3
@@ -79,6 +96,14 @@
   },
   "countdown": {
     "stil": "ring"
+  },
+  "aufloesung": {
+    "zeigen": true,
+    "pause": 2.1,
+    "zeichen_pro_sekunde": 16,
+    "grunddauer": 1.4,
+    "min_dauer": 3.5,
+    "max_dauer": 8
   },
   "texte": {
     "hook": {
@@ -129,7 +154,14 @@
     "endkarte_2": [
       "📌 Die erste richtige Antwort wird angepinnt"
     ],
-    "handle": "Folge *@iqknacker* für mehr Rätsel"
+    "handle": "Folge *@iqknacker* für mehr Rätsel",
+    "pause_1": "*Jetzt* kommentieren!",
+    "pause_2": "Deine Antwort in die Kommentare 👇",
+    "pause_3": "Auflösung in",
+    "aufloesung_label": "AUFLÖSUNG",
+    "abschluss_1": "Hattest du's?",
+    "abschluss_2": "Schreib *✅ oder ❌* in die Kommentare 👇",
+    "abschluss_3": "Und bei welcher Sekunde? ⏱️"
   },
   "wasserzeichen": {
     "datei": "assets/logo/logo_symbol.png",
@@ -163,7 +195,9 @@
   "hashtags_anzahl": 7,
   "caption_aufruf": "Schreib deine Lösung in die Kommentare 👇\n📌 Die erste richtige Antwort wird angepinnt – nicht spicken!",
   "caption_aufruf_optionen": "{buchstaben}? Schreib's in die Kommentare 👇",
+  "caption_aufruf_aufloesung": "Auflösung am Ende 👀 Aber erst selbst rätseln!\nHattest du's? Schreib ✅ oder ❌ – und bei welcher Sekunde ⏱️",
   "kommentar_vorlage": "✅ Lösung: {loesung}\n{erklaerung}\nGlückwunsch an alle, die's hatten 🏆",
+  "kommentar_vorlage_aufloesung": "Hattest du's? ✅ oder ❌ – und bei welcher Sekunde? ⏱️\n💡 Lösung: {loesung}",
   "kategorien": {
     "iq": {
       "label": "IQ-TEST",
@@ -320,8 +354,10 @@
         ],
         "endkarte_1": [
           "Gefunden? *Reihe & Spalte* in die Kommentare 👇"
-        ]
-      }
+        ],
+        "abschluss_1": "Gefunden?"
+      },
+      "caption_aufruf_aufloesung": "Auflösung am Ende 👀 Aber erst selbst suchen!\nGefunden? Schreib ✅ oder ❌ – und bei welcher Sekunde ⏱️"
     }
   }
 }
