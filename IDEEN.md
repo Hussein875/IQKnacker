@@ -21,3 +21,10 @@ Ideen für später – erst angehen, wenn die ersten Zahlen aus TikTok Studio da
 - Dieselben Videos auch als Instagram Reels und YouTube Shorts posten.
 - Eigene Musik-Tracks oder Trend-Sounds gegen die erzeugte Musik testen.
 - Vergleich mit/ohne Auflösung im Video (`--ohne-aufloesung`), falls die Zahlen dafür sprechen.
+
+## Internationalisierung (später)
+- Wenn es auf Deutsch läuft: dieselben Rätsel auf **Englisch** (größter Markt) und ggf. weiteren Sprachen anbieten.
+- Am besten als **eigener Account pro Sprache**, damit der Algorithmus die Zielgruppe sauber zuordnen kann.
+- Technisch: Texte und Sprüche aus `config.json` und `raetsel.json` pro Sprache übersetzen (z. B. `config_en.json`, `raetsel_en.json`).
+  Zahlen-, Emoji- und Suchrätsel lassen sich fast 1:1 übernehmen; Wort- und Buchstabenrätsel brauchen eigene Versionen
+  (z. B. „J – F – M – A – M“ funktioniert auf Englisch, „E – Z – D – V“ nicht).
