@@ -167,7 +167,7 @@ Danach `python generate.py --vorschau` ausführen und die PNGs in `output/` ansc
 
 Ein Rätsel kann ein `thema` bekommen, z. B. `"thema": "halloween"`. Dann trägt es die Plakette, Farbe, Sprüche und Hashtags des Themas (in `config.json` unter `themen`). Vorhanden: `halloween`, `herbst`, `weihnachten`, `silvester`, `gaming`.
 
-- **Zeitraum:** Themen können einen `zeitraum` haben (z. B. `["10-01", "10-31"]`). Der Posting-Plan setzt solche Rätsel nur in diesem Zeitraum ein – und bevorzugt sie, damit sie nicht ablaufen. Was nicht mehr passt, bleibt bis zum nächsten Jahr liegen.
+- **Zeitraum:** Themen können einen `zeitraum` haben (z. B. `["10-01", "10-31"]`). Der Posting-Plan setzt solche Rätsel nur in diesem Zeitraum ein und verteilt sie gleichmäßig bis zu dessen Ende – bei 5 Halloween-Rätseln ab dem 24.10. also am 24., 26., 28., 29. und 31.10., bevorzugt abends. Was nicht mehr passt, bleibt bis zum nächsten Jahr liegen.
 - **Neues Thema:** einfach einen Block unter `themen` ergänzen (`label`, optional `akzent`, `zeitraum`, `hashtags`, `captions`, `texte.hook`).
 - **Faustregeln für Trend-Rätsel:** Das Thema ist nur die Verpackung, die Lösung muss sich logisch herleiten lassen. Keine echten Preise, Termine oder Zahlen aus den News ins Rätsel (die ändern sich und lösen Diskussionen über Fakten statt über die Lösung aus) – lieber „Eine Konsole kostet 500 € …“. Politik und echte Promis meiden.
 

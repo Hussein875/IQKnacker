@@ -387,6 +387,31 @@ def youtube_titel(caption):
     return titel + " #shorts" if len(titel) + 8 < 100 else titel[:99]
 
 
+def zeitraum_ende(zeitraum, datum):
+    """Letzter Tag eines Themen-Zeitraums wie ["10-01", "10-31"], von `datum` aus gesehen (auch über Neujahr)."""
+    monat, tag = map(int, zeitraum[1].split("-"))
+    ende = datetime.date(datum.year, monat, tag)
+    return ende if ende >= datum else datetime.date(datum.year + 1, monat, tag)
+
+
+def saison_zieltage(fertig, themen, start):
+    """Verteilt die Rätsel jedes Saison-Themas gleichmäßig über den (Rest-)Zeitraum – z. B. 5 Halloween-Rätsel
+    ab dem 24.10. auf 24., 26., 28., 29. und 31.10. statt alle gleich am Anfang."""
+    ziele = {}
+    for thema in {r["thema"] for r in fertig if themen.get(r.get("thema") or "", {}).get("zeitraum")}:
+        zeitraum = themen[thema]["zeitraum"]
+        ende = zeitraum_ende(zeitraum, start)
+        monat, tag = map(int, zeitraum[0].split("-"))
+        anfang = datetime.date(ende.year, monat, tag)
+        if anfang > ende:  # Zeitraum über Neujahr
+            anfang = datetime.date(ende.year - 1, monat, tag)
+        anfang = max(anfang, start)
+        tage = (ende - anfang).days + 1
+        anzahl = sum(1 for r in fertig if r.get("thema") == thema)
+        ziele[thema] = [anfang + datetime.timedelta(days=int((k + 0.5) * tage / anzahl)) for k in range(anzahl)]
+    return ziele
+
+
 def plan_als_excel(pfad, zeilen):
     try:
         import openpyxl
@@ -428,23 +453,33 @@ def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
     fertig = [r for r in raetsel if r["status"] != "gepostet" and not r.get("termin")
               and os.path.exists(os.path.join(ausgabe, dateiname(r) + ".mp4"))]
     themen = cfg.get("themen", {})
-    jetzt, vorbei = datetime.datetime.now(), 0
+    jetzt, vorbei, gesetzt = datetime.datetime.now(), 0, {}
+    zieltage = saison_zieltage(fertig, themen, start)
     zeilen = [f"POSTING-PLAN IQKnacker – {len(uhrzeiten)} Videos pro Tag", "=" * 44, ""]
     tabelle = []
     i = 0
     for tag in range(tage):
         datum = start + datetime.timedelta(days=tag)
-        for uhrzeit in uhrzeiten:
+        for nr, uhrzeit in enumerate(uhrzeiten):
             if f"{datum.isoformat()} {uhrzeit}" <= f"{jetzt:%Y-%m-%d %H:%M}":
                 vorbei += 1
                 continue  # schon vorbei – heute nur noch die restlichen Uhrzeiten
             erlaubt = [r for r in fertig if im_zeitraum(cfg, r, datum)]
             if not erlaubt:
                 break
-            # Saison-Rätsel zuerst – sie laufen sonst ab; abwechselnd mit normalen, damit es nicht eintönig wird
-            saison = [r for r in erlaubt if themen.get(r.get("thema") or "", {}).get("zeitraum")]
-            r = saison[0] if saison and (i % 2 == 0 or len(saison) >= len(erlaubt)) else \
-                next((x for x in erlaubt if x not in saison), erlaubt[0])
+            # Saison-Rätsel nur an ihren Zieltagen, lieber abends (vorletzte Uhrzeit) als mittags
+            faellig = []
+            for thema, daten in zieltage.items():
+                offen = sum(1 for d in daten if d <= datum) - gesetzt.get(thema, 0)
+                if offen > 0 and len(uhrzeiten) - nr <= offen + 1 and any(x.get("thema") == thema for x in erlaubt):
+                    faellig.append((daten[-1], thema))
+            normal = [x for x in erlaubt if not themen.get(x.get("thema") or "", {}).get("zeitraum")]
+            if faellig or not normal:
+                thema = min(faellig)[1] if faellig else erlaubt[0].get("thema")
+                r = next(x for x in erlaubt if x.get("thema") == thema)
+                gesetzt[thema] = gesetzt.get(thema, 0) + 1
+            else:
+                r = normal[0]
             fertig.remove(r)
             r["termin"] = f"{datum.isoformat()} {uhrzeit}"
             caption = caption_text(r, cfg).strip()
