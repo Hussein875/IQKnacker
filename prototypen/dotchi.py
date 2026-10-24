@@ -2,7 +2,7 @@
 
 Nutzt Schriften und Text-Setzer aus dem IQKnacker-Generator. Aufruf (im IQKnacker-Ordner, venv aktiv):
     python3 prototypen/dotchi.py --stimme <VOICE_ID>            # beide Beispiele mit ElevenLabs-Stimme
-    python3 prototypen/dotchi.py --stimme <VOICE_ID> --video kaffee
+    python3 prototypen/dotchi.py --stimme <VOICE_ID> --video kaffee --name anna
 Der ElevenLabs-API-Schlüssel steht in ~/.elevenlabs (nur der Schlüssel, nichts sonst) – nie im Repo.
 Ohne Schlüssel wird die kostenlose Piper-Test-Stimme benutzt (de-thorsten-low.onnx neben diesem Skript).
 Gesprochene Sätze werden in prototypen/.cache zwischengespeichert – erneutes Rendern kostet keine Credits.
@@ -404,10 +404,13 @@ if __name__ == "__main__":
     parser.add_argument("--stimme", help="ElevenLabs-Voice-ID (ohne: kostenlose Piper-Test-Stimme)")
     parser.add_argument("--modell", default=ELEVEN["modell"], help="ElevenLabs-Modell (Standard: %(default)s)")
     parser.add_argument("--video", choices=["kaffee", "doener", "alle"], default="alle")
+    parser.add_argument("--name", help="Zusatz für die Dateinamen, z. B. --name anna → kaffee_anna_mit_stimme.mp4")
     args = parser.parse_args()
     ELEVEN["stimme"], ELEVEN["modell"] = args.stimme, args.modell
     ziel = os.path.join(HIER, "out")
     for v in (KAFFEE, DOENER):
         if args.video in ("alle", v.name):
+            if args.name:
+                v.name = f"{v.name}_{args.name}"
             rendern(v, ziel)
     print(f"Fertig – Videos in {os.path.relpath(ziel)}")
