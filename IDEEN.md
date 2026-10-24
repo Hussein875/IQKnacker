@@ -28,3 +28,19 @@ Ideen für später – erst angehen, wenn die ersten Zahlen aus TikTok Studio da
 - Technisch: Texte und Sprüche aus `config.json` und `raetsel.json` pro Sprache übersetzen (z. B. `config_en.json`, `raetsel_en.json`).
   Zahlen-, Emoji- und Suchrätsel lassen sich fast 1:1 übernehmen; Wort- und Buchstabenrätsel brauchen eigene Versionen
   (z. B. „J – F – M – A – M“ funktioniert auf Englisch, „E – Z – D – V“ nicht).
+
+## Zweiter Kanal: „Lohntsich?“ (Geld & Alltag) – Konzept steht, Start nach der IQKnacker-Testphase
+
+- **Ziel:** viral gehen. Junge, breite Zielgruppe (ca. 16–35), frecher Ton, aber immer echte, nachgerechnete Zahlen.
+- **Format:** Faktenvideos, kein Quiz. Hauptformat **A vs. B** (wie das Kaffee-Muster): zwei Karten, Preis pro Stück,
+  Balken „pro Jahr“, große Differenz mit „In 10 Jahren …“, Kommentar- und Teil-Frage. Abwechselnd mit
+  „Rechnung + Pointe“ (Döner-Muster), „Was steckt drin?“, „Damals vs. heute“, „In Perspektive“.
+- **Ideen:** Auto vs. Deutschlandticket · Mieten vs. Kaufen · Kaffee to go vs. Zuhause · Abo-Fallen · Brutto vs. Netto ·
+  Neu- vs. Gebrauchtwagen · Lieferdienst vs. selbst kochen · Handyvertrag vs. Prepaid · Döner, Kino, Miete: 2000 vs. heute.
+- **Regeln:** keine Anlageberatung; echte Zahlen nur mit Quelle + Stand, sonst als *Beispielrechnung* kennzeichnen.
+- **Stimme:** ja – mit ElevenLabs (Starter ca. 5–6 $/Monat, ~30.000 Zeichen ≈ 90 Videos; Preise vorher prüfen).
+  Immer zusätzlich Text im Bild (Instagram läuft oft stumm). Bei KI-Stimme „KI-generiert“ aktivieren.
+- **Technik:** eigenes Repository, eigener Drive-Ordner, zweite Marke in Metricool (Starter erlaubt 5),
+  eigene Cloud-Aufgaben. Prototyp: `prototypen/lohntsich.py` (Muster Kaffee + Döner, mit Test-Stimme).
+- **To-do vor dem Start:** Name final (Platzhalter „Lohntsich?“, Handle prüfen), ElevenLabs-Konto + deutsche Stimme
+  aussuchen, API-Schlüssel lokal auf dem Mac hinterlegen (nie in den Chat oder ins Repo).
