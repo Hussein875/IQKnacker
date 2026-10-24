@@ -29,7 +29,7 @@ Ideen für später – erst angehen, wenn die ersten Zahlen aus TikTok Studio da
   Zahlen-, Emoji- und Suchrätsel lassen sich fast 1:1 übernehmen; Wort- und Buchstabenrätsel brauchen eigene Versionen
   (z. B. „J – F – M – A – M“ funktioniert auf Englisch, „E – Z – D – V“ nicht).
 
-## Zweiter Kanal: „Falsche Wahl“ (@falschewahl, Alltags-Vergleiche) – Konzept steht, Start nach der IQKnacker-Testphase
+## Zweiter Kanal: „Bessere Wahl“ (@besserewahl, Alltags-Vergleiche) – Konzept steht, Start nach der IQKnacker-Testphase
 
 - **Ziel:** viral gehen. Themen: vor allem Geld & Alltag, aber auch Zeit, Essen, Technik, Strom usw. Junge, breite Zielgruppe (ca. 16–35), frecher Ton, aber immer echte, nachgerechnete Zahlen.
 - **Format:** Faktenvideos, kein Quiz. Hauptformat **A vs. B** (wie das Kaffee-Muster): zwei Karten, Preis pro Stück,
@@ -42,9 +42,10 @@ Ideen für später – erst angehen, wenn die ersten Zahlen aus TikTok Studio da
   Immer zusätzlich Text im Bild (Instagram läuft oft stumm). Bei KI-Stimme „KI-generiert“ aktivieren.
 - **Technik:** eigenes Repository, eigener Drive-Ordner, zweite Marke in Metricool (Starter erlaubt 5),
   eigene Cloud-Aufgaben. Prototyp: `prototypen/lohntsich.py` (Muster Kaffee + Döner, mit Test-Stimme; Marke dort noch „LOHNTSICH?“).
-- **Name:** „Falsche Wahl“, Handle `@falschewahl` (auf TikTok frei). Frech-provokant und bewusst nicht nur Geld:
-  Vergleiche aus dem ganzen Alltag (Geld, Zeit, Essen, Technik, Strom …), jedes Video zeigt, welche Wahl die falsche ist.
-  Reserve-Handles (frei): `@imvergleich`, `@vergleichsmal`, `@kurzverglichen`. Verworfen u. a.: @lohntsich/@lohntsichdas
-  (vergeben bzw. BR-Format), @zahlenduell, @besserwissen, @utrum, @pondero (vergeben).
+- **Name:** „Bessere Wahl“, Handle `@besserewahl` (auf TikTok frei). Hilfreich statt belehrend: jedes Video zeigt die
+  bessere Wahl – Vergleiche aus dem ganzen Alltag (Geld, Zeit, Essen, Technik, Strom …), auch positive Pointen passen.
+  Markenzeichen im Video: Stempel „✅ BESSERE WAHL“ auf der Gewinnerseite. Verworfen: „Falsche Wahl“ (zu negativ/belehrend),
+  @lohntsich/@lohntsichdas (vergeben bzw. BR-Format), @zahlenduell, @besserwissen, @utrum, @pondero (vergeben).
+  Reserve-Handles (frei): `@imvergleich`, `@vergleichsmal`, `@kurzverglichen`.
 - **To-do vor dem Start:** Handle auf allen drei Plattformen sichern, ElevenLabs-Konto + deutsche Stimme
   aussuchen, API-Schlüssel lokal auf dem Mac hinterlegen (nie in den Chat oder ins Repo).
