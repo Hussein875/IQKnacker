@@ -1,7 +1,8 @@
 """Prototyp „Dotchi“ – Alltags-Vergleiche als Faktenvideos (1080x1920, 30 fps), mit und ohne Stimme.
 
 Nutzt Schriften und Text-Setzer aus dem IQKnacker-Generator. Aufruf (im IQKnacker-Ordner, venv aktiv):
-    python3 prototypen/dotchi.py                     # beide Beispiele mit Annas ElevenLabs-Stimme
+    python3 prototypen/dotchi.py                     # beide Beispiele mit der ElevenLabs-Stimme
+    python3 prototypen/dotchi.py --musik 0.15        # Musik noch leiser
     python3 prototypen/dotchi.py --video kaffee      # nur das Kaffee-Video
     python3 prototypen/dotchi.py --stimme <VOICE_ID> --video kaffee --name test   # andere Stimme ausprobieren
 Der ElevenLabs-API-Schlüssel steht in ~/.elevenlabs (nur der Schlüssel, nichts sonst) – nie im Repo.
@@ -36,8 +37,9 @@ EMOJI = f"{IQ}/assets/fonts/NotoColorEmoji.ttf"
 STIMME = os.path.join(HIER, "de-thorsten-low.onnx")  # Test-Stimme: github.com/rhasspy/piper/releases/download/v0.0.2/voice-de-thorsten-low.tar.gz
 SCHLUESSEL_DATEI = os.path.expanduser("~/.elevenlabs")
 CACHE = os.path.join(HIER, ".cache")
-ANNA = "DEZHhPbmb8LVZmWufkCh"  # ElevenLabs „Anna – Excited & Journalistic“, die Dotchi-Stimme
-ELEVEN = {"stimme": ANNA, "modell": "eleven_multilingual_v2",
+STIMME_STANDARD = "muSxG4dqYjBCkbpXqbEl"  # ElevenLabs-Stimme für Dotchi (vorher getestet: Anna DEZHhPbmb8LVZmWufkCh)
+MUSIK = {"mit_stimme": 0.3, "ohne_stimme": 0.8}  # Musiklautstärke relativ zu Stimme bzw. Effekten
+ELEVEN = {"stimme": STIMME_STANDARD, "modell": "eleven_multilingual_v2",
           "einstellungen": {"stability": 0.4, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": True}}
 
 B, H, FPS, SR = 1080, 1920, 30, 44100
@@ -316,8 +318,8 @@ def audio(video, mit_stimme, stimmen, ziel):
             effekte[b:b + len(c)] += c[:max(0, n - b)]
     # Musik unter der Stimme leiser (Ducking)
     huelle = np.convolve(np.abs(sprache), np.ones(SR // 10) / (SR // 10), mode="same")
-    ducking = 1 - 0.65 * np.clip(huelle * 12, 0, 1)
-    mix = m * (ducking if mit_stimme else 1) * (0.55 if mit_stimme else 0.8) + sprache * 1.0 + effekte
+    ducking = 1 - 0.75 * np.clip(huelle * 12, 0, 1)
+    mix = m * (ducking if mit_stimme else 1) * MUSIK["mit_stimme" if mit_stimme else "ohne_stimme"] + sprache + effekte
     mix = mix / max(1e-6, np.max(np.abs(mix))) * 0.9
     stereo = (np.repeat(mix[:, None], 2, axis=1) * 32767).astype(np.int16)
     with wave.open(ziel, "wb") as w:
@@ -417,13 +419,16 @@ DOENER = Video("doener", [
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Dotchi-Prototyp: Beispielvideos rendern")
-    parser.add_argument("--stimme", default=ANNA, help="ElevenLabs-Voice-ID (Standard: Anna)")
+    parser.add_argument("--stimme", default=STIMME_STANDARD, help="ElevenLabs-Voice-ID (Standard: %(default)s)")
+    parser.add_argument("--musik", type=float, default=MUSIK["mit_stimme"],
+                        help="Musiklautstärke unter der Stimme, 0 = aus bis 1 = laut (Standard: %(default)s)")
     parser.add_argument("--piper", action="store_true", help="kostenlose Piper-Test-Stimme statt ElevenLabs")
     parser.add_argument("--modell", default=ELEVEN["modell"], help="ElevenLabs-Modell (Standard: %(default)s)")
     parser.add_argument("--video", choices=["kaffee", "doener", "alle"], default="alle")
     parser.add_argument("--name", help="Zusatz für die Dateinamen, z. B. --name anna → kaffee_anna_mit_stimme.mp4")
     args = parser.parse_args()
     ELEVEN["stimme"], ELEVEN["modell"] = (None if args.piper else args.stimme), args.modell
+    MUSIK["mit_stimme"] = args.musik
     ziel = os.path.join(HIER, "out")
     for v in (KAFFEE, DOENER):
         if args.video in ("alle", v.name):
