@@ -29,7 +29,7 @@ Ideen für später – erst angehen, wenn die ersten Zahlen aus TikTok Studio da
   Zahlen-, Emoji- und Suchrätsel lassen sich fast 1:1 übernehmen; Wort- und Buchstabenrätsel brauchen eigene Versionen
   (z. B. „J – F – M – A – M“ funktioniert auf Englisch, „E – Z – D – V“ nicht).
 
-## Zweiter Kanal: „Bessere Wahl“ (@besserewahl, Alltags-Vergleiche) – Konzept steht, Start nach der IQKnacker-Testphase
+## Zweiter Kanal: „Dotchi“ (@dotchitv, Alltags-Vergleiche) – Konzept steht, Start nach der IQKnacker-Testphase
 
 - **Ziel:** viral gehen. Themen: vor allem Geld & Alltag, aber auch Zeit, Essen, Technik, Strom usw. Junge, breite Zielgruppe (ca. 16–35), frecher Ton, aber immer echte, nachgerechnete Zahlen.
 - **Format:** Faktenvideos, kein Quiz. Hauptformat **A vs. B** (wie das Kaffee-Muster): zwei Karten, Preis pro Stück,
@@ -42,10 +42,10 @@ Ideen für später – erst angehen, wenn die ersten Zahlen aus TikTok Studio da
   Immer zusätzlich Text im Bild (Instagram läuft oft stumm). Bei KI-Stimme „KI-generiert“ aktivieren.
 - **Technik:** eigenes Repository, eigener Drive-Ordner, zweite Marke in Metricool (Starter erlaubt 5),
   eigene Cloud-Aufgaben. Prototyp: `prototypen/lohntsich.py` (Muster Kaffee + Döner, mit Test-Stimme; Marke dort noch „LOHNTSICH?“).
-- **Name:** „Bessere Wahl“, Handle `@besserewahl` (auf TikTok frei). Hilfreich statt belehrend: jedes Video zeigt die
-  bessere Wahl – Vergleiche aus dem ganzen Alltag (Geld, Zeit, Essen, Technik, Strom …), auch positive Pointen passen.
-  Markenzeichen im Video: Stempel „✅ BESSERE WAHL“ auf der Gewinnerseite. Verworfen: „Falsche Wahl“ (zu negativ/belehrend),
-  @lohntsich/@lohntsichdas (vergeben bzw. BR-Format), @zahlenduell, @besserwissen, @utrum, @pondero (vergeben).
-  Reserve-Handles (frei): `@imvergleich`, `@vergleichsmal`, `@kurzverglichen`.
-- **To-do vor dem Start:** Handle auf allen drei Plattformen sichern, ElevenLabs-Konto + deutsche Stimme
+- **Name:** „Dotchi“ – jap. どっち, umgangssprachlich „welches von beiden?“. Handle `@dotchitv` (frei auf TikTok, Instagram
+  und YouTube). Bio-Idee: „Dotchi – jap. ‚welches von beiden?‘ Wir vergleichen den Alltag. ⚖️“
+  Vergleiche aus dem ganzen Alltag (Geld, Zeit, Essen, Technik, Strom …); am Ende jedes Videos ein klarer Gewinner
+  (Stempel/Waage kippt). Verworfen u. a.: „Bessere Wahl“/„Falsche Wahl“, „Lohnt sich?“ (BR-Format „Lohnt sich das?“),
+  Utrum, Pondero, Zahlenduell (vergeben). Reserve-Handles (frei): `@besserewahl`, `@imvergleich`, `@vergleichsmal`.
+- **To-do vor dem Start:** `@dotchitv` auf allen drei Plattformen anlegen, ElevenLabs-Konto + deutsche Stimme
   aussuchen, API-Schlüssel lokal auf dem Mac hinterlegen (nie in den Chat oder ins Repo).
