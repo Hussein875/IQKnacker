@@ -11,6 +11,7 @@ Beispiele:
     python generate.py --check         # Installation prüfen
     python generate.py --neu-emoji 5   # 5 neue Emoji-Gleichungen anlegen (Lösung rechnet das Skript)
     python generate.py --neu-finde 5   # 5 neue „Finde die 9“-Rätsel anlegen
+    python generate.py --plan 7        # Posting-Plan für 7 Tage (3 Videos/Tag) in output/postingplan.txt
 """
 
 import argparse
@@ -22,6 +23,7 @@ import random
 import shutil
 import subprocess
 import sys
+import datetime
 import time
 import wave
 
@@ -355,6 +357,37 @@ def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False, ohne_effekte=F
         print(f"  ⚠ Auflösungs-Kommentar hat {laenge} Zeichen – TikTok erlaubt {KOMMENTAR_MAX}. Erklärung kürzen!")
 
 
+# ---------------------------------------------------------------- Posting-Plan
+
+WOCHENTAGE = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
+
+
+def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
+    """Verteilt fertige, noch nicht gepostete Videos auf Tage und Uhrzeiten – als Vorlage zum Einplanen."""
+    ausgabe = os.path.join(BASIS, cfg["ausgabe"]["ordner"])
+    fertig = [r for r in raetsel if r["status"] != "gepostet"
+              and os.path.exists(os.path.join(ausgabe, dateiname(r) + ".mp4"))]
+    zeilen = [f"POSTING-PLAN IQKnacker – {len(uhrzeiten)} Videos pro Tag", "=" * 44, ""]
+    i = 0
+    for tag in range(tage):
+        datum = start + datetime.timedelta(days=tag)
+        for uhrzeit in uhrzeiten:
+            if i >= len(fertig):
+                break
+            r = fertig[i]
+            i += 1
+            zeilen += [f"{WOCHENTAGE[datum.weekday()]}, {datum:%d.%m.} um {uhrzeit} Uhr  →  {dateiname(r)}.mp4"
+                       f"  ({r['schwierigkeit']})",
+                       "", "Caption:", caption_text(r, cfg).strip(), "",
+                       "Kommentar zum Anpinnen:", kommentar_text(r, cfg).strip(), "", "-" * 44, ""]
+    if i < tage * len(uhrzeiten):
+        zeilen.append(f"Hinweis: Nur {i} fertige Videos vorhanden – vorher python generate.py ausführen.")
+    pfad = os.path.join(ausgabe, "postingplan.txt")
+    with open(pfad, "w", encoding="utf-8") as f:
+        f.write("\n".join(zeilen) + "\n")
+    print(f"✓ {os.path.relpath(pfad, BASIS)}: {i} Videos auf {tage} Tage verteilt ({', '.join(uhrzeiten)} Uhr)")
+
+
 # ---------------------------------------------------------------- Kommandozeile
 
 def main():
@@ -370,6 +403,10 @@ def main():
     parser.add_argument("--check", action="store_true", help="Installation prüfen")
     parser.add_argument("--neu-emoji", type=int, metavar="ANZAHL", help="neue Emoji-Gleichungen anlegen")
     parser.add_argument("--neu-finde", type=int, metavar="ANZAHL", help="neue „Finde die 9“-Rätsel anlegen")
+    parser.add_argument("--plan", type=int, metavar="TAGE", help="Posting-Plan für so viele Tage erstellen")
+    parser.add_argument("--uhrzeiten", default="12:30,18:30,21:00",
+                        help="Uhrzeiten für --plan, Komma-getrennt (Standard: 12:30,18:30,21:00)")
+    parser.add_argument("--start", help="erster Tag für --plan als JJJJ-MM-TT (Standard: morgen)")
     parser.add_argument("--schwierigkeit", choices=["leicht", "mittel", "schwer"],
                         help="für --neu-emoji/--neu-finde: nur diese Stufe (sonst gemischt)")
     args = parser.parse_args()
@@ -396,6 +433,12 @@ def main():
             frage = r["frage"].replace("\n", "  |  ").replace("*", "")
             print(f"+ {r['id']:>3} {r['kategorie']:<6} {r['schwierigkeit']:<7} {frage}  →  {r['loesung']}")
         print(f"{len(neu)} Rätsel angelegt. Videos erzeugen mit: python generate.py")
+        return
+
+    if args.plan:
+        start = datetime.date.fromisoformat(args.start) if args.start else \
+            datetime.date.today() + datetime.timedelta(days=1)
+        posting_plan(raetsel, cfg, args.plan, [u.strip() for u in args.uhrzeiten.split(",") if u.strip()], start)
         return
 
     if args.liste:

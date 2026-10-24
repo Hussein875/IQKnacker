@@ -45,6 +45,7 @@ python generate.py --ohne-musik   # Videos ohne Musik (z. B. für Trend-Sounds i
 python generate.py --ohne-effekte # ohne Ticken, Tipp-Pling und Gong
 python generate.py --ohne-aufloesung # Lösung nicht im Video zeigen (Vergleichs-Variante)
 python generate.py --liste        # Übersicht aller Rätsel mit Status
+python generate.py --plan 7       # Posting-Plan für eine Woche (siehe unten)
 ```
 
 ### Rätsel automatisch erzeugen lassen
@@ -75,6 +76,16 @@ Die neuen Rätsel landen mit Status `neu` in `raetsel.json`. Danach wie gewohnt 
 Nach einem erfolgreichen Video wird der Status in `raetsel.json` von `neu` auf `erstellt` gesetzt. Auf `gepostet` setzt du ihn selbst, wenn das Video online ist.
 
 **Reihenfolge:** `python generate.py` arbeitet die Rätsel in der Reihenfolge der Datei ab. Sie ist so sortiert, dass sich leicht, mittel und schwer abwechseln und nie zwei gleiche Kategorien hintereinander kommen – am besten in dieser Reihenfolge posten.
+
+### Posting-Plan
+
+```bash
+python generate.py --plan 7                          # 7 Tage, 3 Videos pro Tag (12:30, 18:30, 21:00)
+python generate.py --plan 7 --uhrzeiten 12:30,19:00  # eigene Uhrzeiten
+python generate.py --plan 7 --start 2026-11-02       # ab einem bestimmten Tag
+```
+
+Verteilt alle fertigen, noch nicht geposteten Videos (in der Reihenfolge der Datei) auf Tage und Uhrzeiten und schreibt sie mit Caption und Kommentar in `output/postingplan.txt`. Damit planst du in **TikTok Studio** am Rechner (tiktok.com/tiktokstudio → Hochladen → „Planen“) eine ganze Woche in einem Rutsch ein.
 
 ---
 
