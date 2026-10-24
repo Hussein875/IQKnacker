@@ -286,6 +286,28 @@ def buchstaben_text(anzahl):
     return ", ".join(buchstaben[:-1]) + " oder " + buchstaben[-1]
 
 
+def einstellungen(cfg, raetsel):
+    """Einstellungen der Kategorie, überlagert vom Thema (z. B. Halloween): Label, Farbe, Sprüche, Hashtags."""
+    kat = dict(cfg["kategorien"].get(raetsel["kategorie"], {}))
+    thema = cfg.get("themen", {}).get(raetsel.get("thema") or "")
+    if thema:
+        texte = {**kat.get("texte", {}), **thema.get("texte", {})}
+        kat.update({k: v for k, v in thema.items() if k not in ("texte", "hashtags", "zeitraum")})
+        kat["texte"] = texte
+        kat["thema_hashtags"] = list(thema.get("hashtags", []))
+    return kat
+
+
+def im_zeitraum(cfg, raetsel, datum):
+    """Darf das Rätsel an diesem Tag gepostet werden? Themen haben einen Zeitraum wie ["10-01", "10-31"]."""
+    thema = cfg.get("themen", {}).get(raetsel.get("thema") or "")
+    if not thema or not thema.get("zeitraum"):
+        return True
+    von, bis = thema["zeitraum"]
+    tag = f"{datum:%m-%d}"
+    return von <= tag <= bis if von <= bis else (tag >= von or tag <= bis)  # auch über Neujahr
+
+
 def countdown_fuer(cfg, raetsel):
     """Countdown-Länge: eigener Wert im Rätsel (`countdown`), sonst je Schwierigkeit aus der Config."""
     if raetsel.get("countdown"):
@@ -330,7 +352,7 @@ class RaetselRenderer:
         v = config["video"]
         self.breite, self.hoehe, self.fps = v["breite"], v["hoehe"], v["fps"]
 
-        self.kat = config["kategorien"].get(raetsel["kategorie"], {})
+        self.kat = einstellungen(config, raetsel)
         self.texte = {**config["texte"], **self.kat.get("texte", {})}
         self.zufall = random.Random(f"{raetsel['id']}-{raetsel['kategorie']}")  # gleiche ID → gleiche Sprüche
         self.schwierigkeit = str(raetsel.get("schwierigkeit", "")).lower()

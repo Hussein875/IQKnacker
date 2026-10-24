@@ -359,5 +359,118 @@
       },
       "caption_aufruf_aufloesung": "Auflösung am Ende 👀 Aber erst selbst suchen!\nGefunden? Schreib ✅ oder ❌ – und bei welcher Sekunde ⏱️"
     }
+  },
+  "themen": {
+    "halloween": {
+      "label": "HALLOWEEN",
+      "akzent": "#FF8A1F",
+      "zeitraum": [
+        "10-01",
+        "10-31"
+      ],
+      "hashtags": [
+        "#halloween",
+        "#halloweenrätsel",
+        "#gruselig"
+      ],
+      "captions": [
+        "Gruselig knifflig 🎃 Schaffst du's?",
+        "Halloween-Rätsel für mutige Köpfe 👻"
+      ],
+      "texte": {
+        "hook": [
+          "Gruselig schwer 👻",
+          "Nur für mutige Köpfe 🎃",
+          "Süßes oder Rätsel? 🎃"
+        ]
+      }
+    },
+    "herbst": {
+      "label": "HERBST-RÄTSEL",
+      "akzent": "#E9A23B",
+      "zeitraum": [
+        "09-22",
+        "11-30"
+      ],
+      "hashtags": [
+        "#herbst",
+        "#herbsträtsel",
+        "#zeitumstellung"
+      ],
+      "captions": [
+        "Herbst-Rätsel für zwischendurch 🍂",
+        "Kurzer Kopf-Check im Herbst 🍁"
+      ],
+      "texte": {
+        "hook": [
+          "Herbst-Rätsel 🍂",
+          "Kopf-Check im Herbst 🍁"
+        ]
+      }
+    },
+    "weihnachten": {
+      "label": "WEIHNACHTS-RÄTSEL",
+      "akzent": "#4CB782",
+      "zeitraum": [
+        "11-27",
+        "12-26"
+      ],
+      "hashtags": [
+        "#weihnachten",
+        "#advent",
+        "#weihnachtsrätsel"
+      ],
+      "captions": [
+        "Kniffliger als Geschenke einpacken 🎁",
+        "Weihnachts-Rätsel für die ganze Familie 🎄"
+      ],
+      "texte": {
+        "hook": [
+          "Weihnachts-Rätsel 🎄",
+          "Kniffliger als Geschenke einpacken 🎁"
+        ]
+      }
+    },
+    "silvester": {
+      "label": "SILVESTER",
+      "zeitraum": [
+        "12-27",
+        "01-06"
+      ],
+      "hashtags": [
+        "#silvester",
+        "#neujahr",
+        "#jahreswechsel"
+      ],
+      "captions": [
+        "Das letzte Rätsel des Jahres? 🎆",
+        "Rätsel zum Jahreswechsel 🥂"
+      ],
+      "texte": {
+        "hook": [
+          "Rätsel zum Jahreswechsel 🎆",
+          "Silvester-Rätsel 🥂"
+        ]
+      }
+    },
+    "gaming": {
+      "label": "GAMING",
+      "akzent": "#8E7CFF",
+      "hashtags": [
+        "#gaming",
+        "#gamer",
+        "#zocken"
+      ],
+      "captions": [
+        "Gamer-Logik gefragt 🎮",
+        "Für alle, die gern zocken 🕹️"
+      ],
+      "texte": {
+        "hook": [
+          "Gamer-Logik gefragt 🎮",
+          "Für Gamer 🕹️"
+        ]
+      }
+    }
   }
 }

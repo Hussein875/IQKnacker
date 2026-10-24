@@ -127,6 +127,8 @@ def pruefe_raetsel(raetsel, cfg):
         ids.add(r["id"])
         if r["status"] not in GUELTIGE_STATUS:
             fehler.append(f"Rätsel {r['id']}: unbekannter Status „{r['status']}“ (erlaubt: {', '.join(GUELTIGE_STATUS)})")
+        if r.get("thema") and r["thema"] not in cfg.get("themen", {}):
+            print(f"⚠ Rätsel {r['id']}: Thema „{r['thema']}“ ist nicht in config.json.")
         if r["kategorie"] not in cfg["kategorien"]:
             print(f"⚠ Rätsel {r['id']}: Kategorie „{r['kategorie']}“ ist nicht in config.json – nutze Standard-Design.")
         optionen = r.get("optionen")
@@ -152,16 +154,18 @@ def dateiname(r):
 # ---------------------------------------------------------------- Texte (Caption, Kommentar)
 
 def caption_text(r, cfg):
-    kat = cfg["kategorien"].get(r["kategorie"], {})
+    from renderer import einstellungen
+    kat = einstellungen(cfg, r)
     zufall = random.Random(f"{r['id']}-{r['kategorie']}")  # gleiche ID → gleiche Caption
     captions = kat.get("captions") or ["Kannst du das lösen? 🧠"]
     from renderer import countdown_fuer
     caption = zufall.choice(captions).replace("{countdown}", str(round(countdown_fuer(cfg, r))))
 
     allgemein = list(cfg.get("hashtags_allgemein", []))
-    eigene = [h for h in kat.get("hashtags", []) if h not in allgemein]
     anzahl = max(5, min(8, cfg.get("hashtags_anzahl", 7)))
-    zusatz = zufall.sample(eigene, min(len(eigene), max(0, anzahl - len(allgemein))))
+    thema = [h for h in kat.get("thema_hashtags", []) if h not in allgemein][:3]  # Themen-Hashtags immer dabei
+    eigene = [h for h in kat.get("hashtags", []) if h not in allgemein and h not in thema]
+    zusatz = thema + zufall.sample(eigene, min(len(eigene), max(0, anzahl - len(allgemein) - len(thema))))
     hashtags = (allgemein[:1] + zusatz + allgemein[1:])[:anzahl]
 
     aufruf = kat.get("caption_aufruf") or cfg.get("caption_aufruf", "Schreib deine Antwort in die Kommentare 👇")
@@ -365,19 +369,26 @@ WOCHENTAGE = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
 def posting_plan(raetsel, cfg, tage, uhrzeiten, start):
     """Verteilt fertige, noch nicht gepostete Videos auf Tage und Uhrzeiten – als Vorlage zum Einplanen."""
     ausgabe = os.path.join(BASIS, cfg["ausgabe"]["ordner"])
+    from renderer import im_zeitraum
     fertig = [r for r in raetsel if r["status"] != "gepostet"
               and os.path.exists(os.path.join(ausgabe, dateiname(r) + ".mp4"))]
+    themen = cfg.get("themen", {})
     zeilen = [f"POSTING-PLAN IQKnacker – {len(uhrzeiten)} Videos pro Tag", "=" * 44, ""]
     i = 0
     for tag in range(tage):
         datum = start + datetime.timedelta(days=tag)
         for uhrzeit in uhrzeiten:
-            if i >= len(fertig):
+            erlaubt = [r for r in fertig if im_zeitraum(cfg, r, datum)]
+            if not erlaubt:
                 break
-            r = fertig[i]
+            # Saison-Rätsel zuerst – sie laufen sonst ab; abwechselnd mit normalen, damit es nicht eintönig wird
+            saison = [r for r in erlaubt if themen.get(r.get("thema") or "", {}).get("zeitraum")]
+            r = saison[0] if saison and (i % 2 == 0 or len(saison) >= len(erlaubt)) else \
+                next((x for x in erlaubt if x not in saison), erlaubt[0])
+            fertig.remove(r)
             i += 1
             zeilen += [f"{WOCHENTAGE[datum.weekday()]}, {datum:%d.%m.} um {uhrzeit} Uhr  →  {dateiname(r)}.mp4"
-                       f"  ({r['schwierigkeit']})",
+                       f"  ({r['schwierigkeit']}{', ' + r['thema'] if r.get('thema') else ''})",
                        "", "Caption:", caption_text(r, cfg).strip(), "",
                        "Kommentar zum Anpinnen:", kommentar_text(r, cfg).strip(), "", "-" * 44, ""]
     if i < tage * len(uhrzeiten):
@@ -444,7 +455,8 @@ def main():
     if args.liste:
         for r in raetsel:
             frage = r["frage"].replace("\n", " ").replace("*", "")
-            print(f"{r['id']:>4}  {r['status']:<9} {r['kategorie']:<7} {frage[:60]}")
+            thema = f"[{r['thema']}] " if r.get("thema") else ""
+            print(f"{r['id']:>4}  {r['status']:<9} {r['kategorie']:<7} {thema}{frage[:60]}")
         return
 
     if args.id:

@@ -174,7 +174,7 @@
   {
     "id": 58,
     "kategorie": "mathe",
-    "frage": "Rechne im Kopf:\n*15 % von 60 + 60 % von 15*",
+    "frage": "Rechne im Kopf:\n*15 % von 60 + 60 % von 15*",
     "loesung": "18",
     "erklaerung": "Beides ist 9: 15 % von 60 = 9 und 60 % von 15 = 9. Zusammen 18.",
     "schwierigkeit": "mittel",
@@ -336,7 +336,7 @@
   {
     "id": 55,
     "kategorie": "iq",
-    "frage": "Du kaufst ein Pferd für 60 €, verkaufst es für 70 €, kaufst es für 80 € zurück und verkaufst es für 90 €. *Dein Gewinn?*",
+    "frage": "Du kaufst ein Pferd für 60 €, verkaufst es für 70 €, kaufst es für 80 € zurück und verkaufst es für 90 €. *Dein Gewinn?*",
     "loesung": "20 €",
     "erklaerung": "Ausgaben: 60 + 80 = 140 €. Einnahmen: 70 + 90 = 160 €. Gewinn: 20 €.",
     "schwierigkeit": "mittel",
@@ -457,6 +457,234 @@
     "loesung": "37",
     "erklaerung": "Jede Zahl ist die Summe der drei davor: 6 + 11 + 20 = 37.",
     "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 81,
+    "kategorie": "iq",
+    "thema": "halloween",
+    "frage": "Eine Hexe hat 3 Katzen. Jede Katze hat 3 Kätzchen. *Wie viele Katzen sind es insgesamt?*",
+    "loesung": "12",
+    "erklaerung": "3 Katzen + 3 × 3 Kätzchen = 12. Wer nur 9 sagt, hat die Mütter vergessen.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 82,
+    "kategorie": "emoji",
+    "thema": "halloween",
+    "frage": "🎃 + 🎃 = 12\n🎃 + 👻 = 10\n👻 − 🦇 = 1\n*🦇 + 🎃 × 👻 = ?*",
+    "loesung": "27",
+    "erklaerung": "🎃 = 6, 👻 = 4, 🦇 = 3 → 3 + 6 × 4 = 27. Punkt vor Strich!",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 83,
+    "kategorie": "mathe",
+    "thema": "halloween",
+    "frage": "Ein Kürbis wiegt 4 kg plus einen halben Kürbis. *Wie schwer ist der ganze Kürbis?*",
+    "loesung": "8 kg",
+    "erklaerung": "Der halbe Kürbis wiegt 4 kg – also wiegt der ganze 8 kg.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 84,
+    "kategorie": "iq",
+    "thema": "halloween",
+    "frage": "Wenn der 27. Oktober ein Montag ist: *Welcher Wochentag ist dann Halloween am 31.?*",
+    "loesung": "Freitag",
+    "erklaerung": "Vom 27. bis 31. sind es 4 Tage: Montag + 4 = Freitag.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 85,
+    "kategorie": "finde",
+    "thema": "halloween",
+    "frage": "Finde die *🍊*!",
+    "loesung": "Reihe 5, Spalte 3",
+    "erklaerung": "Die 🍊 versteckt sich in Reihe 5, Spalte 3 – gezählt von oben links.",
+    "typ": "finde",
+    "zeichen": "🎃",
+    "ziel": "🍊",
+    "spalten": 8,
+    "zeilen": 8,
+    "position": [
+      5,
+      3
+    ],
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 86,
+    "kategorie": "iq",
+    "thema": "herbst",
+    "frage": "Zeitumstellung: Um 3 Uhr wird die Uhr auf 2 Uhr zurückgestellt. Du schläfst von 22 bis 7 Uhr. *Wie lange hast du geschlafen?*",
+    "loesung": "10 Stunden",
+    "erklaerung": "Normal wären es 9 Stunden – durch die Zeitumstellung kommt eine Stunde dazu.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 87,
+    "kategorie": "mathe",
+    "thema": "herbst",
+    "frage": "Ein Igel frisst am 1. Tag 2 Äpfel und dann jeden Tag 3 mehr als am Vortag. *Wie viele am 5. Tag?*",
+    "loesung": "14",
+    "erklaerung": "2 – 5 – 8 – 11 – 14: jeden Tag 3 mehr.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 88,
+    "kategorie": "iq",
+    "thema": "weihnachten",
+    "frage": "Am 1. Advent zündest du 1 Kerze an, am 2. Advent 2, am 3. Advent 3 und am 4. Advent 4. *Wie oft zündest du insgesamt eine Kerze an?*",
+    "loesung": "10-mal",
+    "erklaerung": "1 + 2 + 3 + 4 = 10.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 89,
+    "kategorie": "emoji",
+    "thema": "weihnachten",
+    "frage": "🎄 + 🎄 = 10\n🎄 × 🎁 = 35\n🎁 − ⭐ = 3\n*🎄 + 🎁 × ⭐ = ?*",
+    "loesung": "33",
+    "erklaerung": "🎄 = 5, 🎁 = 7, ⭐ = 4 → 5 + 7 × 4 = 33. Punkt vor Strich!",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 90,
+    "kategorie": "wort",
+    "thema": "weihnachten",
+    "frage": "Welches Wort passt vor alle drei?\n*___BAUM*\n*___MANN*\n*___MARKT*",
+    "loesung": "Weihnachts",
+    "erklaerung": "Weihnachtsbaum, Weihnachtsmann, Weihnachtsmarkt.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 91,
+    "kategorie": "mathe",
+    "thema": "weihnachten",
+    "frage": "Der Weihnachtsmann schafft 3 Häuser pro Sekunde. *Wie viele Häuser schafft er in einer Stunde?*",
+    "loesung": "10.800",
+    "erklaerung": "Eine Stunde hat 3.600 Sekunden: 3 × 3.600 = 10.800.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 92,
+    "kategorie": "mathe",
+    "thema": "weihnachten",
+    "frage": "Am 1. Weihnachtstag gibt es 1 Geschenk, am 2. Tag 2 neue, am 3. Tag 3 neue … bis zum 12. Tag. *Wie viele Geschenke insgesamt?*",
+    "loesung": "78",
+    "erklaerung": "1 + 2 + … + 12 = 78. Trick: 6 Paare mit je 13 (1+12, 2+11, …).",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 93,
+    "kategorie": "finde",
+    "thema": "weihnachten",
+    "frage": "Finde den *🌲*!",
+    "loesung": "Reihe 4, Spalte 6",
+    "erklaerung": "Der 🌲 versteckt sich in Reihe 4, Spalte 6 – gezählt von oben links.",
+    "typ": "finde",
+    "zeichen": "🎄",
+    "ziel": "🌲",
+    "spalten": 8,
+    "zeilen": 8,
+    "position": [
+      4,
+      6
+    ],
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 94,
+    "kategorie": "iq",
+    "thema": "silvester",
+    "frage": "Um Mitternacht stoßen 6 Freunde an – jeder mit jedem genau einmal. *Wie oft klirren die Gläser?*",
+    "loesung": "15-mal",
+    "erklaerung": "Jeder stößt mit 5 anderen an: 6 × 5 = 30 – jedes Anstoßen zählt doppelt → 15.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 95,
+    "kategorie": "mathe",
+    "thema": "silvester",
+    "frage": "Eine Rakete steigt in der 1. Sekunde 5 m und danach jede Sekunde doppelt so weit wie davor. *Wie hoch ist sie nach 4 Sekunden?*",
+    "loesung": "75 m",
+    "erklaerung": "5 + 10 + 20 + 40 = 75 m. Nicht 40 – das ist nur die 4. Sekunde.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 96,
+    "kategorie": "mathe",
+    "thema": "silvester",
+    "frage": "Ein normales Jahr hat 52 volle Wochen. *Wie viele Tage bleiben übrig?*",
+    "loesung": "1 Tag",
+    "erklaerung": "52 × 7 = 364 Tage – ein Jahr hat 365, also bleibt 1 Tag übrig.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 97,
+    "kategorie": "mathe",
+    "thema": "gaming",
+    "frage": "Eine Konsole kostet 500 €. Der Preis steigt um 10 % und sinkt dann wieder um 10 %. *Was kostet sie jetzt?*",
+    "loesung": "495 €",
+    "erklaerung": "+10 % → 550 €. −10 % von 550 € sind 55 € → 495 €. Nicht wieder 500!",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 98,
+    "kategorie": "iq",
+    "thema": "gaming",
+    "frage": "Ein Spiel erscheint in 200 Tagen. Heute ist Montag. *An welchem Wochentag erscheint es?*",
+    "loesung": "Freitag",
+    "erklaerung": "200 Tage = 28 Wochen + 4 Tage → Montag + 4 = Freitag.",
+    "schwierigkeit": "mittel",
+    "status": "neu"
+  },
+  {
+    "id": 99,
+    "kategorie": "mathe",
+    "thema": "gaming",
+    "frage": "Du sparst jede Woche 15 € für ein Spiel, das 80 € kostet. *Nach wie vielen Wochen kannst du es kaufen?*",
+    "loesung": "6 Wochen",
+    "erklaerung": "Nach 5 Wochen hast du 75 € – zu wenig. Nach 6 Wochen 90 €.",
+    "schwierigkeit": "leicht",
+    "status": "neu"
+  },
+  {
+    "id": 100,
+    "kategorie": "mathe",
+    "thema": "gaming",
+    "frage": "Ein Controller kostet im Angebot 20 % weniger, nämlich 48 €. *Was hat er vorher gekostet?*",
+    "loesung": "60 €",
+    "erklaerung": "48 € sind 80 % vom alten Preis: 48 ÷ 0,8 = 60 €.",
+    "schwierigkeit": "schwer",
+    "status": "neu"
+  },
+  {
+    "id": 101,
+    "kategorie": "iq",
+    "thema": "gaming",
+    "frage": "Ein Level dauert 4 Minuten, zwischen zwei Levels lädt es 1 Minute. *Wie lange dauern 5 Levels am Stück?*",
+    "loesung": "24 Minuten",
+    "erklaerung": "5 × 4 Minuten + 4 Ladepausen (nur zwischen den Levels) = 24 Minuten.",
+    "schwierigkeit": "mittel",
     "status": "neu"
   }
 ]

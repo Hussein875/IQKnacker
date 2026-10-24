@@ -131,6 +131,7 @@ Das Video fordert zweimal zum Kommentieren auf: **vor der Auflösung** („Jetzt
 | `status` | `neu` → `erstellt` → `gepostet` |
 | `countdown` *(optional)* | eigene Zeit in Sekunden für genau dieses Rätsel, z. B. `6` |
 | `tipp` *(optional)* | erscheint in der zweiten Hälfte des Countdowns als „💡 Tipp: …“ mit hellem Pling – nur für sehr harte Rätsel verwenden |
+| `thema` *(optional)* | z. B. `halloween`, `weihnachten`, `gaming` – siehe „Themen & Trends“ |
 | `optionen` *(optional, derzeit nicht genutzt)* | 2–4 Antwortvorgaben A/B/C. Bewusst abgeschaltet, weil Vorgaben zum Raten verleiten – die Funktion bleibt für spätere Tests erhalten |
 | `hook` *(optional)* | eigener Spruch oben statt dem zufälligen aus `config.json` |
 | `bild` *(optional)* | Pfad zu einem Bild, z. B. `"assets/bilder/100.png"` – wird über dem Text angezeigt (für Bildrätsel) |
@@ -146,6 +147,14 @@ Das Video fordert zweimal zum Kommentieren auf: **vor der Auflösung** („Jetzt
 **Was ein gutes Rätsel ausmacht:** eine eindeutige Lösung, die man durch Nachdenken herausfinden kann (kein Wissen, kein Schätzen), möglichst mit einer Falle, in die man schnell tappt.
 
 Danach `python generate.py --vorschau` ausführen und die PNGs in `output/` anschauen.
+
+### Themen & Trends
+
+Ein Rätsel kann ein `thema` bekommen, z. B. `"thema": "halloween"`. Dann trägt es die Plakette, Farbe, Sprüche und Hashtags des Themas (in `config.json` unter `themen`). Vorhanden: `halloween`, `herbst`, `weihnachten`, `silvester`, `gaming`.
+
+- **Zeitraum:** Themen können einen `zeitraum` haben (z. B. `["10-01", "10-31"]`). Der Posting-Plan setzt solche Rätsel nur in diesem Zeitraum ein – und bevorzugt sie, damit sie nicht ablaufen. Was nicht mehr passt, bleibt bis zum nächsten Jahr liegen.
+- **Neues Thema:** einfach einen Block unter `themen` ergänzen (`label`, optional `akzent`, `zeitraum`, `hashtags`, `captions`, `texte.hook`).
+- **Faustregeln für Trend-Rätsel:** Das Thema ist nur die Verpackung, die Lösung muss sich logisch herleiten lassen. Keine echten Preise, Termine oder Zahlen aus den News ins Rätsel (die ändern sich und lösen Diskussionen über Fakten statt über die Lösung aus) – lieber „Eine Konsole kostet 500 € …“. Politik und echte Promis meiden.
 
 ### Archiv
 
