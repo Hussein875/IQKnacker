@@ -70,10 +70,13 @@
       "max": 10
     },
     "countdown": {
-      "leicht": 5,
-      "mittel": 7,
-      "schwer": 10,
-      "standard": 7
+      "leicht": 8,
+      "mittel": 12,
+      "schwer": 15,
+      "standard": 12
+    },
+    "countdown_zuschlag": {
+      "emoji": 3
     },
     "zeit_um": 0.7,
     "abschluss": 2.2,
@@ -88,6 +91,7 @@
     "banner_wechsel": 0.35,
     "tipp_ab": 5,
     "spruch_mitte_ab": 6,
+    "pause_hinweis_ab": 4,
     "countdown_puls": 0.14,
     "kritisch_ab": 3,
     "glow_deckkraft": 0.13,
@@ -95,7 +99,8 @@
     "partikel": 40
   },
   "countdown": {
-    "stil": "ring"
+    "stil": "ring",
+    "ruhig": true
   },
   "aufloesung": {
     "zeigen": true,
@@ -136,6 +141,11 @@
       "Schnell! ⏱️",
       "Letzte Chance! 🔥",
       "Gleich ist die Zeit um! ⏰"
+    ],
+    "spruch_pause": [
+      "Zu knapp? Einfach pausieren ⏸",
+      "Mehr Zeit? Video anhalten ⏸",
+      "In Ruhe rechnen? Pausier ⏸"
     ],
     "tipp_prefix": "💡 *Tipp:* ",
     "zeit_um": [

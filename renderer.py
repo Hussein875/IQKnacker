@@ -321,7 +321,9 @@ def countdown_fuer(cfg, raetsel):
     if isinstance(wert, dict):
         stufe = str(raetsel.get("schwierigkeit", "")).lower()
         wert = wert.get(stufe, wert.get("standard", 10))
-    return float(wert)
+    # mehr Denkzeit für Kategorien mit viel zu rechnen (z. B. drei Emoji-Gleichungen)
+    zuschlag = cfg["zeiten"].get("countdown_zuschlag", {}).get(raetsel.get("kategorie"), 0)
+    return float(wert) + zuschlag
 
 
 def lesezeit_fuer(cfg, raetsel):
@@ -408,8 +410,11 @@ class RaetselRenderer:
         self.dauer = self.t_raetsel + self.t_zeit_um + self.t_end
 
         self.anim = config["animation"]
-        # Schlussphase: höchstens `kritisch_ab` Sekunden, bei kurzen Countdowns entsprechend kürzer
-        self.kritisch_ab = min(self.anim.get("kritisch_ab", 3), max(2, round(self.t_countdown * 0.4)))
+        # Schlussphase: höchstens `kritisch_ab` Sekunden, bei kurzen Countdowns entsprechend kürzer.
+        # Ruhiger Countdown (countdown.ruhig): gar keine Schlussphase – kein Rot, kein Wackeln, kein Tick-Druck.
+        self.ruhig = bool(config["countdown"].get("ruhig"))
+        self.kritisch_ab = 0 if self.ruhig else min(self.anim.get("kritisch_ab", 3),
+                                                   max(2, round(self.t_countdown * 0.4)))
 
         self._layout()
         self._ebenen_vorbereiten()
@@ -641,12 +646,18 @@ class RaetselRenderer:
             self.banner.append((self._tipp_start, self._einzeilig(self.setzer_fett, tipp, groesse, textbreite,
                                                                   self.textfarbe, self.akzent)))
         else:
+            # ruhig: statt „Schnell!“ am Ende ein Hinweis, dass man pausieren kann
+            schluss_start = self.t_raetsel - (a.get("pause_hinweis_ab", 4) if self.ruhig else self.kritisch_ab)
             mitte = self._text("spruch_mitte")
             mitte_start = max(frueheste, self.t_raetsel - a.get("spruch_mitte_ab", 6))
-            if mitte and mitte_start < self.t_raetsel - self.kritisch_ab - 1.0:  # bei kurzen Countdowns weglassen
+            if mitte and mitte_start < schluss_start - 1.0:  # bei kurzen Countdowns weglassen
                 self.banner.append((mitte_start, self._einzeilig(self.setzer_fett, mitte, groesse, textbreite,
                                                                  self.textfarbe, self.akzent)))
-            schluss = self._text("spruch_kritisch")
+            pause = self._text("spruch_pause") if self.ruhig else None
+            if pause and schluss_start >= frueheste:
+                self.banner.append((schluss_start, self._einzeilig(self.setzer_fett, pause, groesse, textbreite,
+                                                                   self.textfarbe, self.akzent)))
+            schluss = None if self.ruhig else self._text("spruch_kritisch")
             if schluss:
                 self.banner.append((self.t_raetsel - self.kritisch_ab,
                                     self._einzeilig(self.setzer_fett, schluss, groesse, textbreite,
@@ -872,9 +883,9 @@ class RaetselRenderer:
         raus = self._ausblenden(t, self.t_raetsel)
         c = t - self.t_lesen                       # Sekunden seit Countdown-Start
         rest_sek = self.t_countdown - max(c, 0)
-        kritisch = c >= 0 and rest_sek <= self.kritisch_ab
+        kritisch = self.kritisch_ab > 0 and c >= 0 and rest_sek <= self.kritisch_ab
         in_sekunde = max(c, 0) % 1.0
-        warn_anteil = clamp((self.kritisch_ab - rest_sek + 0.3) / 0.3) if c >= 0 else 0.0
+        warn_anteil = clamp((self.kritisch_ab - rest_sek + 0.3) / 0.3) if c >= 0 and self.kritisch_ab > 0 else 0.0
 
         if self.vignette is not None and kritisch:
             einfuegen(bild, self.vignette, (self.breite / 2, self.hoehe / 2),

@@ -262,7 +262,8 @@ Alle Sprüche stehen in `config.json` unter `texte`. Jeder Eintrag darf ein einz
 |---|---|
 | `hook` | ab dem ersten Frame über dem Rätsel – je `leicht` / `mittel` / `schwer`, `standard` als Ersatz |
 | `spruch_mitte` | 6 Sekunden vor Schluss bzw. frühestens 2,5 s nach Start (nur ohne `tipp`, bei sehr kurzen Countdowns entfällt er) |
-| `spruch_kritisch` | in der Schlussphase (letzte 2–3 Sekunden), in Rot (nur ohne `tipp`) |
+| `spruch_kritisch` | in der Schlussphase (letzte 2–3 Sekunden), in Rot (nur ohne `tipp` und nur bei `countdown.ruhig: false`) |
+| `spruch_pause` | beim ruhigen Countdown in den letzten Sekunden: „Zu knapp? Einfach pausieren ⏸“ (nur ohne `tipp`) |
 | `tipp_prefix` | Text vor jedem Tipp, Standard „💡 *Tipp:* “ |
 | `zeit_um` | große Einblendung, wenn die Zeit abgelaufen ist |
 | `pause_1` – `pause_3` | Kommentar-Pause vor der Auflösung („*Jetzt* kommentieren!“ …) |
@@ -283,10 +284,11 @@ Alles steht zentral in **`config.json`**:
 | `farben` | Hintergrund, Text, Akzent (`#F2C94C`), Warnfarbe für die Schlussphase (`warnung`), Label-Schrift, Ring-Hintergrund, Antwort-Kästen (`option_hintergrund`, `option_rand`) |
 | `schriften` | Pfade zu den Schriftdateien (`.ttf`) |
 | `groessen` | Schriftgrößen für Spruch (`banner`), Label, Rätsel (max/min), Antwort-Kästen, Suchrätsel-Frage, Countdown-Zahl und -Ring (`countdown_ring_klein` mit Antworten oder Gitter), „Zeit um“, Endkarte |
-| `zeiten` | **Lesezeit** (`zeichen_pro_sekunde`, `min`, `max` – oder eine feste Zahl), **Denkzeit je Schwierigkeit** (`countdown`: leicht 5, mittel 7, schwer 10 s), „Zeit um“, Abschluss, Endkarte, Übergänge, `loop` (Überblendung zum Anfang, `0` = aus). Einzelne Rätsel können `lesezeit` und `countdown` selbst festlegen. |
+| `zeiten` | **Lesezeit** (`zeichen_pro_sekunde`, `min`, `max` – oder eine feste Zahl), **Denkzeit je Schwierigkeit** (`countdown`: leicht 8, mittel 12, schwer 15 s; `countdown_zuschlag`: Extra-Sekunden je Kategorie, z. B. Emoji +3), „Zeit um“, Abschluss, Endkarte, Übergänge, `loop` (Überblendung zum Anfang, `0` = aus). Einzelne Rätsel können `lesezeit` und `countdown` selbst festlegen. |
 | `aufloesung` | `zeigen` (Lösung im Video an/aus), Länge der Kommentar-Pause, Lesetempo und Mindest-/Höchstdauer der Auflösung |
 | `animation` | Start-Zoom, langsamer Zoom, Spruch-Wechsel, wann Tipp und Sprüche kommen, Puls der Countdown-Zahl, ab wann es rot wird (`kritisch_ab`), Leuchten (`glow_deckkraft`), roter Rand (`vignette_deckkraft`), Anzahl der Lichtpunkte im Hintergrund (`partikel`, `0` = aus) |
 | `countdown.stil` | `"ring"` (Kreis mit Zahl), `"zahlen"`, `"balken"` oder `"beides"` (Zahl + Balken) |
+| `countdown.ruhig` | `true` (Standard): entspannter Countdown ohne rote Schlussphase, ohne Wackeln und Tick-Druck – statt „Schnell!“ kommt am Ende ein Pausier-Hinweis (`texte.spruch_pause`, ab `animation.pause_hinweis_ab` Sekunden vor Schluss). `false` = alter, hektischer Countdown |
 | `wasserzeichen` | Logo-Datei, Position (`oben_links`, `oben_rechts`, `unten_links`, `unten_rechts`), Höhe, Deckkraft |
 | `safe_zone` | freie Ränder für die TikTok-Oberfläche (oben 150, unten 400, rechts 150 px) |
 | `musik` | `modus`, Ordner, Lautstärke, Ein-/Ausblenden (siehe unten) |

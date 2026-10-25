@@ -163,7 +163,8 @@ def erzeuge_musik(renderer, ziel, saat):
     while t < kritisch_ab - 1e-6:
         abschnitte.append((t, min(t + TAKT, kritisch_ab), folge[i % len(folge)], False))
         t, i = min(t + TAKT, kritisch_ab), i + 1
-    abschnitte.append((kritisch_ab, ende, SPANNUNGSAKKORD, True))
+    if kritisch_ab < ende - 1e-6:  # beim ruhigen Countdown gibt es keine Schlussphase
+        abschnitte.append((kritisch_ab, ende, SPANNUNGSAKKORD, True))
 
     for a_start, a_ende, stufe, kritisch in abschnitte:
         toene = akkord(grund, stufe)
@@ -200,7 +201,8 @@ def erzeuge_musik(renderer, ziel, saat):
             rest.mische(t0 + u * SCHLAG / teilung, hihat(rng), 0.06 if kritisch else 0.045, pan=0.2)
         k += 1
 
-    rest.mische(kritisch_ab, anstieg(rng, ende - kritisch_ab, hz(grund), hz(grund + 12)), 0.12)
+    if kritisch_ab < ende - 1e-6:
+        rest.mische(kritisch_ab, anstieg(rng, ende - kritisch_ab, hz(grund), hz(grund + 12)), 0.12)
 
     # „Zeit um!“: Einschlag
     rest.mische(ende, einschlag(rng), 0.7)
