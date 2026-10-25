@@ -3,6 +3,7 @@
 import math
 import os
 import random
+import re
 from functools import lru_cache
 
 from PIL import Image, ImageDraw, ImageFont
@@ -105,6 +106,9 @@ def einfuegen(frame, ebene, mitte, deckkraft=1.0, skalierung=1.0):
 
 # ---------------------------------------------------------------- Text mit Hervorhebung und Emojis
 
+EINHEIT = re.compile(r"(\d) (€|\$|%|km/h|km|kg|cm|m|Cent)(?=[\s.,!?*)]|$)")
+
+
 def zerlege_text(text):
     """Zerlegt Text in Absätze aus Wörtern. *so* markierte Stellen werden in der Akzentfarbe gesetzt.
 
@@ -113,6 +117,7 @@ def zerlege_text(text):
     """
     absaetze = []
     akzent = False
+    text = EINHEIT.sub("\\1\u00a0\\2", text)  # „20 €“, „60 km/h“: Einheit nie allein in die nächste Zeile
     for zeile in text.split("\n"):
         woerter = []
         for roh in zeile.split(" "):

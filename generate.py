@@ -8,6 +8,7 @@ Beispiele:
     python generate.py --alle          # alle Rätsel neu erzeugen
     python generate.py --vorschau      # nur Vorschaubilder (PNG), kein Video
     python generate.py --liste         # Rätsel mit Status anzeigen
+    python generate.py --doppelte      # ähnliche Rätsel finden (gleiche Idee, Text, Lösungswort …)
     python generate.py --check         # Installation prüfen
     python generate.py --neu-emoji 5   # 5 neue Emoji-Gleichungen anlegen (Lösung rechnet das Skript)
     python generate.py --neu-finde 5   # 5 neue „Finde die 9“-Rätsel anlegen
@@ -21,6 +22,7 @@ import json
 import math
 import os
 import random
+import re
 import shutil
 import subprocess
 import sys
@@ -32,6 +34,7 @@ import wave
 BASIS = os.path.dirname(os.path.abspath(__file__))
 CONFIG_DATEI = os.path.join(BASIS, "config.json")
 RAETSEL_DATEI = os.path.join(BASIS, "raetsel.json")
+ARCHIV_DATEI = os.path.join(BASIS, "raetsel_archiv.json")
 PFLICHTFELDER = ["id", "kategorie", "frage", "loesung", "erklaerung", "schwierigkeit", "status"]
 GUELTIGE_STATUS = ["neu", "erstellt", "gepostet"]
 MUSIK_ENDUNGEN = (".mp3", ".m4a", ".aac", ".wav", ".ogg")
@@ -162,7 +165,56 @@ def neue_raetsel_laden(raetsel, cfg):
     bekannt = {r.get("id") for r in raetsel}
     neu = [dict(r) for r in daten.get("raetsel", []) if r.get("id") not in bekannt]
     raetsel.extend(neu)
-    return len(neu)
+    # „konzepte“: {"54": "handschlag-paare", …} – Denk-Idee älterer Rätsel für die Doppelt-Prüfung
+    for r in raetsel:
+        if not r.get("konzept") and str(r.get("id")) in daten.get("konzepte", {}):
+            r["konzept"] = daten["konzepte"][str(r["id"])]
+    # „gestrichen“: schwache oder doppelte Rätsel fliegen raus – aber nie schon geplante oder gepostete
+    geplant = lade_json(GEPLANT_DATEI) if os.path.exists(GEPLANT_DATEI) else {}
+    weg = {i for i in daten.get("gestrichen", [])
+           if not any(r["id"] == i and (r.get("termin") or r.get("status") == "gepostet") for r in raetsel)
+           and str(i) not in geplant}
+    vorher = len(raetsel)
+    raetsel[:] = [r for r in raetsel if r.get("id") not in weg]
+    return len(neu) + vorher - len(raetsel)
+
+
+def doppelte_finden(raetsel):
+    """Sucht Rätsel, die sich zu sehr ähneln – gleiche Denk-Idee („konzept“), fast gleicher Text, gleiches
+    Lösungswort, gleiche Emoji-Kombination oder gleiches Suchbild. Gemeldet wird nur, wo noch etwas zu ändern
+    ist: Mindestens ein Rätsel der Gruppe ist weder geplant noch gepostet. Das Archiv zählt als „schon da“."""
+    archiv = lade_json(ARCHIV_DATEI) if os.path.exists(ARCHIV_DATEI) else []
+    alle = [(r, not r.get("termin") and r.get("status") != "gepostet") for r in raetsel] + [(r, False) for r in archiv]
+
+    def woerter(r):
+        return set(re.findall(r"\w+", str(r["frage"]).lower()))
+
+    def emojis(r):
+        return frozenset(z for z in r["frage"] if ord(z) > 0x2100 and z not in "–−×÷→…")
+
+    gruppen = {}
+    for r, offen in alle:
+        schluessel = []
+        if r.get("konzept"):
+            schluessel.append(f"Idee „{r['konzept']}“")
+        if r["kategorie"] == "wort":
+            schluessel.append(f"Lösungswort „{str(r['loesung']).lower()}“")
+        if r.get("typ") == "finde":
+            schluessel.append(f"Suchbild {r.get('ziel')} zwischen {r.get('zeichen')}")
+        elif r["kategorie"] == "emoji":
+            schluessel.append(f"Emojis {''.join(sorted(emojis(r)))}")
+        for s in schluessel:
+            gruppen.setdefault(s, []).append((r["id"], offen))
+    treffer = [(grund, [i for i, _ in liste]) for grund, liste in gruppen.items()
+               if len(liste) > 1 and any(offen for _, offen in liste)]
+    for a in range(len(alle)):
+        for b in range(a + 1, len(alle)):
+            (ra, oa), (rb, ob) = alle[a], alle[b]
+            wa, wb = woerter(ra), woerter(rb)
+            if (oa or ob) and wa and len(wa & wb) / len(wa | wb) > 0.75 \
+                    and ra["kategorie"] != "emoji" and ra.get("typ") != "finde":
+                treffer.append(("fast gleicher Text", [ra["id"], rb["id"]]))
+    return treffer
 
 
 def geplante_termine_laden(raetsel):
@@ -688,6 +740,8 @@ def main():
     parser.add_argument("--liste", action="store_true", help="alle Rätsel mit Status anzeigen")
     parser.add_argument("--drive", action="store_true",
                         help="alle fertigen Videos in den Google-Drive-Ordner kopieren")
+    parser.add_argument("--doppelte", action="store_true",
+                        help="ähnliche Rätsel anzeigen (gleiche Idee, Text, Lösungswort, Emojis)")
     parser.add_argument("--gepostet", type=int, nargs="+", metavar="ID",
                         help="diese Rätsel-ID(s) als gepostet markieren")
     parser.add_argument("--check", action="store_true", help="Installation prüfen")
@@ -718,7 +772,17 @@ def main():
     repariert = pruefe_raetsel(raetsel, cfg)
     geplante_termine_laden(raetsel)
     if uebernommen:
-        print(f"+ {uebernommen} neue Rätsel aus {os.path.basename(NEUE_DATEI)} übernommen")
+        print(f"+ {uebernommen} Änderung(en) aus {os.path.basename(NEUE_DATEI)} übernommen")
+    doppelte = doppelte_finden(raetsel)
+    if args.doppelte:
+        for grund, ids in doppelte:
+            print(f"⚠ doppelt ({grund}): Rätsel {', '.join(map(str, ids))}")
+        if doppelte:
+            sys.exit(1)
+        print("✓ Keine doppelten Rätsel")
+        return
+    if doppelte:
+        print(f"⚠ {len(doppelte)} mögliche Doppelte – Details: python3 generate.py --doppelte")
     if termine_abhaken(raetsel) or repariert or uebernommen:
         speichere_raetsel(raetsel)
 

@@ -45,6 +45,7 @@ python generate.py --ohne-musik   # Videos ohne Musik (z. B. für Trend-Sounds i
 python generate.py --ohne-effekte # ohne Ticken, Tipp-Pling und Gong
 python generate.py --ohne-aufloesung # Lösung nicht im Video zeigen (Vergleichs-Variante)
 python generate.py --liste        # Übersicht aller Rätsel mit Status
+python generate.py --doppelte     # ähnliche Rätsel finden (gleiche Idee, Text, Lösungswort …)
 python generate.py --plan 7       # Posting-Plan für eine Woche (siehe unten)
 ```
 
@@ -109,6 +110,11 @@ python generate.py    # übernimmt neue Rätsel aus neue_raetsel.json, rendert s
 ```
 
 Für die Cloud gibt es dazu `--in-neue`: `python generate.py --neu-emoji 5 --in-neue` legt Emoji-Gleichungen direkt in `neue_raetsel.json` an.
+
+`neue_raetsel.json` kann außerdem vorhandene Rätsel verbessern, ohne `raetsel.json` anzufassen (die gehört dem Mac):
+
+- `"gestrichen": [72, 76]` – schwache oder doppelte Rätsel fliegen beim nächsten Lauf raus. Schon geplante oder gepostete bleiben.
+- `"konzepte": {"54": "handschlag-paare"}` – die Denk-Idee älterer Rätsel für die Doppelt-Prüfung (neue Rätsel tragen `konzept` selbst).
 
 ### Google Drive
 
@@ -182,6 +188,7 @@ Das Video fordert zweimal zum Kommentieren auf: **vor der Auflösung** („Jetzt
 | `status` | `neu` → `erstellt` → `gepostet` |
 | `countdown` *(optional)* | eigene Zeit in Sekunden für genau dieses Rätsel, z. B. `6` |
 | `tipp` *(optional)* | erscheint in der zweiten Hälfte des Countdowns als „💡 Tipp: …“ mit hellem Pling – nur für sehr harte Rätsel verwenden |
+| `konzept` *(empfohlen)* | die Denk-Idee in Kurzform, z. B. `zaunpfahl`, `handschlag-paare`, `prozent-falle` – zwei Rätsel mit gleicher Idee gelten als doppelt, auch wenn sie anders verpackt sind |
 | `thema` *(optional)* | z. B. `halloween`, `weihnachten`, `gaming` – siehe „Themen & Trends“ |
 | `optionen` *(optional, derzeit nicht genutzt)* | 2–4 Antwortvorgaben A/B/C. Bewusst abgeschaltet, weil Vorgaben zum Raten verleiten – die Funktion bleibt für spätere Tests erhalten |
 | `hook` *(optional)* | eigener Spruch oben statt dem zufälligen aus `config.json` |
@@ -191,17 +198,29 @@ Das Video fordert zweimal zum Kommentieren auf: **vor der Auflösung** („Jetzt
 
 - `*Sternchen*` um Wörter setzen → erscheinen in der Akzentfarbe: `"Wie viele *Dreiecke* siehst du?"`
 - `\n` erzwingt einen Zeilenumbruch: `"Welche Zahl kommt als Nächstes?\n2 – 6 – 12 – ?"`
-- Damit eine Zahlenreihe nicht mitten drin umbricht, statt normaler Leerzeichen geschützte Leerzeichen verwenden (` `), wie in Rätsel 12.
+- Damit eine Zahlenreihe nicht mitten drin umbricht, statt normaler Leerzeichen geschützte Leerzeichen verwenden (` `), wie in Rätsel 12. Zahl und Einheit („20 €“, „60 km/h“, „25 %“) hält der Generator automatisch zusammen.
 - Emojis funktionieren überall (Rätsel, Sprüche, Optionen). Am besten einfache Emojis ohne Hautfarben oder Kombinationen.
 - Kürzere Texte werden größer dargestellt. Ideal sind 1–3 kurze Sätze.
 
 **Was ein gutes Rätsel ausmacht:** eine eindeutige Lösung, die man durch Nachdenken herausfinden kann (kein Wissen, kein Schätzen), möglichst mit einer Falle, in die man schnell tappt.
 
+### Qualität: nur Rätsel, die wir selbst gern schauen
+
+Jedes Rätsel muss mindestens eins davon haben – sonst fliegt es raus:
+
+- **Aha-Moment:** Die schnelle Antwort ist falsch, die richtige überrascht (Schläger & Ball, Seerosen, Zug im Tunnel).
+- **Kommentar-Streit:** Leute sind sich sicher und liegen trotzdem daneben (Durchschnittstempo, Prozent rauf und runter).
+- **Mehrwert:** ein Trick, den man danach kann (99 × 99, durch ½ teilen) oder ein „Wusstest du?“-Fakt.
+
+**Nicht mehr:** reines Ausrechnen ohne Falle („3 Hühner und 2 Hunde – wie viele Beine?“), Allgemeinwissen, Schulbuch-Fragen („Wie viele Kanten hat ein Würfel?“), Rätsel, die man nur mit Stift lösen kann.
+
+**Nichts doppelt:** `python generate.py --doppelte` vergleicht alle Rätsel inklusive Archiv – gleiche Idee (`konzept`), fast gleicher Text, gleiches Lösungswort, gleiche Emoji-Kombination, gleiches Suchbild-Paar. Gemeldet wird nur, wo noch etwas zu ändern ist (mindestens ein Rätsel ist weder geplant noch gepostet). Die Auto-Rätsel (`--neu-emoji`, `--neu-finde`) nehmen von sich aus keine schon benutzten Kombinationen.
+
 Danach `python generate.py --vorschau` ausführen und die PNGs in `output/` anschauen.
 
 ### Themen & Trends
 
-Ein Rätsel kann ein `thema` bekommen, z. B. `"thema": "halloween"`. Dann trägt es die Plakette, Farbe, Sprüche und Hashtags des Themas (in `config.json` unter `themen`). Vorhanden: `halloween`, `herbst`, `weihnachten`, `silvester`, `gaming`.
+Ein Rätsel kann ein `thema` bekommen, z. B. `"thema": "halloween"`. Dann trägt es die Plakette, Farbe, Sprüche und Hashtags des Themas (in `config.json` unter `themen`). Vorhanden: `halloween`, `herbst`, `weihnachten`, `silvester`, `gaming` – dazu Trend-Themen aus `neue_raetsel.json` (z. B. `trend_2026_11_gta6`). Welche Trends anstehen, steht in der gemeinsamen Trendliste `TRENDS.md` im Repo `dotchitv`.
 
 - **Zeitraum:** Themen können einen `zeitraum` haben (z. B. `["10-01", "10-31"]`). Der Posting-Plan setzt solche Rätsel nur in diesem Zeitraum ein und verteilt sie gleichmäßig bis zu dessen Ende – bei 5 Halloween-Rätseln ab dem 24.10. also am 24., 26., 28., 29. und 31.10., bevorzugt abends. Was nicht mehr passt, bleibt bis zum nächsten Jahr liegen.
 - **Neues Thema:** einfach einen Block unter `themen` ergänzen (`label`, optional `akzent`, `zeitraum`, `hashtags`, `captions`, `texte.hook`).

@@ -13,9 +13,11 @@ EMOJI_SYMBOLE = ["🍎", "🍌", "🍒", "🍇", "🍓", "🍉", "🍋", "🍑",
 
 # Zeichenpaare (normal, abweichend) – je ähnlicher, desto schwerer
 FINDE_PAARE = {
-    "leicht": [("6", "9"), ("O", "Q"), ("E", "F"), ("😀", "😎"), ("🍎", "🍅")],
-    "mittel": [("8", "B"), ("5", "S"), ("C", "G"), ("M", "N"), ("😐", "😑"), ("🙂", "🙃")],
-    "schwer": [("O", "0"), ("B", "8"), ("Z", "2"), ("😃", "😄"), ("🐻", "🐨")],
+    "leicht": [("6", "9"), ("O", "Q"), ("E", "F"), ("😀", "😎"), ("🍎", "🍅"), ("1", "7"), ("A", "H"),
+               ("🍊", "🍋"), ("🐟", "🐠")],
+    "mittel": [("8", "B"), ("5", "S"), ("C", "G"), ("M", "N"), ("😐", "😑"), ("🙂", "🙃"), ("P", "R"),
+               ("U", "V"), ("🍏", "🍎"), ("🐭", "🐹")],
+    "schwer": [("O", "0"), ("B", "8"), ("Z", "2"), ("😃", "😄"), ("🐻", "🐨"), ("6", "b"), ("🙂", "😊")],
 }
 FINDE_GITTER = {"leicht": (7, 7), "mittel": (8, 8), "schwer": (10, 10)}  # (Spalten, Reihen) – quadratisch nutzt den Platz am besten
 SCHWIERIGKEITEN = ["leicht", "mittel", "schwer"]
@@ -122,6 +124,15 @@ def finde_raetsel(zufall, schwierigkeit, neue_id):
     }
 
 
+def fingerabdruck(r):
+    """Was ein Auto-Rätsel ausmacht: die drei Emojis bzw. das Zeichenpaar im Suchbild."""
+    if r.get("typ") == "finde":
+        return ("finde", r.get("zeichen"), r.get("ziel"))
+    if r.get("kategorie") == "emoji":
+        return ("emoji", frozenset(e for e in EMOJI_SYMBOLE if e in r.get("frage", "")))
+    return None
+
+
 def erzeuge(art, anzahl, raetsel, schwierigkeit=None, saat=None, cloud=False):
     """Hängt `anzahl` neue Rätsel der Art "emoji" oder "finde" an die Liste an und gibt sie zurück."""
     zufall = random.Random(saat)
@@ -129,7 +140,10 @@ def erzeuge(art, anzahl, raetsel, schwierigkeit=None, saat=None, cloud=False):
     neu = []
     for i in range(anzahl):
         stufe = schwierigkeit or SCHWIERIGKEITEN[i % len(SCHWIERIGKEITEN)]
-        eintrag = bauer(zufall, stufe, naechste_id(raetsel, cloud))
+        for _ in range(50):  # keine Emoji-Kombination und kein Suchbild-Paar, das es schon gab
+            eintrag = bauer(zufall, stufe, naechste_id(raetsel, cloud))
+            if fingerabdruck(eintrag) not in {fingerabdruck(r) for r in raetsel}:
+                break
         raetsel.append(eintrag)
         neu.append(eintrag)
     return neu

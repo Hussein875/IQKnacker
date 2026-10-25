@@ -1,0 +1,260 @@
+{
+  "themen": {
+    "trend_2026_11_gta6": {
+      "label": "GTA 6",
+      "akzent": "#FF5FA2",
+      "zeitraum": [
+        "11-12",
+        "11-22"
+      ],
+      "hashtags": [
+        "#gta6",
+        "#gta",
+        "#gaming"
+      ],
+      "captions": [
+        "GTA 6 ist fast da – aber erst dieses Rätsel 🎮",
+        "Gamer-Logik für die Wartezeit auf GTA 6 🕹️"
+      ],
+      "texte": {
+        "hook": [
+          "Warten auf GTA 6? 🎮",
+          "Für alle GTA-Fans 🕹️"
+        ]
+      }
+    }
+  },
+  "raetsel": [
+    {
+      "id": 1000,
+      "kategorie": "iq",
+      "frage": "Ein Schläger und ein Ball kosten zusammen *1,10 €*. Der Schläger kostet *1 € mehr* als der Ball. *Was kostet der Ball?*",
+      "loesung": "5 Cent",
+      "erklaerung": "Nicht 10 Cent – dann wären es 1,20 €. Ball 0,05 € + Schläger 1,05 € = 1,10 €. Selbst in Harvard lag über die Hälfte falsch.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "schlaeger-ball"
+    },
+    {
+      "id": 1001,
+      "kategorie": "iq",
+      "frage": "5 Maschinen brauchen *5 Minuten* für 5 Teile. *Wie lange brauchen 100 Maschinen für 100 Teile?*",
+      "loesung": "5 Minuten",
+      "erklaerung": "Jede Maschine braucht 5 Minuten für 1 Teil. 100 Maschinen bauen 100 Teile gleichzeitig – also auch in 5 Minuten.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "maschinen-falle"
+    },
+    {
+      "id": 1002,
+      "kategorie": "iq",
+      "frage": "Seerosen verdoppeln sich jeden Tag. Nach *48 Tagen* ist der ganze See bedeckt. *Wann war er halb bedeckt?*",
+      "loesung": "Nach 47 Tagen",
+      "erklaerung": "Nicht nach 24! Die Fläche verdoppelt sich jeden Tag – einen Tag vor „voll“ war der See also halb bedeckt.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "verdopplung-rueckwaerts"
+    },
+    {
+      "id": 1003,
+      "kategorie": "iq",
+      "frage": "Du läufst ein Rennen und überholst den *Zweiten*. *Auf welchem Platz bist du jetzt?*",
+      "loesung": "Platz 2",
+      "erklaerung": "Du nimmst nur seinen Platz ein – Erster bist du damit noch nicht.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "ueberholen-falle"
+    },
+    {
+      "id": 1004,
+      "kategorie": "mathe",
+      "frage": "Eine Schnecke will eine *10 m* hohe Wand hoch: tagsüber *3 m* rauf, nachts *2 m* runter. *An welchem Tag ist sie oben?*",
+      "loesung": "Am 8. Tag",
+      "erklaerung": "Nach 7 Tagen und Nächten ist sie bei 7 m. Am 8. Tag klettert sie 3 m und ist oben – da rutscht nichts mehr zurück.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "schnecke-wand"
+    },
+    {
+      "id": 1005,
+      "kategorie": "mathe",
+      "frage": "Rechne im Kopf:\n*30 geteilt durch ½ plus 10*",
+      "loesung": "70",
+      "erklaerung": "Durch ½ teilen heißt verdoppeln: 30 ÷ ½ = 60, plus 10 = 70. Wer 30 ÷ 2 rechnet, landet bei 25.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "durch-halb"
+    },
+    {
+      "id": 1006,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*ZAHN___*\n*HAAR___*\n*KLEIDER___*",
+      "loesung": "Bürste",
+      "erklaerung": "Zahnbürste, Haarbürste, Kleiderbürste.",
+      "schwierigkeit": "mittel",
+      "status": "neu"
+    },
+    {
+      "id": 1007,
+      "kategorie": "iq",
+      "frage": "Ein *1 km* langer Zug fährt mit *60 km/h* durch einen *1 km* langen Tunnel. *Wie lange dauert es, bis er ganz durch ist?*",
+      "loesung": "2 Minuten",
+      "erklaerung": "Die Spitze fährt 1 km bis zum Ausgang, dann muss noch der ganze Zug raus: 2 km. 60 km/h = 1 km pro Minute → 2 Minuten.",
+      "schwierigkeit": "schwer",
+      "status": "neu",
+      "konzept": "zug-tunnel"
+    },
+    {
+      "id": 1008,
+      "kategorie": "iq",
+      "thema": "herbst",
+      "frage": "Im Dunkeln greifst du in eine Schublade mit *10 schwarzen* und *10 weißen* Socken. *Wie viele brauchst du für ein sicheres Paar?*",
+      "loesung": "3 Socken",
+      "erklaerung": "Bei 2 Farben sind unter 3 Socken immer zwei gleiche. Nicht 11 – die Farbe ist egal, Hauptsache ein Paar.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "socken-schublade"
+    },
+    {
+      "id": 1009,
+      "kategorie": "mathe",
+      "thema": "weihnachten",
+      "frage": "Eine Lichterkette hat *50 Lampen*. Jede 3. ist rot, jede 4. blau. Ist eine beides, leuchtet sie *lila*. *Wie viele sind lila?*",
+      "loesung": "4",
+      "erklaerung": "Lila sind nur Lampen, deren Nummer durch 3 und 4 teilbar ist – also jede 12.: Nr. 12, 24, 36 und 48.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "kgv-zaehlen"
+    },
+    {
+      "id": 1010,
+      "kategorie": "mathe",
+      "thema": "weihnachten",
+      "frage": "Ein Blech Plätzchen backt *12 Minuten*. In den Ofen passen *2 Bleche* gleichzeitig. *Wie lange dauern 4 Bleche?*",
+      "loesung": "24 Minuten",
+      "erklaerung": "Zwei Durchgänge mit je 2 Blechen: 2 × 12 = 24 Minuten. Nicht 48 – es backen ja immer zwei zugleich.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "ofen-parallel"
+    },
+    {
+      "id": 1011,
+      "kategorie": "mathe",
+      "thema": "weihnachten",
+      "frage": "Punsch kostet *4 €*, die Tasse *3 € Pfand*. Du trinkst *3 Punsch* aus einer Tasse und gibst sie zurück. *Was hat dich das gekostet?*",
+      "loesung": "12 €",
+      "erklaerung": "3 × 4 € = 12 €. Das Pfand zahlst du nur einmal – und bekommst es am Ende zurück.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "pfand-rechnung"
+    },
+    {
+      "id": 1012,
+      "kategorie": "iq",
+      "thema": "silvester",
+      "frage": "Manche Monate haben 31 Tage, manche 30. *Wie viele Monate haben 28 Tage?*",
+      "loesung": "Alle 12",
+      "erklaerung": "Jeder Monat hat mindestens 28 Tage – der Februar hat nur nicht mehr.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "monate-28"
+    },
+    {
+      "id": 1013,
+      "kategorie": "iq",
+      "thema": "trend_2026_11_gta6",
+      "frage": "Du fährst eine Strecke mit *60 km/h* hin und dieselbe Strecke mit *120 km/h* zurück. *Wie schnell warst du im Schnitt?*",
+      "loesung": "80 km/h",
+      "erklaerung": "Nicht 90! Bei 120 km: hin 2 h, zurück 1 h → 240 km in 3 h = 80 km/h. Wusstest du? GTA V erschien schon 2013.",
+      "schwierigkeit": "schwer",
+      "status": "neu",
+      "konzept": "durchschnitt-tempo"
+    },
+    {
+      "id": 1014,
+      "kategorie": "mathe",
+      "thema": "trend_2026_11_gta6",
+      "frage": "Ein Spiel kostet *80 €*. Laden A gibt *25 % Rabatt*, Laden B zieht *20 € ab*. *Wo ist es günstiger?*",
+      "loesung": "Gleich teuer",
+      "erklaerung": "25 % von 80 € sind genau 20 € – du zahlst beide Male 60 €.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "rabatt-vergleich"
+    },
+    {
+      "id": 1015,
+      "kategorie": "mathe",
+      "thema": "trend_2026_11_gta6",
+      "frage": "Im Spiel kostet ein Auto *3-mal so viel* wie ein Motorrad. Zusammen kosten sie *40.000 $*. *Was kostet das Auto?*",
+      "loesung": "30.000 $",
+      "erklaerung": "Motorrad = 1 Teil, Auto = 3 Teile → 4 Teile = 40.000 $. 1 Teil = 10.000 $, das Auto also 30.000 $.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "verhaeltnis-teilen"
+    }
+  ],
+  "gestrichen": [
+    72,
+    74,
+    76,
+    77,
+    78,
+    79,
+    48,
+    87,
+    88,
+    91,
+    92,
+    94,
+    98,
+    99,
+    101
+  ],
+  "konzepte": {
+    "11": "uhr-rechnen",
+    "12": "quadratzahlen-rueckwaerts",
+    "13": "anfangsbuchstaben-folge",
+    "14": "look-and-say",
+    "15": "zaunpfahl",
+    "16": "halbes-plus-rest",
+    "17": "uhrzeiger-deckung",
+    "18": "ziffern-zaehlen",
+    "19": "wochentag-rechnen",
+    "20": "quadrate-zaehlen",
+    "21": "seil-aequator",
+    "22": "geburtstags-paradox",
+    "43": "uhrzeiger-winkel",
+    "44": "ziffern-muster",
+    "45": "tribonacci",
+    "46": "hoch-sich-selbst",
+    "47": "faktor-folge",
+    "49": "geschwister",
+    "50": "waegen",
+    "51": "wuerfel-anmalen",
+    "52": "pizza-schnitte",
+    "53": "ko-system",
+    "54": "handschlag-paare",
+    "55": "handel-falle",
+    "56": "alters-raetsel",
+    "57": "rest-eins",
+    "58": "prozent-tausch",
+    "59": "kopfrechen-trick",
+    "60": "ziffern-bedingungen",
+    "61": "tage-logik",
+    "62": "gauss-summe",
+    "63": "diagonalen",
+    "69": "anfangsbuchstaben-folge",
+    "70": "differenzen-folge",
+    "71": "dreieckszahlen",
+    "73": "uhrzeit-rechnen",
+    "75": "primzahl-falle",
+    "81": "mitzaehlen-falle",
+    "83": "halbes-plus-rest",
+    "84": "wochentag-rechnen",
+    "86": "zeitumstellung",
+    "95": "verdopplung-summe",
+    "96": "kalender-rest",
+    "97": "prozent-falle",
+    "100": "prozent-rueckwaerts"
+  }
+}
