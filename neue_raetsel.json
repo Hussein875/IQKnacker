@@ -22,6 +22,98 @@
           "Für alle GTA-Fans 🕹️"
         ]
       }
+    },
+    "trend_2026_11_11_karneval": {
+      "label": "KARNEVAL",
+      "akzent": "#FFB020",
+      "zeitraum": [
+        "11-09",
+        "11-11"
+      ],
+      "hashtags": [
+        "#karneval",
+        "#elfterelfter",
+        "#alaaf"
+      ],
+      "captions": [
+        "Elf-Uhr-Elf-Logik zum 11.11. 🎭",
+        "Zum Karnevalsstart: Narren-Logik 🃏"
+      ],
+      "texte": {
+        "hook": [
+          "Alaaf & Helau – aber erst denken! 🎭",
+          "Karnevalsstart-Rätsel 🃏"
+        ]
+      }
+    },
+    "trend_2026_11_11_laterne": {
+      "label": "LATERNEN",
+      "akzent": "#FFD54A",
+      "zeitraum": [
+        "11-09",
+        "11-11"
+      ],
+      "hashtags": [
+        "#laternenumzug",
+        "#martinstag",
+        "#laterne"
+      ],
+      "captions": [
+        "Laternen-Logik für den 11.11. 🏮",
+        "Wer läuft hier schneller? 🏮"
+      ],
+      "texte": {
+        "hook": [
+          "Laternenzeit! 🏮",
+          "Denk-Spaziergang mit Laterne 🏮"
+        ]
+      }
+    },
+    "trend_2026_11_11_singles": {
+      "label": "SINGLES DAY",
+      "akzent": "#FF5C8A",
+      "zeitraum": [
+        "11-09",
+        "11-11"
+      ],
+      "hashtags": [
+        "#singlesday",
+        "#1111",
+        "#rabatt"
+      ],
+      "captions": [
+        "Singles Day: Rechne, bevor du kaufst 🛍️",
+        "Rabatt-Falle am 11.11.? 🛍️"
+      ],
+      "texte": {
+        "hook": [
+          "Singles Day – nicht reinfallen! 🛍️",
+          "Schnäppchen-Check zum 11.11. 🛒"
+        ]
+      }
+    },
+    "trend_2026_11_09_sterne": {
+      "label": "STERNHIMMEL",
+      "akzent": "#7EC8FF",
+      "zeitraum": [
+        "11-10",
+        "11-13"
+      ],
+      "hashtags": [
+        "#sternschnuppen",
+        "#tauriden",
+        "#nachthimmel"
+      ],
+      "captions": [
+        "Sternschnuppen-Nacht: Logik unterm Himmel ✨",
+        "Tauriden-Zeit: erst denken, dann wünschen ✨"
+      ],
+      "texte": {
+        "hook": [
+          "Sternschnuppen-Zeit ✨",
+          "Nachthimmel-Rätsel 🌌"
+        ]
+      }
     }
   },
   "raetsel": [
@@ -191,6 +283,236 @@
       "schwierigkeit": "mittel",
       "status": "neu",
       "konzept": "verhaeltnis-teilen"
+    },
+    {
+      "id": 1016,
+      "kategorie": "iq",
+      "thema": "trend_2026_11_11_karneval",
+      "frage": "Die *24-Stunden-Digitaluhr* zeigt *11:11*. *Wie lange dauert es*, bis sie das nächste Mal *vier gleiche Ziffern* zeigt?",
+      "loesung": "11 Std. 11 Min.",
+      "erklaerung": "Das nächste Mal ist es 22:22 – also 11 Std. 11 Min. später. Wusstest du? Im Karneval gilt die Elf als Narrenzahl.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "schnapszahl-uhr"
+    },
+    {
+      "id": 1017,
+      "kategorie": "iq",
+      "thema": "trend_2026_11_11_karneval",
+      "frage": "*Narren* lügen immer, *Ritter* sagen immer die Wahrheit. A sagt: „*Mindestens einer von uns beiden ist ein Narr.*“ *Was sind A und B?*",
+      "loesung": "A ist Ritter, B Narr",
+      "erklaerung": "Wäre A ein Narr, wäre sein Satz wahr – Widerspruch. Also ist A Ritter, sein Satz stimmt: B ist der Narr. Wusstest du? Die Elf gilt als Narrenzahl.",
+      "schwierigkeit": "schwer",
+      "status": "neu",
+      "konzept": "ritter-luegner"
+    },
+    {
+      "id": 1018,
+      "kategorie": "mathe",
+      "thema": "trend_2026_11_11_laterne",
+      "frage": "Ein Laternenzug ist *60 m* lang und geht *1 m/s*. Ein Kind sprintet vom Ende zur Spitze (*3 m/s* am Boden). *Wie lange braucht es?*",
+      "loesung": "30 Sekunden",
+      "erklaerung": "Das Kind holt pro Sekunde nur 3 − 1 = 2 m auf: 60 ÷ 2 = 30 s, nicht 20. Wusstest du? In der Schweiz schnitzt man Laternen oft aus Rüben.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "relativ-aufholen"
+    },
+    {
+      "id": 1019,
+      "kategorie": "mathe",
+      "thema": "trend_2026_11_11_singles",
+      "frage": "Singles Day: Eine Jacke kostet *60 €*. Das *zweite* Teil gibt's zum *halben Preis*. *Wie viel Prozent sparst du bei zwei Jacken?*",
+      "loesung": "25 %",
+      "erklaerung": "Du sparst 30 € von 120 € – also 25 %, nicht 50 %. Wusstest du? Die vier Einsen im 11.11. stehen für Singles.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "zweites-halber-preis"
+    },
+    {
+      "id": 1020,
+      "kategorie": "mathe",
+      "thema": "trend_2026_11_11_singles",
+      "frage": "Jacke *100 €*, dazu *10 % Rabatt* und ein *10-€-Gutschein*. *Was ist günstiger: erst Rabatt, dann Gutschein – oder umgekehrt?*",
+      "loesung": "Erst Rabatt (80 € statt 81 €)",
+      "erklaerung": "Erst Rabatt: 90 − 10 = 80 €. Erst Gutschein: 90 € minus 10 % = 81 €. Wusstest du? Alibaba machte 2009 den 11.11. zum Shopping-Tag.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "gutschein-reihenfolge"
+    },
+    {
+      "id": 1021,
+      "kategorie": "iq",
+      "thema": "trend_2026_11_09_sterne",
+      "frage": "Es ist *Mitternacht* und es regnet. *Scheint in 72 Stunden die Sonne?*",
+      "loesung": "Nein",
+      "erklaerung": "72 Stunden sind genau 3 Tage – dann ist wieder Mitternacht. Wusstest du? Tauriden-Sternschnuppen gehören zu den langsamsten und sind oft hell.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "mitternacht-72h"
+    },
+    {
+      "id": 1022,
+      "kategorie": "mathe",
+      "thema": "trend_2026_11_09_sterne",
+      "frage": "Ein Teleskop macht alles in Länge und Breite *10-mal* größer. *Wievielmal größer* erscheint die *Fläche* des Mondes?",
+      "loesung": "100-mal",
+      "erklaerung": "10 × 10 = 100: Länge und Breite wachsen je 10-fach, die Fläche also 100-fach. Wusstest du? Sternschnuppen sind meist nur millimetergroße Staubkörnchen.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "flaeche-quadrat"
+    },
+    {
+      "id": 1023,
+      "kategorie": "iq",
+      "frage": "Drei Schalter im Flur, die *Glühbirne* im Zimmer siehst du von dort nicht. Du darfst *allein nur einmal* hinein. *Wie findest du den richtigen?*",
+      "loesung": "Über die Wärme der Birne",
+      "erklaerung": "Schalter 1 länger an, dann aus; Schalter 2 an. Im Zimmer: leuchtet = 2, warm aber aus = 1, kalt und aus = 3.",
+      "schwierigkeit": "schwer",
+      "status": "neu",
+      "konzept": "schalter-waerme"
+    },
+    {
+      "id": 1024,
+      "kategorie": "iq",
+      "frage": "Als ich *6* war, war meine Schwester *halb so alt* wie ich. Jetzt bin ich *70*. *Wie alt ist sie?*",
+      "loesung": "67 Jahre",
+      "erklaerung": "Sie ist 3 Jahre jünger – dieser Abstand bleibt immer gleich: 70 − 3 = 67. Nicht 35!",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "alter-halb"
+    },
+    {
+      "id": 1025,
+      "kategorie": "mathe",
+      "frage": "Eine *1 kg* schwere Gurke besteht zu *99 %* aus Wasser. Sie trocknet, bis sie zu *98 %* aus Wasser besteht. *Wie schwer ist sie jetzt?*",
+      "loesung": "500 g",
+      "erklaerung": "Die 10 g Trockenmasse bleiben und sind jetzt 2 % des Gewichts: 10 g ÷ 0,02 = 500 g. Ein Prozentpunkt weniger Wasser, halbes Gewicht!",
+      "schwierigkeit": "schwer",
+      "status": "neu",
+      "konzept": "gurke-wasseranteil"
+    },
+    {
+      "id": 1026,
+      "kategorie": "wort",
+      "frage": "Ich habe *Städte* ohne Häuser, *Flüsse* ohne Wasser und *Wälder* ohne Bäume. *Was bin ich?*",
+      "loesung": "Eine Landkarte",
+      "erklaerung": "Auf einer Landkarte sind Städte, Flüsse und Wälder nur eingezeichnet – es gibt sie dort nicht wirklich.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "raetsel-landkarte",
+      "hook": "Klassiker – aber kennst du ihn? 🧠"
+    },
+    {
+      "id": 1027,
+      "kategorie": "wort",
+      "frage": "Was wird *nasser*, je mehr es *trocknet?*",
+      "loesung": "Ein Handtuch",
+      "erklaerung": "Ein Handtuch trocknet dich ab und nimmt dabei das Wasser auf – es wird also selbst immer nasser.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "handtuch-trocknet",
+      "hook": "Klassiker – aber kennst du ihn? 🧠"
+    },
+    {
+      "id": 1028,
+      "kategorie": "iq",
+      "frage": "*Zwei Väter* und *zwei Söhne* gehen angeln und fangen genau *3 Fische* – jeder einen. *Wie geht das?*",
+      "loesung": "Es sind nur 3 Personen",
+      "erklaerung": "Großvater, Vater und Sohn: Der Vater in der Mitte ist zugleich Vater und Sohn.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "vaeter-soehne"
+    },
+    {
+      "id": 1029,
+      "kategorie": "mathe",
+      "frage": "Zwei Münzen sind zusammen *30 Cent* wert. *Eine* davon ist *keine 10-Cent-Münze*. *Welche Münzen sind es?*",
+      "loesung": "20 Cent und 10 Cent",
+      "erklaerung": "Nur eine ist keine 10er – die andere darf eine sein: 20 + 10 = 30 Cent.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "muenzen-nicht"
+    },
+    {
+      "id": 1030,
+      "kategorie": "emoji",
+      "frage": "🍐 + 🍐 + 🍐 = 9\n🍐 + 🐷 + 🐷 = 15\n⚽ + ⚽ = 4\n*⚽ + 🍐 + 🐷 = ?*",
+      "loesung": "11",
+      "erklaerung": "🍐 = 3, 🐷 = 6, ⚽ = 2 → 2 + 3 + 6 = 11.",
+      "schwierigkeit": "leicht",
+      "status": "neu"
+    },
+    {
+      "id": 1031,
+      "kategorie": "emoji",
+      "frage": "🐸 + 🐸 + 🐸 = 12\n🐸 + 🍋 + 🍋 = 16\n🍑 + 🍑 = 4\n*🍑 + 🐸 + 🍋 = ?*",
+      "loesung": "12",
+      "erklaerung": "🐸 = 4, 🍋 = 6, 🍑 = 2 → 2 + 4 + 6 = 12.",
+      "schwierigkeit": "leicht",
+      "status": "neu"
+    },
+    {
+      "id": 1032,
+      "kategorie": "emoji",
+      "frage": "⭐ + ⭐ = 10\n⭐ + 🥝 + 🥝 = 19\n🥝 − 🥥 = 4\n*⭐ × 🥥 + 🥝 = ?*",
+      "loesung": "22",
+      "erklaerung": "⭐ = 5, 🥝 = 7, 🥥 = 3 → 5 × 3 + 7 = 22.",
+      "schwierigkeit": "mittel",
+      "status": "neu"
+    },
+    {
+      "id": 1033,
+      "kategorie": "emoji",
+      "frage": "🍪 + 🍪 + 🍪 = 9\n🍪 + 🍕 + 🍕 = 13\n🍕 − 🦊 = 1\n*🍪 × 🦊 + 🍕 = ?*",
+      "loesung": "17",
+      "erklaerung": "🍪 = 3, 🍕 = 5, 🦊 = 4 → 3 × 4 + 5 = 17.",
+      "schwierigkeit": "mittel",
+      "status": "neu"
+    },
+    {
+      "id": 1034,
+      "kategorie": "emoji",
+      "frage": "🍑 + 🍑 + 🍑 = 18\n🍑 × 🍍 = 54\n🍍 − 🍔 = 4\n*🍑 + 🍍 × 🍔 = ?*",
+      "loesung": "51",
+      "erklaerung": "🍑 = 6, 🍍 = 9, 🍔 = 5 → 6 + 9 × 5 = 51. Punkt vor Strich!",
+      "schwierigkeit": "schwer",
+      "status": "neu"
+    },
+    {
+      "id": 1035,
+      "kategorie": "finde",
+      "typ": "finde",
+      "frage": "Finde die *7*!",
+      "zeichen": "1",
+      "ziel": "7",
+      "spalten": 7,
+      "zeilen": 7,
+      "position": [
+        3,
+        5
+      ],
+      "loesung": "Reihe 3, Spalte 5",
+      "erklaerung": "Die 7 versteckt sich in Reihe 3, Spalte 5 – gezählt von oben links.",
+      "schwierigkeit": "leicht",
+      "status": "neu"
+    },
+    {
+      "id": 1036,
+      "kategorie": "finde",
+      "typ": "finde",
+      "frage": "Finde das *Q*!",
+      "zeichen": "O",
+      "ziel": "Q",
+      "spalten": 7,
+      "zeilen": 7,
+      "position": [
+        6,
+        2
+      ],
+      "loesung": "Reihe 6, Spalte 2",
+      "erklaerung": "Das Q versteckt sich in Reihe 6, Spalte 2 – gezählt von oben links.",
+      "schwierigkeit": "leicht",
+      "status": "neu"
     }
   ],
   "gestrichen": [
