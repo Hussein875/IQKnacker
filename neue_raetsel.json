@@ -114,6 +114,29 @@
           "Nachthimmel-Rätsel 🌌"
         ]
       }
+    },
+    "halloween_2026_purge": {
+      "label": "PURGE-NACHT",
+      "akzent": "#FF5A5A",
+      "zeitraum": [
+        "10-31",
+        "11-01"
+      ],
+      "hashtags": [
+        "#purge",
+        "#halloween",
+        "#halloween2026"
+      ],
+      "captions": [
+        "Purge-Nacht? Wir rätseln lieber 😈🧠",
+        "Halloween-Special: Logik statt Chaos 🎃"
+      ],
+      "texte": {
+        "hook": [
+          "Purge-Nacht 😈",
+          "Halloween-Special 🎃"
+        ]
+      }
     }
   },
   "raetsel": [
@@ -513,6 +536,28 @@
       "erklaerung": "Das Q versteckt sich in Reihe 6, Spalte 2 – gezählt von oben links.",
       "schwierigkeit": "leicht",
       "status": "neu"
+    },
+    {
+      "id": 1037,
+      "kategorie": "iq",
+      "thema": "halloween_2026_purge",
+      "frage": "Du gehst um *20 Uhr* ins Bett und stellst deinen *analogen Wecker* auf *9 Uhr*. *Wie lange schläfst du?*",
+      "loesung": "1 Stunde",
+      "erklaerung": "Ein analoger Wecker kennt kein Abend oder Morgen: Er klingelt schon um 21 Uhr! Wusstest du? Der erste Purge-Film kam 2013 ins Kino.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "analog-wecker"
+    },
+    {
+      "id": 1038,
+      "kategorie": "iq",
+      "thema": "halloween_2026_purge",
+      "frage": "*100 Türen* sind zu. Person 1 dreht *alle* um (auf/zu), Person 2 *jede 2.*, Person 3 *jede 3.* … bis Person 100. *Wie viele sind offen?*",
+      "loesung": "10",
+      "erklaerung": "Offen bleiben nur Türen mit ungerader Teilerzahl – die Quadratzahlen 1, 4, 9 … 100. Also 10 Türen!",
+      "schwierigkeit": "schwer",
+      "status": "neu",
+      "konzept": "tueren-quadratzahlen"
     }
   ],
   "gestrichen": [
