@@ -133,8 +133,8 @@
       ],
       "texte": {
         "hook": [
-          "Purge-Nacht 😈",
-          "Halloween-Special 🎃"
+          "Halloween-Special 🎃",
+          "Logik statt Chaos 😈"
         ]
       }
     }
@@ -539,25 +539,25 @@
     },
     {
       "id": 1037,
-      "kategorie": "iq",
+      "kategorie": "mathe",
       "thema": "halloween_2026_purge",
-      "frage": "Du gehst um *20 Uhr* ins Bett und stellst deinen *analogen Wecker* auf *9 Uhr*. *Wie lange schläfst du?*",
-      "loesung": "1 Stunde",
-      "erklaerung": "Ein analoger Wecker kennt kein Abend oder Morgen: Er klingelt schon um 21 Uhr! Wusstest du? Der erste Purge-Film kam 2013 ins Kino.",
+      "frage": "Purge-Strafe: *90 Tagessätze*. Ein Tagessatz ist ein *Dreißigstel* deines Monats-Netto. *Wie viele Monatsgehälter* sind das?",
+      "loesung": "3 Monatsgehälter",
+      "erklaerung": "90 ÷ 30 = 3 – drei Monate arbeiten für nichts! Wusstest du? So rechnen deutsche Gerichte Geldstrafen: Monats-Netto ÷ 30 = ein Tagessatz.",
       "schwierigkeit": "leicht",
       "status": "neu",
-      "konzept": "analog-wecker"
+      "konzept": "tagessatz-geldstrafe"
     },
     {
       "id": 1038,
       "kategorie": "iq",
       "thema": "halloween_2026_purge",
-      "frage": "*100 Türen* sind zu. Person 1 dreht *alle* um (auf/zu), Person 2 *jede 2.*, Person 3 *jede 3.* … bis Person 100. *Wie viele sind offen?*",
-      "loesung": "10",
-      "erklaerung": "Offen bleiben nur Türen mit ungerader Teilerzahl – die Quadratzahlen 1, 4, 9 … 100. Also 10 Türen!",
-      "schwierigkeit": "schwer",
+      "frage": "Die *Süßigkeiten* sind weg. Anna: „Ben war's!“ Ben: „Ich nicht!“ Cem: „Ich nicht!“ *Nur einer* lügt nicht. *Wer zahlt 20 € Strafe?*",
+      "loesung": "Cem",
+      "erklaerung": "Nur wenn Ben die Wahrheit sagt, passt alles: Anna lügt (Ben war's nicht), Cem lügt – also war's Cem. Jede andere Annahme ergibt zwei Täter.",
+      "schwierigkeit": "mittel",
       "status": "neu",
-      "konzept": "tueren-quadratzahlen"
+      "konzept": "nur-einer-wahr"
     }
   ],
   "gestrichen": [
