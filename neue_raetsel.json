@@ -137,6 +137,121 @@
           "Logik statt Chaos 😈"
         ]
       }
+    },
+    "trend_2026_11_24_supermond": {
+      "label": "SUPERMOND",
+      "akzent": "#8FD3FF",
+      "zeitraum": [
+        "11-20",
+        "11-26"
+      ],
+      "hashtags": [
+        "#supermond",
+        "#vollmond",
+        "#weltall"
+      ],
+      "captions": [
+        "Supermond am 24.11. – aber erst dieses Rätsel 🌕",
+        "Mond-Logik für die Vollmond-Woche 🌙"
+      ],
+      "texte": {
+        "hook": [
+          "Supermond-Woche 🌕",
+          "Rätsel zum Vollmond 🌙"
+        ]
+      }
+    },
+    "trend_2026_11_26_thanksgiving": {
+      "label": "THANKSGIVING",
+      "akzent": "#FF9F43",
+      "zeitraum": [
+        "11-20",
+        "11-26"
+      ],
+      "hashtags": [
+        "#thanksgiving",
+        "#usa",
+        "#truthahn"
+      ],
+      "captions": [
+        "Thanksgiving-Rätsel 🦃 Wer rechnet richtig?",
+        "Zeitzonen-Falle zu Thanksgiving 🦃"
+      ],
+      "texte": {
+        "hook": [
+          "Happy Thanksgiving 🦃",
+          "Heute wird in den USA gefeiert 🦃"
+        ]
+      }
+    },
+    "trend_2026_11_27_blackweek": {
+      "label": "BLACK WEEK",
+      "akzent": "#FFD60A",
+      "zeitraum": [
+        "11-20",
+        "11-26"
+      ],
+      "hashtags": [
+        "#blackfriday",
+        "#blackweek",
+        "#rabatt"
+      ],
+      "captions": [
+        "Black Week: Rechne nach, bevor du kaufst 🛒",
+        "Rabatt-Falle zum Black Friday 🏷️"
+      ],
+      "texte": {
+        "hook": [
+          "Black Week 🛒",
+          "Rabatt oder Schein? 🏷️"
+        ]
+      }
+    },
+    "trend_2026_11_23_weihnachtsmarkt": {
+      "label": "WEIHNACHTSMARKT",
+      "akzent": "#FF6B6B",
+      "zeitraum": [
+        "11-20",
+        "11-26"
+      ],
+      "hashtags": [
+        "#weihnachtsmarkt",
+        "#weihnachten",
+        "#glühwein"
+      ],
+      "captions": [
+        "Weihnachtsmarkt-Zeit 🎡 Kleines Rätsel zum Aufwärmen",
+        "Riesenrad-Logik für den Weihnachtsmarkt 🎄"
+      ],
+      "texte": {
+        "hook": [
+          "Weihnachtsmarkt-Rätsel 🎡",
+          "Glühwein-Zeit ☕"
+        ]
+      }
+    },
+    "trend_2026_11_29_advent": {
+      "label": "ADVENT",
+      "akzent": "#F2994A",
+      "zeitraum": [
+        "11-20",
+        "11-26"
+      ],
+      "hashtags": [
+        "#advent",
+        "#adventskranz",
+        "#kerzen"
+      ],
+      "captions": [
+        "Bald 1. Advent – Kerzen-Rätsel 🕯️",
+        "Adventskranz-Logik 🕯️"
+      ],
+      "texte": {
+        "hook": [
+          "Bald ist Advent 🕯️",
+          "Kerzen-Rätsel 🕯️"
+        ]
+      }
     }
   },
   "raetsel": [
@@ -558,6 +673,234 @@
       "schwierigkeit": "mittel",
       "status": "neu",
       "konzept": "nur-einer-wahr"
+    },
+    {
+      "id": 1039,
+      "kategorie": "emoji",
+      "frage": "🍌 + 🍌 = 18\n🍌 + 🐵 + 🐵 = 25\n🧁 + 🧁 = 12\n*🧁 + 🍌 + 🐵 = ?*",
+      "loesung": "23",
+      "erklaerung": "🍌 = 9, 🐵 = 8, 🧁 = 6 → 6 + 9 + 8 = 23.",
+      "schwierigkeit": "leicht",
+      "status": "neu"
+    },
+    {
+      "id": 1040,
+      "kategorie": "emoji",
+      "frage": "🥝 + 🥝 + 🥝 = 12\n🥝 + 🍑 + 🍑 = 22\n🍑 − 🍔 = 1\n*🥝 × 🍔 + 🍑 = ?*",
+      "loesung": "41",
+      "erklaerung": "🥝 = 4, 🍑 = 9, 🍔 = 8 → 4 × 8 + 9 = 41.",
+      "schwierigkeit": "mittel",
+      "status": "neu"
+    },
+    {
+      "id": 1041,
+      "kategorie": "emoji",
+      "frage": "🚗 + 🚗 + 🚗 = 9\n🚗 × 🍦 = 24\n🍦 − 🍌 = 1\n*🚗 + 🍦 × 🍌 = ?*",
+      "loesung": "59",
+      "erklaerung": "🚗 = 3, 🍦 = 8, 🍌 = 7 → 3 + 8 × 7 = 59. Punkt vor Strich!",
+      "schwierigkeit": "schwer",
+      "status": "neu"
+    },
+    {
+      "id": 1042,
+      "kategorie": "emoji",
+      "frage": "🍔 + 🍔 + 🍔 = 21\n🍔 + 🚗 + 🚗 = 25\n🍓 + 🍓 = 12\n*🍓 + 🍔 + 🚗 = ?*",
+      "loesung": "22",
+      "erklaerung": "🍔 = 7, 🚗 = 9, 🍓 = 6 → 6 + 7 + 9 = 22.",
+      "schwierigkeit": "leicht",
+      "status": "neu"
+    },
+    {
+      "id": 1043,
+      "kategorie": "emoji",
+      "frage": "🥝 + 🥝 + 🥝 = 12\n🥝 + 🐸 + 🐸 = 16\n🐸 − 🍉 = 5\n*🥝 × 🍉 + 🐸 = ?*",
+      "loesung": "10",
+      "erklaerung": "🥝 = 4, 🐸 = 6, 🍉 = 1 → 4 × 1 + 6 = 10.",
+      "schwierigkeit": "mittel",
+      "status": "neu"
+    },
+    {
+      "id": 1044,
+      "kategorie": "finde",
+      "typ": "finde",
+      "frage": "Finde das *🍋*!",
+      "zeichen": "🍊",
+      "ziel": "🍋",
+      "spalten": 7,
+      "zeilen": 7,
+      "position": [
+        2,
+        2
+      ],
+      "loesung": "Reihe 2, Spalte 2",
+      "erklaerung": "Das 🍋 versteckt sich in Reihe 2, Spalte 2 – gezählt von oben links.",
+      "schwierigkeit": "leicht",
+      "status": "neu"
+    },
+    {
+      "id": 1045,
+      "kategorie": "finde",
+      "typ": "finde",
+      "frage": "Finde das *😑*!",
+      "zeichen": "😐",
+      "ziel": "😑",
+      "spalten": 8,
+      "zeilen": 8,
+      "position": [
+        4,
+        7
+      ],
+      "loesung": "Reihe 4, Spalte 7",
+      "erklaerung": "Das 😑 versteckt sich in Reihe 4, Spalte 7 – gezählt von oben links.",
+      "schwierigkeit": "mittel",
+      "status": "neu"
+    },
+    {
+      "id": 1046,
+      "kategorie": "iq",
+      "thema": "trend_2026_11_24_supermond",
+      "frage": "Der Mond zeigt uns *immer dieselbe Seite*. Wie oft dreht er sich dabei bei *einem Umlauf* um die Erde um sich selbst?",
+      "loesung": "Genau 1-mal",
+      "erklaerung": "Würde er sich nie drehen, sähen wir nach und nach alle Seiten. Wusstest du? Eine Mond-Drehung dauert wie ein Umlauf rund 27,3 Tage.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "mond-gebundene-rotation"
+    },
+    {
+      "id": 1047,
+      "kategorie": "iq",
+      "thema": "trend_2026_11_24_supermond",
+      "frage": "Bei uns ist *Vollmond*. Welche *Phase* hat die Erde dann am Himmel eines Astronauten auf dem Mond?",
+      "loesung": "Neuerde – ganz dunkel",
+      "erklaerung": "Beim Vollmond liegt die Erde zwischen Sonne und Mond: Die Sonne beleuchtet ihre Rückseite. Wusstest du? „Erdschein“ erhellt die Mondnacht schwach.",
+      "schwierigkeit": "schwer",
+      "status": "neu",
+      "konzept": "mond-erdphase"
+    },
+    {
+      "id": 1048,
+      "kategorie": "iq",
+      "thema": "trend_2026_11_26_thanksgiving",
+      "frage": "Thanksgiving-Dinner in New York: *Donnerstag, 18 Uhr*. Dort ist es *6 Stunden früher* als bei dir. *Welcher Tag und welche Uhrzeit ist es bei dir?*",
+      "loesung": "Freitag, 0 Uhr",
+      "erklaerung": "18 + 6 = 24 Uhr: Bei dir ist schon Freitag. Wusstest du? Thanksgiving ist in den USA immer am vierten Donnerstag im November.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "zeitzone-datumswechsel"
+    },
+    {
+      "id": 1049,
+      "kategorie": "mathe",
+      "thema": "trend_2026_11_27_blackweek",
+      "frage": "Black Week: *−30 %* auf einen Preis von *100 €*. Letzte Woche kostete er *80 €*. *Wie viel Prozent sparst du wirklich?*",
+      "loesung": "12,5 %",
+      "erklaerung": "70 € statt 80 € = 10 € gespart, 10 ÷ 80 = 12,5 %. Wusstest du? Bei Rabatten gilt in Deutschland der niedrigste Preis der letzten 30 Tage als Bezug.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "scheinrabatt-vorpreis"
+    },
+    {
+      "id": 1050,
+      "kategorie": "mathe",
+      "thema": "trend_2026_11_27_blackweek",
+      "frage": "*3 zum Preis von 2*! Wie viel *Prozent Rabatt* sind das pro Stück?",
+      "loesung": "Ein Drittel (33 %)",
+      "erklaerung": "Du zahlst 2 von 3 Stücken, sparst also 1 von 3 = ⅓. Nicht 50 %! Trick: Rabatt = geschenkte Stücke ÷ alle Stücke.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "drei-fuer-zwei"
+    },
+    {
+      "id": 1051,
+      "kategorie": "iq",
+      "thema": "trend_2026_11_23_weihnachtsmarkt",
+      "frage": "Das *Riesenrad* hat *24 Gondeln* (1–24). Du sitzt in Nr. *5*, dein Freund *genau gegenüber*. *In welcher Nummer?*",
+      "loesung": "Nr. 17",
+      "erklaerung": "Gegenüber = 12 Gondeln weiter: 5 + 12 = 17. Wusstest du? Der Dresdner Striezelmarkt wurde 1434 erstmals urkundlich erwähnt.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "kreis-gegenueber"
+    },
+    {
+      "id": 1052,
+      "kategorie": "mathe",
+      "thema": "trend_2026_11_29_advent",
+      "frage": "Aus *4 Kerzenstummeln* gießt du *1 neue Kerze*. Du hast *16 neue Kerzen*. *Wie viele Kerzen brennen insgesamt?*",
+      "loesung": "21 Kerzen",
+      "erklaerung": "16 + 4 (aus 16 Stummeln) + 1 (aus 4 Stummeln) = 21. Wusstest du? Der erste Adventskranz hing 1839 in Hamburg.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "stummel-recycling"
+    },
+    {
+      "id": 1053,
+      "kategorie": "mathe",
+      "frage": "Ein Blatt ist *0,1 mm* dick. Du faltest es *10-mal* in der Mitte (rein rechnerisch). *Wie dick ist der Stapel?*",
+      "loesung": "Rund 10 cm",
+      "erklaerung": "Jede Falte verdoppelt: 2¹⁰ = 1024 Lagen × 0,1 mm ≈ 10 cm. Wusstest du? Rechnerisch reichen 42 Falten bis zum Mond.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "papier-falten"
+    },
+    {
+      "id": 1054,
+      "kategorie": "wort",
+      "frage": "Was gehört dir, wird aber *von anderen öfter benutzt* als von dir?",
+      "loesung": "Dein Name",
+      "erklaerung": "Andere sprechen dich ständig damit an, du selbst nennst ihn kaum.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "besitz-name"
+    },
+    {
+      "id": 1055,
+      "kategorie": "iq",
+      "frage": "Du hast *3 Äpfel* und *nimmst 2 weg*. *Wie viele Äpfel hast du?*",
+      "loesung": "2 Äpfel",
+      "erklaerung": "Du hast die 2 genommen – die hast du jetzt. Die Frage war nicht, wie viele übrig bleiben!",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "nimm-weg-falle"
+    },
+    {
+      "id": 1056,
+      "kategorie": "wort",
+      "frage": "Je *mehr* davon du nimmst, desto *mehr* lässt du hinter dir. Was ist das?",
+      "loesung": "Schritte",
+      "erklaerung": "Jeder Schritt hinterlässt eine Fußspur – je mehr Schritte, desto mehr Spuren.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "raetsel-schritte"
+    },
+    {
+      "id": 1057,
+      "kategorie": "iq",
+      "frage": "Drei Kisten: *Äpfel*, *Orangen*, *Gemischt*. Alle Schilder sind *falsch*. Aus welcher Kiste ziehst du *eine* Frucht, um alle zu klären?",
+      "loesung": "Aus „Gemischt“",
+      "erklaerung": "Dort steckt nur eine Sorte, z. B. Äpfel. Dann ist „Orangen“ die gemischte Kiste und „Äpfel“ enthält Orangen.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "falsche-etiketten"
+    },
+    {
+      "id": 1058,
+      "kategorie": "iq",
+      "frage": "Band 1 und 2 stehen *richtig sortiert*, Rücken nach vorn. Ein Wurm frisst von *Seite 1 (Band 1)* bis zur *letzten Seite (Band 2)*. *Was frisst er?*",
+      "loesung": "Nur 2 Buchdeckel",
+      "erklaerung": "Seite 1 von Band 1 liegt rechts, die letzte Seite von Band 2 links – direkt nebeneinander. Dazwischen nur die Deckel.",
+      "schwierigkeit": "schwer",
+      "status": "neu",
+      "konzept": "buecherwurm"
+    },
+    {
+      "id": 1059,
+      "kategorie": "iq",
+      "frage": "4 Personen müssen nachts über eine Brücke: *1 Lampe, max. 2 zugleich*. Sie brauchen *1, 2, 5 und 10 Min*. *Schnellste Gesamtzeit?*",
+      "loesung": "17 Minuten",
+      "erklaerung": "1+2 gehen (2), 1 zurück (1), 5+10 gehen (10), 2 zurück (2), 1+2 gehen (2) = 17. Nicht 19!",
+      "schwierigkeit": "schwer",
+      "status": "neu",
+      "konzept": "bruecke-lampe"
     }
   ],
   "gestrichen": [
