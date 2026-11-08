@@ -901,6 +901,146 @@
       "schwierigkeit": "schwer",
       "status": "neu",
       "konzept": "bruecke-lampe"
+    },
+    {
+      "id": 1060,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt vor alle drei?\n*___KISSEN*\n*___HÖRER*\n*___SPRUNG*",
+      "loesung": "Kopf",
+      "erklaerung": "Kopfkissen, Kopfhörer, Kopfsprung.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-kopf"
+    },
+    {
+      "id": 1061,
+      "kategorie": "mathe",
+      "frage": "Ohne Taschenrechner:\n*25 × 48 = ?*",
+      "loesung": "1200",
+      "erklaerung": "25 × 4 = 100 – und 48 sind 12 × 4. Also 12 × 100 = 1200. Mit dem Trick rechnest du jedes Mal-25 im Kopf!",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "mal-25-trick"
+    },
+    {
+      "id": 1062,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt vor alle drei?\n*___MANN*\n*___FLOCKE*\n*___STURM*",
+      "loesung": "Schnee",
+      "erklaerung": "Schneemann, Schneeflocke, Schneesturm.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-schnee"
+    },
+    {
+      "id": 1063,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*KÜHL___*\n*BÜCHER___*\n*GELD___*",
+      "loesung": "Schrank",
+      "erklaerung": "Kühlschrank, Bücherschrank, Geldschrank.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "wort-dreier-schrank"
+    },
+    {
+      "id": 1064,
+      "kategorie": "mathe",
+      "frage": "Ohne Taschenrechner:\n*47 × 1001 = ?*",
+      "loesung": "47.047",
+      "erklaerung": "Mal 1001 = mal 1000 plus einmal: 47.000 + 47 = 47.047. Klappt mit jeder zweistelligen Zahl!",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "mal-1001-trick"
+    },
+    {
+      "id": 1065,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt vor alle drei?\n*___BÄR*\n*___BERG*\n*___ZEIT*",
+      "loesung": "Eis",
+      "erklaerung": "Eisbär, Eisberg, Eiszeit.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-eis"
+    },
+    {
+      "id": 1066,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*HAUS___*\n*AUTO___*\n*FAHRRAD___*",
+      "loesung": "Schlüssel",
+      "erklaerung": "Hausschlüssel, Autoschlüssel, Fahrradschlüssel.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-schluessel"
+    },
+    {
+      "id": 1067,
+      "kategorie": "mathe",
+      "frage": "Ohne Taschenrechner:\n*19 × 21 = ?*",
+      "loesung": "399",
+      "erklaerung": "19 × 21 = (20 − 1) × (20 + 1) = 400 − 1 = 399. Der Trick klappt immer, wenn beide gleich weit von einer runden Zahl weg sind.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "binom-trick"
+    },
+    {
+      "id": 1068,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*NACHT___*\n*TISCH___*\n*TASCHEN___*",
+      "loesung": "Lampe",
+      "erklaerung": "Nachtlampe, Tischlampe, Taschenlampe.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-lampe"
+    },
+    {
+      "id": 1069,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*WINTER___*\n*HALB___*\n*SCHÖNHEITS___*",
+      "loesung": "Schlaf",
+      "erklaerung": "Winterschlaf, Halbschlaf, Schönheitsschlaf.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "wort-dreier-schlaf"
+    },
+    {
+      "id": 1070,
+      "kategorie": "mathe",
+      "frage": "Was ist *mehr*:\n*3 Dutzend Dutzend* oder *400*?",
+      "loesung": "3 Dutzend Dutzend (432)",
+      "erklaerung": "Ein Dutzend Dutzend = 12 × 12 = 144. Mal 3 = 432 – also mehr als 400!",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "dutzend-dutzend"
+    },
+    {
+      "id": 1071,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*FINGER___*\n*ZEHEN___*\n*FUSS___*",
+      "loesung": "Nagel",
+      "erklaerung": "Fingernagel, Zehennagel, Fußnagel.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-nagel"
+    },
+    {
+      "id": 1072,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*TRAUBEN___*\n*ORANGEN___*\n*TOMATEN___*",
+      "loesung": "Saft",
+      "erklaerung": "Traubensaft, Orangensaft, Tomatensaft.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-saft"
+    },
+    {
+      "id": 1073,
+      "kategorie": "mathe",
+      "frage": "Wie viel ist\n*1 % von 1 %*\nvon *1 Million*?",
+      "loesung": "100",
+      "erklaerung": "1 % von 1 Million = 10.000. Davon 1 % = 100. Prozent von Prozent schrumpft schnell!",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "prozent-von-prozent"
     }
   ],
   "gestrichen": [
@@ -920,7 +1060,21 @@
     99,
     101,
     19,
-    69
+    69,
+    1031,
+    1032,
+    1033,
+    1034,
+    1035,
+    1036,
+    1040,
+    1041,
+    1043,
+    1044,
+    1045,
+    1047,
+    1058,
+    1059
   ],
   "konzepte": {
     "11": "uhr-rechnen",
