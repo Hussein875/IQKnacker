@@ -252,6 +252,75 @@
           "Kerzen-Rätsel 🕯️"
         ]
       }
+    },
+    "trend_2026_11_30_cybermonday": {
+      "label": "CYBER MONDAY",
+      "akzent": "#3DDCFF",
+      "zeitraum": [
+        "11-28",
+        "11-30"
+      ],
+      "hashtags": [
+        "#cybermonday",
+        "#rabatt",
+        "#schnäppchen"
+      ],
+      "captions": [
+        "Cyber Monday: Erst rechnen, dann kaufen 🛒",
+        "Rabatt-Check zum Cyber Monday 💻"
+      ],
+      "texte": {
+        "hook": [
+          "Cyber Monday – nicht reinfallen! 💻",
+          "Rabatt-Falle? Rechne mit! 🛒"
+        ]
+      }
+    },
+    "trend_2026_12_01_adventskalender": {
+      "label": "TÜRCHEN 1",
+      "akzent": "#FF6B6B",
+      "zeitraum": [
+        "11-30",
+        "12-03"
+      ],
+      "hashtags": [
+        "#adventskalender",
+        "#advent",
+        "#dezember"
+      ],
+      "captions": [
+        "Das erste Türchen ist offen – und dieses Rätsel 🎁",
+        "Adventskalender-Logik für den 1. Dezember 🎄"
+      ],
+      "texte": {
+        "hook": [
+          "Türchen auf! 🎁",
+          "Adventskalender-Rätsel 🎄"
+        ]
+      }
+    },
+    "trend_2026_12_01_winter": {
+      "label": "WINTER",
+      "akzent": "#9AD8FF",
+      "zeitraum": [
+        "11-30",
+        "12-03"
+      ],
+      "hashtags": [
+        "#winteranfang",
+        "#schneemann",
+        "#winter"
+      ],
+      "captions": [
+        "Meteorologischer Winteranfang – Zeit für Schneemann-Logik ⛄",
+        "Winter ist da: Bau im Kopf mit ⛄"
+      ],
+      "texte": {
+        "hook": [
+          "Der Winter ist da ⛄",
+          "Schneemann-Logik ❄️"
+        ]
+      }
     }
   },
   "raetsel": [
@@ -1041,6 +1110,235 @@
       "schwierigkeit": "leicht",
       "status": "neu",
       "konzept": "prozent-von-prozent"
+    },
+    {
+      "id": 1074,
+      "kategorie": "emoji",
+      "frage": "🍩 + 🍩 = 10\n🍩 + 🐼 + 🐼 = 13\n🧁 + 🧁 = 2\n*🧁 + 🍩 + 🐼 = ?*",
+      "loesung": "10",
+      "erklaerung": "🍩 = 5, 🐼 = 4, 🧁 = 1 → 1 + 5 + 4 = 10.",
+      "schwierigkeit": "leicht",
+      "status": "neu"
+    },
+    {
+      "id": 1075,
+      "kategorie": "emoji",
+      "frage": "🐵 + 🐵 = 4\n🐵 + 🐼 + 🐼 = 14\n⚽ + ⚽ = 10\n*⚽ + 🐵 + 🐼 = ?*",
+      "loesung": "13",
+      "erklaerung": "🐵 = 2, 🐼 = 6, ⚽ = 5 → 5 + 2 + 6 = 13.",
+      "schwierigkeit": "leicht",
+      "status": "neu"
+    },
+    {
+      "id": 1076,
+      "kategorie": "emoji",
+      "frage": "🍒 + 🍒 = 12\n🍒 + ⚽ + ⚽ = 22\n🍇 + 🍇 = 10\n*🍇 + 🍒 + ⚽ = ?*",
+      "loesung": "19",
+      "erklaerung": "🍒 = 6, ⚽ = 8, 🍇 = 5 → 5 + 6 + 8 = 19.",
+      "schwierigkeit": "leicht",
+      "status": "neu"
+    },
+    {
+      "id": 1077,
+      "kategorie": "emoji",
+      "frage": "🏀 + 🏀 = 10\n🏀 + 🍇 + 🍇 = 21\n🍪 + 🍪 = 6\n*🍪 + 🏀 + 🍇 = ?*",
+      "loesung": "16",
+      "erklaerung": "🏀 = 5, 🍇 = 8, 🍪 = 3 → 3 + 5 + 8 = 16.",
+      "schwierigkeit": "leicht",
+      "status": "neu"
+    },
+    {
+      "id": 1078,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*GLÜH___*\n*ROT___*\n*WEISS___*",
+      "loesung": "Wein",
+      "erklaerung": "Glühwein, Rotwein, Weißwein.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-wein"
+    },
+    {
+      "id": 1079,
+      "kategorie": "mathe",
+      "frage": "Im Kopf mitrechnen:\n*1000 + 40*\n*+ 1000 + 30*\n*+ 1000 + 20*\n*+ 1000 + 10*",
+      "loesung": "4100",
+      "erklaerung": "Die Tausender: 4000. Die Zehner: 40 + 30 + 20 + 10 = 100. Zusammen 4100 – nicht 5000! Beim Mitzählen springt das Gehirn gern einen Tausender zu weit.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "summen-falle-4100"
+    },
+    {
+      "id": 1080,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*WEIHNACHTS___*\n*FLOH___*\n*SUPER___*",
+      "loesung": "Markt",
+      "erklaerung": "Weihnachtsmarkt, Flohmarkt, Supermarkt.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-markt"
+    },
+    {
+      "id": 1081,
+      "kategorie": "mathe",
+      "frage": "*37 × 3 = 111*\nWas ist dann\n*37 × 18 = ?*",
+      "loesung": "666",
+      "erklaerung": "18 = 3 × 6. Also 37 × 18 = 111 × 6 = 666. Genauso: 37 × 6 = 222, 37 × 9 = 333 … lauter Schnapszahlen!",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "schnapszahl-37"
+    },
+    {
+      "id": 1082,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt vor alle drei?\n*___LIFT*\n*___SPRUNG*\n*___STOCK*",
+      "loesung": "Ski",
+      "erklaerung": "Skilift, Skisprung, Skistock.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-ski"
+    },
+    {
+      "id": 1083,
+      "kategorie": "iq",
+      "frage": "Eine Münze zeigt *5-mal hintereinander Kopf*. Wie hoch ist die Chance auf *Kopf* beim *6. Wurf?*",
+      "loesung": "50 %",
+      "erklaerung": "Die Münze hat kein Gedächtnis: Jeder Wurf ist neu, also immer 50 %. Wer meint, jetzt „muss“ Zahl kommen, tappt in den Spielerfehlschluss.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "muenzwurf-gedaechtnis"
+    },
+    {
+      "id": 1084,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*ZIMT___*\n*SEE___*\n*ABEND___*",
+      "loesung": "Stern",
+      "erklaerung": "Zimtstern, Seestern, Abendstern.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "wort-dreier-stern"
+    },
+    {
+      "id": 1085,
+      "kategorie": "mathe",
+      "frage": "Ohne Taschenrechner:\n*11 × 72 = ?*",
+      "loesung": "792",
+      "erklaerung": "Mal-11-Trick: Ziffern auseinanderziehen und ihre Summe in die Mitte: 7 _ 2 → 7 + 2 = 9 → 792. Klappt mit jeder zweistelligen Zahl (Übertrag beachten)!",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "mal-11-trick"
+    },
+    {
+      "id": 1086,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*GESCHENK___*\n*PACK___*\n*ZEITUNGS___*",
+      "loesung": "Papier",
+      "erklaerung": "Geschenkpapier, Packpapier, Zeitungspapier.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-papier"
+    },
+    {
+      "id": 1087,
+      "kategorie": "iq",
+      "frage": "Ein Bauer hat *17 Schafe*. Alle *bis auf 9* laufen weg. *Wie viele* bleiben ihm?",
+      "loesung": "9",
+      "erklaerung": "„Alle bis auf 9“ heißt: 9 bleiben da. Wer schnell 17 − 9 = 8 rechnet, ist reingefallen!",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "alle-bis-auf"
+    },
+    {
+      "id": 1088,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt vor alle drei?\n*___FISCH*\n*___RAUSCH*\n*___GRÄBER*",
+      "loesung": "Gold",
+      "erklaerung": "Goldfisch, Goldrausch, Goldgräber.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "wort-dreier-gold"
+    },
+    {
+      "id": 1089,
+      "kategorie": "mathe",
+      "frage": "Ohne Taschenrechner:\n*65 × 65 = ?*",
+      "loesung": "4225",
+      "erklaerung": "Trick für Zahlen mit 5 am Ende: vordere Ziffer mal die nächsthöhere (6 × 7 = 42), dann 25 anhängen: 4225. Genauso 35 × 35 = 1225!",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "quadrat-endziffer-5"
+    },
+    {
+      "id": 1090,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*GEBURTSTAGS___*\n*ADVENTS___*\n*DUFT___*",
+      "loesung": "Kerze",
+      "erklaerung": "Geburtstagskerze, Adventskerze, Duftkerze.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-kerze"
+    },
+    {
+      "id": 1091,
+      "kategorie": "mathe",
+      "frage": "Ist *123.456.789*\nohne Rest durch *9* teilbar?",
+      "loesung": "Ja",
+      "erklaerung": "Quersumme: 1 + 2 + … + 9 = 45 – und 45 ist durch 9 teilbar, also auch die ganze Zahl. Der Quersummen-Trick klappt bei jeder Zahl!",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "quersumme-9"
+    },
+    {
+      "id": 1092,
+      "kategorie": "iq",
+      "frage": "Lisas Mutter hat *4 Kinder*: *Frühling*, *Sommer*, *Herbst* und …?",
+      "loesung": "Lisa",
+      "erklaerung": "Es ist Lisas Mutter – also heißt das vierte Kind Lisa. Wer „Winter“ sagt, ist dem Muster in die Falle gegangen!",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "name-falle"
+    },
+    {
+      "id": 1093,
+      "kategorie": "mathe",
+      "frage": "Ohne Taschenrechner:\n*864 × 5 = ?*",
+      "loesung": "4320",
+      "erklaerung": "Mal 5 = mal 10 und dann halbieren: 8640 : 2 = 4320. Mit dem Trick geht jedes Mal-5 im Kopf!",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "mal-5-trick"
+    },
+    {
+      "id": 1094,
+      "kategorie": "mathe",
+      "frage": "Cyber Monday: *20 % Rabatt* und an der Kasse *nochmal 20 %*. Sparst du insgesamt *40 %?*",
+      "loesung": "Nein, nur 36 %",
+      "erklaerung": "100 € → 80 € → davon 20 % weg = 64 €. Gespart: 36 %. Wusstest du? Den Namen „Cyber Monday“ gibt es seit 2005 – erfunden von US-Händlern.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "rabatt-auf-rabatt",
+      "thema": "trend_2026_11_30_cybermonday"
+    },
+    {
+      "id": 1095,
+      "kategorie": "mathe",
+      "frage": "Adventskalender: Hinter Türchen 1 ist *1 Cent*, hinter jedem weiteren *doppelt so viel*. Sind in *Türchen 24* mehr als *10.000 €?*",
+      "loesung": "Ja, rund 84.000 €",
+      "erklaerung": "10-mal verdoppeln ≈ ×1000. Türchen 21: 1 Mio. Cent = 10.000 €. Türchen 24: noch 3-mal doppelt = 83.886 €. Wusstest du? Adventskalender gibt es seit gut 100 Jahren.",
+      "schwierigkeit": "schwer",
+      "status": "neu",
+      "konzept": "verdopplung-cent",
+      "thema": "trend_2026_12_01_adventskalender"
+    },
+    {
+      "id": 1096,
+      "kategorie": "iq",
+      "frage": "Schneemann: Die obere Kugel ist *halb so breit* wie die untere. Wie viel *Schnee* steckt in ihr – verglichen mit der unteren?",
+      "loesung": "Nur ein Achtel",
+      "erklaerung": "Halb so breit, halb so tief, halb so hoch: ½ × ½ × ½ = ⅛. Wusstest du? Meteorologisch beginnt der Winter am 1.12., astronomisch erst am 21.12.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "volumen-halb-achtel",
+      "thema": "trend_2026_12_01_winter"
     }
   ],
   "gestrichen": [
@@ -1074,7 +1372,9 @@
     1045,
     1047,
     1058,
-    1059
+    1059,
+    93,
+    95
   ],
   "konzepte": {
     "11": "uhr-rechnen",
@@ -1121,6 +1421,13 @@
     "95": "verdopplung-summe",
     "96": "kalender-rest",
     "97": "prozent-falle",
-    "100": "prozent-rueckwaerts"
+    "100": "prozent-rueckwaerts",
+    "64": "wort-dreier-fuss",
+    "65": "wort-dreier-haus",
+    "66": "wort-dreier-licht",
+    "67": "wort-dreier-schirm",
+    "68": "wort-dreier-wasser",
+    "90": "wort-dreier-weihnachts",
+    "1006": "wort-dreier-buerste"
   }
 }
