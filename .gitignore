@@ -6,3 +6,4 @@ output/*
 prototypen/out/
 prototypen/.cache/
 prototypen/*.onnx*
+.stimmen-cache/

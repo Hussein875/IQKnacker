@@ -400,6 +400,8 @@ class RaetselRenderer:
                 lesen = len(str(raetsel.get("erklaerung", ""))) / self.aufl.get("zeichen_pro_sekunde", 14)
                 self.t_aufloesung = clamp(self.aufl.get("grunddauer", 1.8) + lesen,
                                           self.aufl.get("min_dauer", 3.5), self.aufl.get("max_dauer", 8))
+            # mit Stimme: so lange, dass die gesprochene Lösung ganz hineinpasst
+            self.t_aufloesung = max(self.t_aufloesung, float(raetsel.get("_aufloesung_min", 0)))
             self.t_abschluss = z.get("abschluss", 2.4)
             self.t_end = self.t_pause + self.t_aufloesung + self.t_abschluss
             letzte_szene = self.t_abschluss
@@ -732,14 +734,51 @@ class RaetselRenderer:
         groesse = self.setzer_fett.passende_groesse(frage, max_b, max_h, max_groesse, g["raetsel_min"],
                                                     zeilenabstand)
         self.raetsel_schriftgroesse = groesse
-        text = self.setzer_fett.block(frage, groesse, max_b, self.textfarbe, self.akzent, zeilenabstand)
+        text, boxen = self.setzer_fett.block_mit_woertern(frage, groesse, max_b, self.textfarbe, self.akzent,
+                                                         zeilenabstand)
         if bild_ebene is None:
+            self._reihen_aufbau_vorbereiten(text, boxen)
             return text
         kombi = Image.new("RGBA", (max(bild_ebene.width, text.width), bild_ebene.height + 40 + text.height),
                           (0, 0, 0, 0))
         kombi.alpha_composite(bild_ebene, ((kombi.width - bild_ebene.width) // 2, 0))
         kombi.alpha_composite(text, ((kombi.width - text.width) // 2, bild_ebene.height + 40))
         return kombi
+
+    def _reihen_aufbau_vorbereiten(self, text, boxen):
+        """Wort-Dreier: Die Frage steht ab Frame 1, die drei Wörter springen kurz danach nacheinander herein –
+        so passiert in der ersten Sekunde etwas, und das Auge bleibt dran."""
+        self.reihen_aufbau = None
+        a = self.anim
+        if not a.get("reihen_aufbau", True) or "___" not in str(self.raetsel.get("frage", "")):
+            return
+        baender = sorted({(oben, unten) for _, oben, _, unten in boxen})
+        anzahl = str(self.raetsel["frage"]).count("___")
+        if len(baender) < anzahl + 1:
+            return  # Wörter umbrochen o. Ä. – dann lieber alles auf einmal zeigen
+        basis = text.copy()
+        reihen = []
+        for oben, unten in baender[-anzahl:]:
+            reihen.append((text.crop((0, oben, text.width, unten)), oben))
+            basis.paste((0, 0, 0, 0), (0, oben, text.width, unten))
+        start, abstand = a.get("reihen_start", 0.35), a.get("reihen_abstand", 0.35)
+        self.reihen_aufbau = (basis, reihen, start, abstand, start + abstand * (anzahl - 1) + 0.4)
+
+    def _inhalt_zum_zeitpunkt(self, t):
+        """Rätsel-Ebene zum Zeitpunkt t – während des Reihen-Aufbaus ohne die noch fehlenden Wörter."""
+        aufbau = getattr(self, "reihen_aufbau", None)
+        if not aufbau or t >= aufbau[4]:
+            return self.inhalt_ebene
+        basis, reihen, start, abstand, _ = aufbau
+        ebene = basis.copy()
+        for i, (reihe, oben) in enumerate(reihen):
+            p = clamp((t - start - i * abstand) / 0.3)
+            if p <= 0:
+                continue
+            q = ease_out(p)
+            versatz = round(30 * (1 - q))
+            ebene.alpha_composite(mit_deckkraft(reihe, q), dest=(0, min(ebene.height - reihe.height, oben + versatz)))
+        return ebene
 
     def _finde_ebene(self, max_b, max_h):
         """Gitter aus gleichen Zeichen mit genau einem abweichenden – inklusive Reihen-/Spaltennummern."""
@@ -902,7 +941,7 @@ class RaetselRenderer:
         zoom = punch * (1 + a["zoom_drift"] * t / self.t_raetsel)
         if kritisch:
             zoom *= 1 + 0.02 * (1 - ease_out(in_sekunde / 0.4))  # „Herzschlag“
-        einfuegen(bild, self.inhalt_ebene, (self.mitte_x, self.inhalt_y), raus, zoom)
+        einfuegen(bild, self._inhalt_zum_zeitpunkt(t), (self.mitte_x, self.inhalt_y), raus, zoom)
 
         self._optionen(bild, t, raus, kritisch, in_sekunde)
         self._countdown(bild, c, raus, punch, kritisch, in_sekunde, warn_anteil)

@@ -38,6 +38,7 @@ ARCHIV_DATEI = os.path.join(BASIS, "raetsel_archiv.json")
 PFLICHTFELDER = ["id", "kategorie", "frage", "loesung", "erklaerung", "schwierigkeit", "status"]
 GUELTIGE_STATUS = ["neu", "erstellt", "gepostet"]
 MUSIK_ENDUNGEN = (".mp3", ".m4a", ".aac", ".wav", ".ogg")
+STIMMEN_CACHE = os.path.join(BASIS, ".stimmen-cache")  # gesprochene Sätze, damit nichts doppelt bezahlt wird
 KOMMENTAR_MAX = 150  # Zeichenlimit für TikTok-Kommentare
 
 
@@ -101,6 +102,14 @@ def check():
     else:
         info = f"keine Tracks in {cfg['musik']['ordner']} – Videos ohne Musik"
     print(f"Musik:   {info}")
+    import stimme
+    st = cfg.get("stimme", {})
+    if not st.get("aktiv"):
+        print("Stimme:  aus (config.json → stimme.aktiv)")
+    elif stimme.verfuegbar(cfg):
+        print(f"Stimme:  ✓ ElevenLabs-Schlüssel in {stimme.SCHLUESSEL_DATEI} (Voice-ID {st['voice_id']})")
+    else:
+        print(f"Stimme:  ✗ kein Schlüssel – Videos entstehen ohne Stimme. Einrichten: pbpaste > ~/.elevenlabs && chmod 600 ~/.elevenlabs")
     logo = os.path.join(BASIS, cfg["wasserzeichen"]["datei"])
     if cfg["ausgabe"].get("drive_ordner"):
         drive = drive_ordner(cfg)
@@ -386,9 +395,21 @@ def musik_waehlen(cfg, ohne_musik):
     return (None, True) if modus in ("auto", "generiert") else (None, False)
 
 
-def ffmpeg_befehl(ffmpeg, renderer, ziel, cfg, musik, effekte, musik_generiert=False):
+def musik_absenken(cfg, fenster):
+    """Lautstärke-Ausdruck für ffmpeg: Musik während der Stimme leiser (weich ein- und ausgeblendet)."""
+    if not fenster:
+        return ""
+    tief = cfg.get("stimme", {}).get("musik_unter_stimme", 0.35)
+    rampe = 0.15
+    # pro Fenster ein Faktor 0..1 (1 = Stimme läuft), weich über `rampe` Sekunden; in '…' brauchen Kommas kein Escape
+    teile = [f"clip(min((t-{a - rampe:.3f})/{rampe},({b + rampe:.3f}-t)/{rampe}),0,1)" for a, b in fenster]
+    return f",volume='1-{1 - tief:.3f}*min(1,{'+'.join(teile)})':eval=frame"
+
+
+def ffmpeg_befehl(ffmpeg, renderer, ziel, cfg, musik, effekte, musik_generiert=False, sprache=None, fenster=()):
     v = cfg["video"]
     dauer = renderer.dauer
+    absenken = musik_absenken(cfg, fenster)
     befehl = [ffmpeg, "-y", "-loglevel", "error",
               "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{renderer.breite}x{renderer.hoehe}",
               "-r", str(renderer.fps), "-i", "-"]
@@ -396,7 +417,7 @@ def ffmpeg_befehl(ffmpeg, renderer, ziel, cfg, musik, effekte, musik_generiert=F
     if musik and musik_generiert:
         # Erzeugte Musik hat genau Videolänge und blendet selbst passend zum Loop aus
         befehl += ["-i", musik]
-        filter_teile.append(f"[{eingang}:a]volume={cfg['musik']['lautstaerke']}[musik]")
+        filter_teile.append(f"[{eingang}:a]volume={cfg['musik']['lautstaerke']}{absenken}[musik]")
         spuren.append("[musik]")
         eingang += 1
     elif musik:
@@ -406,7 +427,7 @@ def ffmpeg_befehl(ffmpeg, renderer, ziel, cfg, musik, effekte, musik_generiert=F
         filter_teile.append(f"[{eingang}:a]atrim=0:{dauer:.3f},asetpts=N/SR/TB,"
                             f"afade=t=in:st=0:d={m['einblenden']},"
                             f"afade=t=out:st={dauer - aus:.3f}:d={aus},"
-                            f"volume={m['lautstaerke']}[musik]")
+                            f"volume={m['lautstaerke']}{absenken}[musik]")
         spuren.append("[musik]")
         eingang += 1
     if effekte:
@@ -415,9 +436,16 @@ def ffmpeg_befehl(ffmpeg, renderer, ziel, cfg, musik, effekte, musik_generiert=F
                             f"aformat=channel_layouts=stereo,apad[sfx]")
         spuren.append("[sfx]")
         eingang += 1
+    if sprache:
+        befehl += ["-i", sprache]
+        filter_teile.append(f"[{eingang}:a]volume={cfg['stimme'].get('lautstaerke', 1.0)},"
+                            f"aformat=channel_layouts=stereo,apad[stimme]")
+        spuren.append("[stimme]")
+        eingang += 1
     if spuren:
-        if len(spuren) == 2:
-            filter_teile.append("[musik][sfx]amix=inputs=2:duration=first:normalize=0[a]")
+        if len(spuren) >= 2:
+            # Die erste Spur bestimmt die Länge; Musik/Effekte/Stimme sind ohnehin genau so lang wie das Video
+            filter_teile.append(f"{''.join(spuren)}amix=inputs={len(spuren)}:duration=first:normalize=0[a]")
         else:
             filter_teile.append(f"{spuren[0]}anull[a]")
         ausgang = "[a]"
@@ -437,12 +465,59 @@ def ffmpeg_befehl(ffmpeg, renderer, ziel, cfg, musik, effekte, musik_generiert=F
     return befehl
 
 
-def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False, ohne_effekte=False):
+def stimme_vorbereiten(r, cfg, ffmpeg):
+    """Frage und Lösung sprechen lassen. Rückgabe (Rätsel mit angepassten Zeiten, [(Rolle, Samples)]).
+    Ohne Schlüssel oder bei Fehlern: unverändertes Rätsel und leere Liste – das Video entsteht ohne Stimme."""
+    import stimme
+    if not stimme.verfuegbar(cfg):
+        return r, []
+    teile = []
+    for rolle, satz in (("frage", stimme.frage_text(r, cfg)), ("loesung", stimme.loesung_text(r, cfg))):
+        mp3 = stimme.sprich(satz, cfg, STIMMEN_CACHE) if satz else None
+        samples = stimme.als_samples(ffmpeg, mp3) if mp3 else None
+        if samples is None:
+            return r, []  # lieber ganz ohne Stimme als nur halb
+        teile.append((rolle, samples))
+    st = cfg["stimme"]
+    r = dict(r)
+    r["lesezeit"] = max(1.5, stimme.dauer(teile[0][1]) + st.get("nach_frage", 0.3))
+    r["_aufloesung_min"] = stimme.dauer(teile[1][1]) + st.get("nach_loesung", 1.6)
+    return r, teile
+
+
+def stimme_schreiben(renderer, teile, cfg, ziel, rate=44100):
+    """Legt die gesprochenen Sätze an ihre Stellen im Video. Rückgabe: Zeitfenster, in denen gesprochen wird."""
+    import stimme
+    puffer = array.array("h", bytes(2 * round(renderer.dauer * rate)))
+    fenster = []
+    for rolle, samples in teile:
+        start = cfg["stimme"].get("start_frage", 0.1) if rolle == "frage" else \
+            renderer.aufloesung_zeitpunkt() + cfg["stimme"].get("start_loesung", 0.15)
+        s0 = round(start * rate)
+        stueck = samples[: max(0, len(puffer) - s0)]
+        puffer[s0:s0 + len(stueck)] = stueck
+        fenster.append((start, start + stimme.dauer(samples)))
+    with wave.open(ziel, "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(rate)
+        w.writeframes(puffer.tobytes())
+    return fenster
+
+
+def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False, ohne_effekte=False, ohne_stimme=False):
     from renderer import RaetselRenderer
 
     ausgabe = os.path.join(BASIS, cfg["ausgabe"]["ordner"])
     os.makedirs(ausgabe, exist_ok=True)
     name = dateiname(r)
+    teile = []
+    if not nur_vorschau and not ohne_stimme:
+        try:
+            r, teile = stimme_vorbereiten(r, cfg, ffmpeg)
+        except Exception as fehler:  # die Stimme ist ein Extra – sie darf nie ein Video verhindern
+            print(f"  ⚠ Keine Stimme ({fehler}) – Video ohne Stimme")
+            teile = []
     renderer = RaetselRenderer(cfg, r, BASIS)
 
     vorschau = os.path.join(ausgabe, f"{name}.png")
@@ -465,10 +540,15 @@ def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False, ohne_effekte=F
     if cfg.get("soundeffekte", {}).get("aktiv") and not ohne_effekte:
         effekte = os.path.join(ausgabe, f".{name}.sfx.wav")
         soundeffekte_schreiben(renderer, effekte)
+    sprache, fenster = None, []
+    if teile:
+        sprache = os.path.join(ausgabe, f".{name}.stimme.wav")
+        fenster = stimme_schreiben(renderer, teile, cfg, sprache)
 
     start = time.time()
     try:
-        prozess = subprocess.Popen(ffmpeg_befehl(ffmpeg, renderer, tmp, cfg, musik, effekte, musik_generiert),
+        prozess = subprocess.Popen(ffmpeg_befehl(ffmpeg, renderer, tmp, cfg, musik, effekte, musik_generiert,
+                                                 sprache, fenster),
                                    stdin=subprocess.PIPE)
         try:
             for i in range(renderer.frame_anzahl):
@@ -481,7 +561,7 @@ def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False, ohne_effekte=F
                 os.remove(tmp)
             raise RuntimeError("FFmpeg ist mit einem Fehler abgebrochen (siehe Meldung oben).")
     finally:
-        for hilfsdatei in (effekte, musik if musik_generiert else None):
+        for hilfsdatei in (effekte, sprache, musik if musik_generiert else None):
             if hilfsdatei and os.path.exists(hilfsdatei):
                 os.remove(hilfsdatei)
     os.replace(tmp, video)
@@ -497,12 +577,14 @@ def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False, ohne_effekte=F
 
     musik_info = "erzeugte Musik" if musik_generiert else os.path.basename(musik) if musik else "ohne Musik"
     musik_info += ", mit Soundeffekten" if effekte else ""
+    musik_info += ", mit Stimme" if sprache else ""
     print(f"  ✓ {os.path.relpath(video, BASIS)}  ({renderer.dauer:.1f} s, {musik_info}, "
           f"Schriftgröße {renderer.raetsel_schriftgroesse}, {time.time() - start:.1f} s Renderzeit"
           f"{', in Google Drive kopiert' if drive else ''})")
     laenge = len(kommentar.strip().encode("utf-16-le")) // 2  # Emojis zählen hier doppelt – wie bei TikTok
     if laenge > KOMMENTAR_MAX:
         print(f"  ⚠ Auflösungs-Kommentar hat {laenge} Zeichen – TikTok erlaubt {KOMMENTAR_MAX}. Erklärung kürzen!")
+    return bool(sprache)
 
 
 # ---------------------------------------------------------------- Posting-Plan
@@ -587,6 +669,7 @@ def plan_als_metricool(ausgabe, cfg, posts, von, bis):
     mc = cfg.get("metricool", {})
     zeilen, ohne_link = [], []
     for r, datum, uhrzeit, caption in posts:
+        ki = "true" if mc.get("ki_stimme") and r.get("ki_stimme") else "false"  # KI-Stimme kennzeichnen
         link = drive_link(cfg, r)
         if not link:
             ohne_link.append(dateiname(r) + ".mp4")
@@ -600,12 +683,12 @@ def plan_als_metricool(ausgabe, cfg, posts, von, bis):
             "Instagram Post Type": "REEL", "Instagram Show Reel On Feed": "true",
             "Youtube Video Title": youtube_titel(caption), "Youtube Video Type": "SHORT",
             "Youtube Video Privacy": "PUBLIC", "Youtube video for kids": "false",
-            "Youtube AI generated content": "false", "Youtube notify subscribers": "true",
+            "Youtube AI generated content": ki, "Youtube notify subscribers": "true",
             "Youtube Video Category": mc.get("youtube_kategorie", "EDUCATION"),
             "Youtube Video Tags": ",".join(mc.get("youtube_tags", [])),
             "TikTok disable comments": "false", "TikTok disable duet": "false", "TikTok disable stitch": "false",
             "TikTok Post Privacy": "PUBLIC_TO_EVERYONE", "TikTok Branded Content": "false",
-            "TikTok Your Brand": "false", "TikTok Auto Add Music": "false", "TikTok Ai generated content": "false",
+            "TikTok Your Brand": "false", "TikTok Auto Add Music": "false", "TikTok Ai generated content": ki,
             "Brand name": mc.get("marke", ""),
         })
         zeilen.append([werte[s] for s in METRICOOL_SPALTEN])
@@ -735,6 +818,7 @@ def main():
     parser.add_argument("--vorschau", action="store_true", help="nur Vorschaubilder, kein Video, Status bleibt")
     parser.add_argument("--ohne-musik", action="store_true", help="Video ohne Musik erzeugen")
     parser.add_argument("--ohne-effekte", action="store_true", help="ohne Ticken und Gong")
+    parser.add_argument("--ohne-stimme", action="store_true", help="ohne Sprecherstimme (ElevenLabs)")
     parser.add_argument("--ohne-aufloesung", action="store_true",
                         help="Lösung nicht im Video zeigen (Endkarte wie früher, z. B. zum Vergleichen)")
     parser.add_argument("--liste", action="store_true", help="alle Rätsel mit Status anzeigen")
@@ -878,12 +962,17 @@ def main():
     for r in auswahl:
         print(f"• Rätsel {r['id']} ({r['kategorie']})")
         try:
-            erzeuge(r, cfg, ffmpeg, nur_vorschau=args.vorschau, ohne_musik=args.ohne_musik,
-                    ohne_effekte=args.ohne_effekte)
+            mit_stimme = erzeuge(r, cfg, ffmpeg, nur_vorschau=args.vorschau, ohne_musik=args.ohne_musik,
+                                 ohne_effekte=args.ohne_effekte, ohne_stimme=args.ohne_stimme)
         except Exception as e:
             fehler += 1
             print(f"  ✗ Fehler: {e}")
             continue
+        if not args.vorschau:
+            if mit_stimme:
+                r["ki_stimme"] = True  # für das KI-Label in Metricool (TikTok/YouTube)
+            else:
+                r.pop("ki_stimme", None)
         if not args.vorschau and r["status"] == "neu":
             r["status"] = "erstellt"
             speichere_raetsel(raetsel)  # nach jedem Video speichern, damit nichts verloren geht

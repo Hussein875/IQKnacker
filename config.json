@@ -79,7 +79,7 @@
       "emoji": 3
     },
     "zeit_um": 0.7,
-    "abschluss": 2.2,
+    "abschluss": 1.6,
     "endkarte": 2.6,
     "uebergang": 0.25,
     "loop": 0.3
@@ -104,7 +104,7 @@
   },
   "aufloesung": {
     "zeigen": true,
-    "pause": 2.1,
+    "pause": 1.8,
     "zeichen_pro_sekunde": 16,
     "grunddauer": 1.4,
     "min_dauer": 3.5,
@@ -145,7 +145,7 @@
     "spruch_pause": [
       "Zu knapp? Einfach pausieren ⏸",
       "Mehr Zeit? Video anhalten ⏸",
-      "In Ruhe rechnen? Pausier ⏸"
+      "In Ruhe überlegen? Pausier ⏸"
     ],
     "tipp_prefix": "💡 *Tipp:* ",
     "zeit_um": [
@@ -201,7 +201,15 @@
   "metricool": {
     "marke": "",
     "youtube_kategorie": "EDUCATION",
-    "youtube_tags": ["rätsel", "denksport", "iqtest", "logik", "matherätsel", "shorts"]
+    "youtube_tags": [
+      "rätsel",
+      "denksport",
+      "iqtest",
+      "logik",
+      "matherätsel",
+      "shorts"
+    ],
+    "ki_stimme": true
   },
   "hashtags_allgemein": [
     "#iqknacker",
@@ -488,5 +496,22 @@
         ]
       }
     }
+  },
+  "stimme": {
+    "aktiv": true,
+    "voice_id": "muSxG4dqYjBCkbpXqbEl",
+    "modell": "eleven_multilingual_v2",
+    "einstellungen": {
+      "stability": 0.4,
+      "similarity_boost": 0.8,
+      "style": 0.35,
+      "use_speaker_boost": true
+    },
+    "lautstaerke": 1.0,
+    "musik_unter_stimme": 0.35,
+    "nach_frage": 0.3,
+    "nach_loesung": 1.6,
+    "start_frage": 0.1,
+    "start_loesung": 0.15
   }
 }

@@ -212,6 +212,8 @@ Jedes Rätsel muss mindestens eins davon haben – sonst fliegt es raus:
 - **Kommentar-Streit:** Leute sind sich sicher und liegen trotzdem daneben (Durchschnittstempo, Prozent rauf und runter).
 - **Mehrwert:** ein Trick, den man danach kann (99 × 99, durch ½ teilen) oder ein „Wusstest du?“-Fakt.
 
+**Schnell statt schwer (TikTok-Auswertung Oktober/November):** Am besten laufen Rätsel, die man in 3 Sekunden versteht und in der Countdown-Zeit im Kopf schafft – Wort-Dreier und Kopfrechen-Tricks. Lieber ein leichtes Rätsel mit Aha als ein schweres, bei dem die Leute aufgeben und weiterwischen. Wort-Dreier sind das Hauptformat (mindestens eins pro Tag).
+
 **Nicht mehr:** reines Ausrechnen ohne Falle („3 Hühner und 2 Hunde – wie viele Beine?“), Allgemeinwissen, Schulbuch-Fragen („Wie viele Kanten hat ein Würfel?“), Rätsel, die man nur mit Stift lösen kann.
 
 **Nichts doppelt:** `python generate.py --doppelte` vergleicht alle Rätsel inklusive Archiv – gleiche Idee (`konzept`), fast gleicher Text, gleiches Lösungswort, gleiche Emoji-Kombination, gleiches Suchbild-Paar. Gemeldet wird nur, wo noch etwas zu ändern ist (mindestens ein Rätsel ist weder geplant noch gepostet). Die Auto-Rätsel (`--neu-emoji`, `--neu-finde`) nehmen von sich aus keine schon benutzten Kombinationen.
@@ -312,6 +314,8 @@ Alles steht zentral in **`config.json`**:
   - `"dateien"`: nur deine Tracks (ohne Dateien keine Musik)
   - `"aus"`: keine Musik
 - **Soundeffekte:** Ticken pro Countdown-Sekunde (in der Schlussphase höher und doppelt), ein helles Pling beim Tipp, ein Gong bei „Zeit um!“, leises Ticken bei „3 · 2 · 1“ und ein heller Klang, wenn die Lösung erscheint – alles vom Skript erzeugt.
+- **Sprecherstimme (ElevenLabs, seit 13.11.2026):** Die Stimme liest am Anfang die Frage vor (bei Wort-Dreiern: „Welches Wort passt hinter alle drei? Glüh. Rot. Weiß.“) und sagt bei der Auflösung die Lösung. Der Countdown startet erst, wenn die Frage gesprochen ist; die Musik wird unter der Stimme leiser. Einstellungen unter `stimme` in `config.json` (`aktiv`, `voice_id` – dieselbe Stimme wie bei Dotchi –, Modell, Lautstärke). Schlüssel wie bei Dotchi in `~/.elevenlabs`. Gesprochene Sätze landen in `.stimmen-cache/`, damit nichts doppelt bezahlt wird (~100 Zeichen pro Video). **Fehlt der Schlüssel oder antwortet ElevenLabs nicht, entsteht das Video ohne Stimme** – der Wochenlauf bricht nie ab. Eigener Text pro Rätsel: `"sprich": "…"` (Frage) bzw. `"sprich_loesung": "…"`. Ohne Stimme rendern: `--ohne-stimme`. Videos mit Stimme bekommen in der Metricool-CSV automatisch das KI-Label für TikTok und YouTube.
+- **Wort-Aufbau:** Bei Wort-Dreiern steht die Frage ab dem ersten Frame, die drei Wörter springen in der ersten Sekunde nacheinander herein (`animation.reihen_aufbau`, `reihen_start`, `reihen_abstand`) – damit sich gleich am Anfang etwas bewegt.
 - **Trend-Sound in der App:** Videos mit `--ohne-musik` erzeugen (Ticken bleibt) oder mit `--ohne-musik --ohne-effekte` ganz ohne Ton.
 - **Logo:** `assets/logo/logo_symbol.png` (nur Symbol) und `assets/logo/logo_komplett.png` (mit Schriftzug), PNG mit transparentem Hintergrund. Wird klein als Wasserzeichen oben links eingeblendet. Solange keine Datei da ist, steht dort `@iqknacker` als Text. `assets/logo/profilbild.png` ist das Profilbild für den Account.
 
