@@ -216,6 +216,8 @@ Jedes Rätsel muss mindestens eins davon haben – sonst fliegt es raus:
 
 **Nicht mehr:** reines Ausrechnen ohne Falle („3 Hühner und 2 Hunde – wie viele Beine?“), Allgemeinwissen, Schulbuch-Fragen („Wie viele Kanten hat ein Würfel?“), Rätsel, die man nur mit Stift lösen kann.
 
+**Foto-Karussells (TikTok/Instagram):** `python3 karussell.py --name wort_best_of --titel "5 Wort-Rätsel" 64 66 68 67 65` – Titelfolie, ein Rätsel pro Folie, Lösungen auf der letzten Folie („Wie viele hattest du?“). Für Rätsel, die schon als Video gelaufen sind. Geplante Karussells stehen in `karussells.json`.
+
 **Nichts doppelt:** `python generate.py --doppelte` vergleicht alle Rätsel inklusive Archiv – gleiche Idee (`konzept`), fast gleicher Text, gleiches Lösungswort, gleiche Emoji-Kombination, gleiches Suchbild-Paar. Gemeldet wird nur, wo noch etwas zu ändern ist (mindestens ein Rätsel ist weder geplant noch gepostet). Die Auto-Rätsel (`--neu-emoji`, `--neu-finde`) nehmen von sich aus keine schon benutzten Kombinationen.
 
 Danach `python generate.py --vorschau` ausführen und die PNGs in `output/` anschauen.
