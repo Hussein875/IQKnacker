@@ -60,6 +60,66 @@ def _zahlen_sprechbar(text):
     return re.sub(r"\s+", " ", text).strip()
 
 
+EINER = ["null", "ein", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf", "zwölf",
+         "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn"]
+ZEHNER = ["", "", "zwanzig", "dreißig", "vierzig", "fünfzig", "sechzig", "siebzig", "achtzig", "neunzig"]
+ZAHL = re.compile(r"\d{1,3}(?:\.\d{3})+(?!\d)|\d+(?:,\d+)?")   # 1.188 · 63 · 0,5
+RECHENWOERTER = {"plus", "minus", "mal", "geteilt", "durch", "gleich", "hoch", "von", "und", "prozent"}
+
+
+def _unter_tausend(n, allein, gross):
+    """1…999 in Worten. `allein`: eine 1 am Ende heißt „eins“ (sonst „ein“ wie in „eintausend“);
+    `gross`: in großen Zahlen heißt es „einhundert“, sonst nur „hundert“."""
+    wort = ""
+    if n >= 100:
+        wort = (("ein" if gross else "") if n // 100 == 1 else EINER[n // 100]) + "hundert"
+        n %= 100
+    if n == 0:
+        return wort
+    if n == 1:
+        return wort + ("eins" if allein else "ein")
+    if n < 20:
+        return wort + EINER[n]
+    return wort + (EINER[n % 10] + "und" if n % 10 else "") + ZEHNER[n // 10]
+
+
+def zahl_in_worten(n):
+    """Ganze Zahl als deutsches Zahlwort: 63 → „dreiundsechzig“, 1188 → „eintausendeinhundertachtundachtzig“."""
+    if n == 0:
+        return "null"
+    if n >= 10 ** 9:
+        return str(n)
+    teile = []
+    millionen, rest = divmod(n, 10 ** 6)
+    if millionen:
+        teile.append("eine Million" if millionen == 1 else zahl_in_worten(millionen) + " Millionen")
+    tausender, rest = divmod(rest, 1000)
+    wort = _unter_tausend(tausender, False, True) + "tausend" if tausender else ""
+    if rest:
+        wort += _unter_tausend(rest, True, bool(tausender or millionen))
+    if wort:
+        teile.append(wort)
+    return " ".join(teile)
+
+
+def deutsch_sichern(text):
+    """Sätze, die außer Zahlen nur Rechenwörter enthalten („15!“, „8 plus 7?“), liest eine mehrsprachige Stimme
+    leicht auf Englisch vor – ihr fehlt der Hinweis auf die Sprache. Dann die Zahlen als deutsche Wörter schreiben."""
+    woerter = re.findall(r"[A-Za-zÄÖÜäöüß]+", text)
+    if not re.search(r"\d", text) or any(w.lower() not in RECHENWOERTER for w in woerter):
+        return text
+
+    def wort(m):
+        roh = m.group()
+        if "," in roh:
+            ganz, nach = roh.split(",")
+            return zahl_in_worten(int(ganz)) + " Komma " + " ".join(zahl_in_worten(int(z)) for z in nach)
+        return zahl_in_worten(int(roh.replace(".", "")))
+
+    text = ZAHL.sub(wort, text.replace(" %", " Prozent").replace("%", " Prozent"))
+    return text[:1].upper() + text[1:]
+
+
 def frage_text(r, cfg):
     """Was die Stimme am Anfang sagt. Ein Rätsel kann mit `sprich` einen eigenen Text vorgeben."""
     if r.get("sprich"):
@@ -132,6 +192,7 @@ def verfuegbar(cfg):
 
 def sprich(satz, cfg, cache):
     """Satz bei ElevenLabs sprechen lassen (MP3, zwischengespeichert). Rückgabe: Pfad oder None bei Fehler."""
+    satz = deutsch_sichern(satz)
     st = cfg["stimme"]
     kennung = json.dumps([st["voice_id"], st["modell"], st["einstellungen"], satz], sort_keys=True)
     os.makedirs(cache, exist_ok=True)
