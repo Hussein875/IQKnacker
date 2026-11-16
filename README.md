@@ -289,7 +289,7 @@ weiterhin (Titel, alle Lösungen für den Kommentar). Pro Level optional `sprich
 bei Zahlenreihen z. B. „Welche Zahl kommt als Nächstes?“, danach nur noch „Level drei.“ (sonst liest sie jede Zahl vor).
 
 Für alle drei: `sprich` und `sprich_loesung` angeben, wenn die Frage Rechenzeichen, Klammern oder Hochzahlen enthält –
-die Stimme soll „Klammer auf“ und „hoch zwei“ sagen, nicht raten. Eigene Caption pro Rätsel: Feld `caption`.
+die Stimme soll „Klammer auf“ und „hoch zwei“ sagen, nicht raten. Eigene Caption pro Rätsel: Feld `caption`. Eigene Hashtags pro Rätsel (statt der des Formats): Feld `hashtags`, z. B. bei einem Rechtschreib-Rätsel `["#rechtschreibung", "#deutsch"]`.
 
 ### Themen & Trends
 

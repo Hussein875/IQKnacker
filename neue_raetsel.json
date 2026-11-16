@@ -1454,6 +1454,13 @@
       "kategorie": "wort",
       "typ": "fehler",
       "frage": "Ein Wort ist *falsch geschrieben*. Welches?",
+      "caption": "Ein Wort ist falsch geschrieben – findest du es? 🕵️",
+      "hashtags": [
+        "#rechtschreibung",
+        "#deutsch",
+        "#findedenfehler",
+        "#quiz"
+      ],
       "zeilen": [
         "Maschine",
         "Adresse",

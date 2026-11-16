@@ -337,7 +337,7 @@ def caption_text(r, cfg):
     allgemein = list(cfg.get("hashtags_allgemein", []))
     anzahl = max(5, min(8, cfg.get("hashtags_anzahl", 7)))
     thema = [h for h in kat.get("thema_hashtags", []) if h not in allgemein][:3]  # Themen-Hashtags immer dabei
-    eigene = [h for h in kat.get("hashtags", []) if h not in allgemein and h not in thema]
+    eigene = [h for h in (r.get("hashtags") or kat.get("hashtags", [])) if h not in allgemein and h not in thema]
     zusatz = thema + zufall.sample(eigene, min(len(eigene), max(0, anzahl - len(allgemein) - len(thema))))
     hashtags = (allgemein[:1] + zusatz + allgemein[1:])[:anzahl]
 
