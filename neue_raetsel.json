@@ -1339,6 +1339,211 @@
       "status": "neu",
       "konzept": "volumen-halb-achtel",
       "thema": "trend_2026_12_01_winter"
+    },
+    {
+      "id": 1097,
+      "kategorie": "mathe",
+      "typ": "duell",
+      "frage": "*2 + 2 × 2* = ?",
+      "links": {
+        "name": "Anna",
+        "sagt": "8"
+      },
+      "rechts": {
+        "name": "Ben",
+        "sagt": "6"
+      },
+      "recht": "rechts",
+      "loesung": "6 – Ben hat recht",
+      "erklaerung": "*Punkt vor Strich:* erst 2 × 2 = 4, dann 2 + 4 = 6.",
+      "sprich": "Zwei plus zwei mal zwei. Anna sagt acht. Ben sagt sechs. Wer hat recht?",
+      "sprich_loesung": "Ben hat recht! Punkt vor Strich.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "punkt-vor-strich-duell"
+    },
+    {
+      "id": 1098,
+      "kategorie": "mathe",
+      "typ": "duell",
+      "frage": "*8 ÷ 2(2 + 2)* = ?",
+      "links": {
+        "name": "Anna",
+        "sagt": "16"
+      },
+      "rechts": {
+        "name": "Ben",
+        "sagt": "1"
+      },
+      "recht": "links",
+      "loesung": "16 – Anna hat recht",
+      "erklaerung": "Klammer zuerst: 8 ÷ 2 × 4. Dann von *links nach rechts*: 4 × 4 = 16. Wer 1 sagt, rechnet 2 × 4 zuerst.",
+      "sprich": "Acht geteilt durch zwei, Klammer auf, zwei plus zwei, Klammer zu. Anna sagt sechzehn. Ben sagt eins. Wer hat recht?",
+      "sprich_loesung": "Anna hat recht! Von links nach rechts gerechnet: sechzehn.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "klammer-streit-8-durch-2"
+    },
+    {
+      "id": 1099,
+      "kategorie": "iq",
+      "typ": "duell",
+      "frage": "*3 Türen*, 1 Gewinn. Du wählst Tür 1. Der Moderator weiß alles und öffnet die leere Tür 3. *Wechseln?*",
+      "links": {
+        "name": "Anna",
+        "sagt": "Bleiben!"
+      },
+      "rechts": {
+        "name": "Ben",
+        "sagt": "Wechseln!"
+      },
+      "recht": "rechts",
+      "loesung": "Wechseln – Ben hat recht",
+      "erklaerung": "Tür 1 gewinnt nur in *1 von 3* Fällen. Wechseln gewinnt in *2 von 3* – der Moderator öffnet ja nie den Gewinn.",
+      "sprich": "Drei Türen, ein Gewinn. Du wählst Tür eins. Der Moderator weiß, wo der Gewinn ist, und öffnet die leere Tür drei. Anna bleibt. Ben wechselt. Wer hat recht?",
+      "sprich_loesung": "Ben hat recht! Wechseln gewinnt in zwei von drei Fällen.",
+      "schwierigkeit": "schwer",
+      "status": "neu",
+      "konzept": "ziegenproblem"
+    },
+    {
+      "id": 1100,
+      "kategorie": "mathe",
+      "typ": "duell",
+      "frage": "*−3²* = ?",
+      "links": {
+        "name": "Anna",
+        "sagt": "9"
+      },
+      "rechts": {
+        "name": "Ben",
+        "sagt": "−9"
+      },
+      "recht": "rechts",
+      "loesung": "−9 – Ben hat recht",
+      "erklaerung": "Das Quadrat gilt nur für die 3: −(3 × 3) = −9. Für 9 bräuchte man eine *Klammer*: (−3)².",
+      "sprich": "Minus drei hoch zwei. Anna sagt neun. Ben sagt minus neun. Wer hat recht?",
+      "sprich_loesung": "Ben hat recht! Ohne Klammer gilt das Quadrat nur für die Drei.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "minus-quadrat"
+    },
+    {
+      "id": 1101,
+      "kategorie": "mathe",
+      "typ": "fehler",
+      "frage": "Beweis: *1 = 2* – wo steckt der Fehler?",
+      "zeilen": [
+        "a = b",
+        "a² = ab",
+        "a² − b² = ab − b²",
+        "(a + b)(a − b) = b(a − b)",
+        "a + b = b",
+        "2b = b",
+        "2 = 1"
+      ],
+      "fehler_zeile": 5,
+      "loesung": "Zeile 5",
+      "erklaerung": "Dort wird durch *(a − b)* geteilt – und das ist *0*, weil a = b. Durch 0 teilen ist verboten!",
+      "sprich": "Hier wird bewiesen, dass eins gleich zwei ist. In welcher Zeile steckt der Fehler?",
+      "sprich_loesung": "Zeile fünf! Dort wird durch null geteilt.",
+      "schwierigkeit": "schwer",
+      "status": "neu",
+      "konzept": "beweis-1-gleich-2"
+    },
+    {
+      "id": 1102,
+      "kategorie": "iq",
+      "typ": "fehler",
+      "frage": "Wo ist der *fehlende Euro*?",
+      "zeilen": [
+        "3 Freunde zahlen je 10 €: 30 €",
+        "Die Rechnung war nur 25 €",
+        "Zurück: je 1 € + 2 € Trinkgeld",
+        "Jeder hat also 9 € gezahlt: 27 €",
+        "27 € + 2 € Trinkgeld = 29 €",
+        "Es fehlt 1 € … oder?"
+      ],
+      "fehler_zeile": 5,
+      "loesung": "Zeile 5",
+      "erklaerung": "Die 2 € Trinkgeld stecken schon in den 27 €: *25 € Rechnung + 2 €*. Richtig: 27 € + 3 € zurück = 30 €.",
+      "sprich": "Drei Freunde zahlen dreißig Euro. Am Ende fehlt plötzlich ein Euro. In welcher Zeile steckt der Fehler?",
+      "sprich_loesung": "Zeile fünf! Das Trinkgeld steckt schon in den siebenundzwanzig Euro.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "fehlender-euro"
+    },
+    {
+      "id": 1103,
+      "kategorie": "mathe",
+      "typ": "level",
+      "frage": "5 Level Kopfrechnen – wie weit kommst du?",
+      "level": [
+        {
+          "frage": "*9 × 7*",
+          "loesung": "63"
+        },
+        {
+          "frage": "*15 × 15*",
+          "loesung": "225"
+        },
+        {
+          "frage": "*25 × 16*",
+          "loesung": "400"
+        },
+        {
+          "frage": "*99 × 12*",
+          "loesung": "1.188",
+          "sprich_loesung": "Eintausendeinhundertachtundachtzig!"
+        },
+        {
+          "frage": "*37 × 27*",
+          "loesung": "999"
+        }
+      ],
+      "loesung": "63 · 225 · 400 · 1.188 · 999",
+      "erklaerung": "Tricks: 25 × 16 = 100 × 4 · 99 × 12 = 1.200 − 12 · 37 × 27 = 111 × 9.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "level-kopfrechnen-1"
+    },
+    {
+      "id": 1104,
+      "kategorie": "iq",
+      "typ": "level",
+      "frage": "5 Level Zahlenreihen – wie weit kommst du?",
+      "level": [
+        {
+          "frage": "2 – 4 – 6 – 8 – *?*",
+          "loesung": "10",
+          "sprich": "Welche Zahl kommt als Nächstes?"
+        },
+        {
+          "frage": "1 – 4 – 9 – 16 – *?*",
+          "loesung": "25",
+          "sprich": "Und jetzt?"
+        },
+        {
+          "frage": "1 – 1 – 2 – 3 – 5 – *?*",
+          "loesung": "8",
+          "sprich": "Level drei."
+        },
+        {
+          "frage": "2 – 6 – 12 – 20 – *?*",
+          "loesung": "30",
+          "sprich": "Level vier."
+        },
+        {
+          "frage": "3 – 5 – 9 – 17 – 33 – *?*",
+          "loesung": "65",
+          "sprich": "Letztes Level. Nur für Genies."
+        }
+      ],
+      "loesung": "10 · 25 · 8 · 30 · 65",
+      "erklaerung": "+2 · Quadratzahlen · Summe der zwei Zahlen davor · +4, +6, +8, +10 · immer × 2 − 1.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "level-zahlenreihen-1"
     }
   ],
   "gestrichen": [

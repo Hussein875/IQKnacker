@@ -220,6 +220,12 @@ def doppelte_finden(raetsel):
         for b in range(a + 1, len(alle)):
             (ra, oa), (rb, ob) = alle[a], alle[b]
             wa, wb = woerter(ra), woerter(rb)
+            if "level" in (ra.get("typ"), rb.get("typ")):
+                # Level-Videos haben ähnliche Titel – doppelt sind sie, wenn sie dieselben Fragen stellen
+                fa, fb = ({str(e["frage"]) for e in x.get("level", [])} for x in (ra, rb))
+                if (oa or ob) and len(fa & fb) >= 2:
+                    treffer.append(("gleiche Level-Fragen", [ra["id"], rb["id"]]))
+                continue
             if (oa or ob) and wa and len(wa & wb) / len(wa | wb) > 0.75 \
                     and ra["kategorie"] != "emoji" and ra.get("typ") != "finde":
                 treffer.append(("fast gleicher Text", [ra["id"], rb["id"]]))
@@ -285,6 +291,23 @@ def pruefe_raetsel(raetsel, cfg):
                 fehler.append(f"Rätsel {r['id']}: „optionen“ braucht eine Liste mit 2 bis 4 Antworten")
             elif str(r["loesung"]) not in [str(o) for o in optionen]:
                 print(f"⚠ Rätsel {r['id']}: Die Lösung „{r['loesung']}“ steht nicht wörtlich unter den Optionen.")
+        if r.get("typ") == "duell":
+            for seite in ("links", "rechts"):
+                if not isinstance(r.get(seite), dict) or not r[seite].get("name") or "sagt" not in r[seite]:
+                    fehler.append(f"Rätsel {r['id']}: Für „duell“ braucht „{seite}“ einen Namen („name“) und eine Antwort („sagt“)")
+            if r.get("recht") not in ("links", "rechts", "beide", "keiner"):
+                fehler.append(f"Rätsel {r['id']}: „recht“ muss links, rechts, beide oder keiner sein")
+        if r.get("typ") == "fehler":
+            zeilen = r.get("zeilen")
+            if not isinstance(zeilen, list) or not 3 <= len(zeilen) <= 8:
+                fehler.append(f"Rätsel {r['id']}: Für „fehler“ braucht „zeilen“ 3 bis 8 Zeilen")
+            elif not isinstance(r.get("fehler_zeile"), int) or not 1 <= r["fehler_zeile"] <= len(zeilen):
+                fehler.append(f"Rätsel {r['id']}: „fehler_zeile“ muss die Nummer der falschen Zeile sein (1 bis {len(zeilen)})")
+        if r.get("typ") == "level":
+            level = r.get("level")
+            if not isinstance(level, list) or not 3 <= len(level) <= 6 or not all(
+                    isinstance(e, dict) and e.get("frage") and "loesung" in e for e in level):
+                fehler.append(f"Rätsel {r['id']}: Für „level“ braucht „level“ 3 bis 6 Einträge mit „frage“ und „loesung“")
         if r.get("typ") == "finde":
             fehlend = [f for f in ("zeichen", "ziel", "spalten", "zeilen", "position") if f not in r]
             if fehlend:
@@ -308,7 +331,8 @@ def caption_text(r, cfg):
     zufall = random.Random(f"{r['id']}-{r['kategorie']}")  # gleiche ID → gleiche Caption
     captions = kat.get("captions") or ["Kannst du das lösen? 🧠"]
     from renderer import countdown_fuer
-    caption = zufall.choice(captions).replace("{countdown}", str(round(countdown_fuer(cfg, r))))
+    auswahl = zufall.choice(captions)  # immer ziehen: so bleiben die Hashtags eines Rätsels gleich
+    caption = namen_einsetzen((r.get("caption") or auswahl).replace("{countdown}", str(round(countdown_fuer(cfg, r)))), r)
 
     allgemein = list(cfg.get("hashtags_allgemein", []))
     anzahl = max(5, min(8, cfg.get("hashtags_anzahl", 7)))
@@ -324,17 +348,30 @@ def caption_text(r, cfg):
         from renderer import buchstaben_text
         aufruf = kat.get("caption_aufruf_optionen") or cfg.get("caption_aufruf_optionen") or aufruf
         aufruf = aufruf.replace("{buchstaben}", buchstaben_text(len(r["optionen"])))
-    return f"{caption}\n{aufruf}\n\n{' '.join(hashtags)}\n"
+    return f"{caption}\n{namen_einsetzen(aufruf, r)}\n\n{' '.join(hashtags)}\n"
+
+
+def namen_einsetzen(text, r):
+    """Ersetzt {links} und {rechts} durch die Namen der Duell-Figuren (z. B. „Team {links} oder Team {rechts}?“)."""
+    for seite in ("links", "rechts"):
+        if isinstance(r.get(seite), dict):
+            text = text.replace("{" + seite + "}", str(r[seite].get("name", "")))
+    return text
 
 
 def kommentar_text(r, cfg):
+    from renderer import einstellungen
+    kat = einstellungen(cfg, r)
     werte = dict(r)
+    for seite in ("links", "rechts"):
+        if isinstance(r.get(seite), dict):
+            werte[seite] = r[seite].get("name", "")
     optionen = [str(o) for o in r.get("optionen") or []]
     if str(r["loesung"]) in optionen:  # bei A/B/C den Buchstaben mit angeben
         werte["loesung"] = f"{'ABCD'[optionen.index(str(r['loesung']))]} – {r['loesung']}"
-    vorlage = cfg["kommentar_vorlage"]
+    vorlage = kat.get("kommentar_vorlage") or cfg["kommentar_vorlage"]
     if cfg.get("aufloesung", {}).get("zeigen"):  # Lösung steht schon im Video → Kommentar fragt nach ✅/❌
-        vorlage = cfg.get("kommentar_vorlage_aufloesung") or vorlage
+        vorlage = kat.get("kommentar_vorlage_aufloesung") or cfg.get("kommentar_vorlage_aufloesung") or vorlage
     return vorlage.format(**werte).strip() + "\n"
 
 
@@ -375,6 +412,8 @@ def soundeffekte_schreiben(renderer, ziel, rate=44100):
         ton(renderer.tipp_zeitpunkt(), 0.6, [(1568, 1.0), (2349, 0.45)], 0.22, 8)
     if renderer.t_zeit_um > 0:
         ton(renderer.zeit_um_zeitpunkt(), 1.4, [(523.25, 1.0), (784, 0.6), (1046.5, 0.35)], 0.35, 3.2)
+    for zeit, dauer, frequenzen, lautstaerke, abklingen in getattr(renderer, "extra_toene", lambda: [])():
+        ton(zeit, dauer, frequenzen, lautstaerke, abklingen)  # z. B. der aufsteigende Klang pro gelöstem Level
 
     daten = array.array("h", (max(-32767, min(32767, round(x * 32767))) for x in puffer))
     with wave.open(ziel, "wb") as w:
@@ -471,6 +510,22 @@ def stimme_vorbereiten(r, cfg, ffmpeg):
     import stimme
     if not stimme.verfuegbar(cfg):
         return r, []
+    if r.get("typ") == "level":  # jede Frage und jede Lösung einzeln; die Level werden so lang wie nötig
+        teile, zeiten = [], []
+        for i, eintrag in enumerate(r["level"]):
+            paar = []
+            for satz in (stimme.level_frage_text(eintrag), stimme.level_loesung_text(eintrag)):
+                mp3 = stimme.sprich(satz, cfg, STIMMEN_CACHE)
+                samples = stimme.als_samples(ffmpeg, mp3) if mp3 else None
+                if samples is None:
+                    return r, []
+                paar.append(samples)
+            teile += [(("frage", i), paar[0]), (("loesung", i), paar[1])]
+            zeiten.append((math.ceil(stimme.dauer(paar[0]) + cfg["stimme"].get("level_denkzeit", 1.3)),
+                           math.ceil((stimme.dauer(paar[1]) + 0.45) * 2) / 2))
+        r = dict(r)
+        r["_level_zeiten"] = zeiten
+        return r, teile
     teile = []
     for rolle, satz in (("frage", stimme.frage_text(r, cfg)), ("loesung", stimme.loesung_text(r, cfg))):
         mp3 = stimme.sprich(satz, cfg, STIMMEN_CACHE) if satz else None
@@ -491,8 +546,7 @@ def stimme_schreiben(renderer, teile, cfg, ziel, rate=44100):
     puffer = array.array("h", bytes(2 * round(renderer.dauer * rate)))
     fenster = []
     for rolle, samples in teile:
-        start = cfg["stimme"].get("start_frage", 0.1) if rolle == "frage" else \
-            renderer.aufloesung_zeitpunkt() + cfg["stimme"].get("start_loesung", 0.15)
+        start = renderer.stimme_start(rolle)
         s0 = round(start * rate)
         stueck = samples[: max(0, len(puffer) - s0)]
         puffer[s0:s0 + len(stueck)] = stueck
@@ -518,7 +572,11 @@ def erzeuge(r, cfg, ffmpeg, nur_vorschau=False, ohne_musik=False, ohne_effekte=F
         except Exception as fehler:  # die Stimme ist ein Extra – sie darf nie ein Video verhindern
             print(f"  ⚠ Keine Stimme ({fehler}) – Video ohne Stimme")
             teile = []
-    renderer = RaetselRenderer(cfg, r, BASIS)
+    if r.get("typ") == "level":
+        from level import LevelRenderer
+        renderer = LevelRenderer(cfg, r, BASIS)
+    else:
+        renderer = RaetselRenderer(cfg, r, BASIS)
 
     vorschau = os.path.join(ausgabe, f"{name}.png")
     renderer.frame(renderer.vorschau_zeitpunkt()).save(vorschau)

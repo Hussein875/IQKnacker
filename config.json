@@ -513,5 +513,142 @@
     "nach_loesung": 1.6,
     "start_frage": 0.1,
     "start_loesung": 0.15
+  },
+  "typen": {
+    "duell": {
+      "label": "WER HAT RECHT?",
+      "hashtags": [
+        "#werhatrecht",
+        "#mathe",
+        "#denkfalle",
+        "#logikrätsel",
+        "#knobeln",
+        "#gehirnjogging",
+        "#denksport"
+      ],
+      "captions": [
+        "{links} oder {rechts} – wer hat recht? 🤔",
+        "Einer von beiden liegt falsch 😬 Wer?",
+        "Team {links} oder Team {rechts}? 👀"
+      ],
+      "caption_aufruf_aufloesung": "Erst entscheiden, dann auflösen 👀\nSchreib dein Team in die Kommentare: {links} oder {rechts}?",
+      "kommentar_vorlage_aufloesung": "Team {links} oder Team {rechts}? Schreib's unten 👇\n💡 Lösung: {loesung}",
+      "texte": {
+        "hook": [
+          "{links} oder {rechts}? 🤔",
+          "Einer liegt falsch 😬",
+          "Wer hat recht? 👀"
+        ],
+        "pause_1": "*Wer* hat recht?",
+        "pause_2": "Schreib *{links}* oder *{rechts}* 👇",
+        "abschluss_1": "Dein Team?",
+        "abschluss_2": "Schreib *{links} oder {rechts}* in die Kommentare 👇",
+        "abschluss_3": "Hattest du's gewusst? 👀"
+      }
+    },
+    "fehler": {
+      "label": "FINDE DEN FEHLER",
+      "hashtags": [
+        "#findedenfehler",
+        "#mathe",
+        "#denkfalle",
+        "#logikrätsel",
+        "#knobeln",
+        "#gehirnjogging",
+        "#denksport"
+      ],
+      "captions": [
+        "Irgendwo steckt ein Fehler – findest du ihn? 🕵️",
+        "Eine Zeile ist falsch. Welche? 🤯",
+        "Das kann nicht stimmen … oder? 🤔"
+      ],
+      "caption_aufruf_aufloesung": "Auflösung am Ende 👀 Aber erst selbst suchen!\nIn welcher Zeile steckt der Fehler? Schreib die Nummer 👇",
+      "kommentar_vorlage_aufloesung": "In welcher Zeile steckt der Fehler? Schreib die Nummer 👇\n💡 Lösung: {loesung}",
+      "texte": {
+        "hook": [
+          "Eine Zeile ist falsch 🕵️",
+          "Wo steckt der Fehler? 🤯",
+          "Das kann nicht stimmen 🤔"
+        ],
+        "spruch_mitte": [
+          "Zeile für Zeile … 👀",
+          "Schau genau hin! 🔍"
+        ],
+        "pause_2": "Schreib die *Zeile* in die Kommentare 👇",
+        "abschluss_1": "Gefunden?",
+        "abschluss_2": "Schreib *✅ oder ❌* in die Kommentare 👇",
+        "abschluss_3": "In welcher Sekunde? ⏱️"
+      }
+    },
+    "level": {
+      "label": "LEVEL",
+      "hashtags": [
+        "#level",
+        "#challenge",
+        "#kopfrechnen",
+        "#denksport",
+        "#knobeln",
+        "#gehirnjogging",
+        "#iqtest"
+      ],
+      "captions": [
+        "5 Level – wie weit kommst du? 🧠",
+        "Level 1 schafft jeder. Level 5 fast keiner 🔥",
+        "Von leicht bis Genie: Wo steigst du aus? 😬"
+      ],
+      "caption_aufruf_aufloesung": "Jedes Level wird schwerer 👀\nWie weit bist du gekommen? Schreib dein Level 👇",
+      "kommentar_vorlage_aufloesung": "Wie weit bist du gekommen? Schreib dein Level 👇\n💡 Lösungen: {loesung}",
+      "texte": {
+        "hook": [
+          "5 Level – wie weit kommst du? 🧠",
+          "Level 5 schafft fast keiner 🔥"
+        ],
+        "level_sprueche": [
+          "Aufwärmen 😌",
+          "Noch easy 🙂",
+          "Jetzt wird's ernst 😬",
+          "Nur noch wenige dabei 🔥",
+          "Level Genie 🧠"
+        ],
+        "level_abschluss_1": "Wie weit bist *du* gekommen?",
+        "level_abschluss_2": "Schreib dein *Level* in die Kommentare 👇",
+        "level_abschluss_3": "Alle {anzahl} geschafft? Respekt! 🏆"
+      }
+    }
+  },
+  "figuren": {
+    "anna": {
+      "haut": "#F2C9A0",
+      "haare": "#7A3E1D",
+      "frisur": "lang",
+      "shirt": "#FF7EB6",
+      "farbe": "#FF7EB6"
+    },
+    "ben": {
+      "haut": "#E0A878",
+      "haare": "#23232B",
+      "frisur": "kurz",
+      "shirt": "#56CCF2",
+      "farbe": "#56CCF2",
+      "brille": true
+    }
+  },
+  "level": {
+    "sekunden": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "aufloesung": 1.5,
+    "abschluss": 2.6,
+    "farben": [
+      "#6FCF97",
+      "#B8E986",
+      "#F2C94C",
+      "#F2994A",
+      "#FF5C5C"
+    ]
   }
 }

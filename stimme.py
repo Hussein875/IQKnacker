@@ -25,6 +25,7 @@ FESTE_SAETZE = {
     "emoji": "Welche Zahl gehört ans Fragezeichen?",
     "finde": "Findest du das eine Zeichen, das anders ist?",
     "bild": "Schau genau hin!",
+    "fehler": "Eine Zeile ist falsch. Findest du den Fehler?",
 }
 
 
@@ -59,6 +60,13 @@ def frage_text(r, cfg):
     """Was die Stimme am Anfang sagt. Ein Rätsel kann mit `sprich` einen eigenen Text vorgeben."""
     if r.get("sprich"):
         return r["sprich"]
+    if r.get("typ") == "duell":  # „Wer hat recht?“: Frage, dann beide Antworten
+        links, rechts = r["links"], r["rechts"]
+        frage = _zahlen_sprechbar(_ohne_emojis(str(r["frage"]).replace("*", "")))
+        if frage and frage[-1] not in ".?!":
+            frage += "?"
+        return (f"{frage} {links['name']} sagt: {_zahlen_sprechbar(_ohne_emojis(str(links['sagt'])))}. "
+                f"{rechts['name']} sagt: {_zahlen_sprechbar(_ohne_emojis(str(rechts['sagt'])))}. Wer hat recht?")
     feste = {**FESTE_SAETZE, **cfg.get("stimme", {}).get("feste_saetze", {})}
     if r.get("kategorie") in feste or r.get("typ") in feste:
         return feste.get(r.get("typ")) or feste[r["kategorie"]]
@@ -79,12 +87,31 @@ def loesung_text(r, cfg):
     """Was die Stimme bei der Auflösung sagt – kurz, damit man die Erklärung selbst liest."""
     if r.get("sprich_loesung"):
         return r["sprich_loesung"]
+    if r.get("typ") == "duell":
+        recht = r.get("recht")
+        if recht in ("links", "rechts"):
+            return f"{r[recht]['name']} hat recht!"
+        return "Beide haben recht!" if recht == "beide" else "Keiner von beiden hat recht!"
+    if r.get("typ") == "fehler":
+        return f"Der Fehler steckt in Zeile {r.get('fehler_zeile')}!"
     loesung = _ohne_emojis(str(r.get("loesung", ""))).strip()
     if r.get("kategorie") == "wort" and str(r.get("konzept", "")).startswith("wort-dreier"):
         erkl = _ohne_emojis(str(r.get("erklaerung", ""))).strip()
         if 0 < len(erkl) <= 70:
             return f"{loesung}! {erkl}"
     return _zahlen_sprechbar(f"Die Lösung: {loesung}!")
+
+
+def level_frage_text(eintrag):
+    """Was die Stimme zu einem Level sagt: eigener Text (`sprich`) oder die Frage in sprechbarer Form."""
+    if eintrag.get("sprich"):
+        return eintrag["sprich"]
+    satz = _zahlen_sprechbar(_ohne_emojis(str(eintrag["frage"]).replace("*", "").replace("\n", " ")))
+    return satz if satz and satz[-1] in ".?!" else satz + "?"
+
+
+def level_loesung_text(eintrag):
+    return eintrag.get("sprich_loesung") or _zahlen_sprechbar(_ohne_emojis(str(eintrag["loesung"]))) + "!"
 
 
 def _schluessel():

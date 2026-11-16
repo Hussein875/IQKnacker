@@ -107,6 +107,7 @@ def einfuegen(frame, ebene, mitte, deckkraft=1.0, skalierung=1.0):
 # ---------------------------------------------------------------- Text mit Hervorhebung und Emojis
 
 EINHEIT = re.compile(r"(\d) (€|\$|%|km/h|km|kg|cm|m|Cent)(?=[\s.,!?*)]|$)")
+NUMMER = re.compile(r"\b(Tür|Zeile|Level|Platz|Seite|Band|Teil|Nr\.) (\d)")  # „Tür 1“ nie über zwei Zeilen
 
 
 def zerlege_text(text):
@@ -118,6 +119,7 @@ def zerlege_text(text):
     absaetze = []
     akzent = False
     text = EINHEIT.sub("\\1\u00a0\\2", text)  # „20 €“, „60 km/h“: Einheit nie allein in die nächste Zeile
+    text = NUMMER.sub("\\1\u00a0\\2", text)
     for zeile in text.split("\n"):
         woerter = []
         for roh in zeile.split(" "):
@@ -300,6 +302,10 @@ def einstellungen(cfg, raetsel):
         kat.update({k: v for k, v in thema.items() if k not in ("texte", "hashtags", "zeitraum")})
         kat["texte"] = texte
         kat["thema_hashtags"] = list(thema.get("hashtags", []))
+    typ = cfg.get("typen", {}).get(raetsel.get("typ") or "")
+    if typ:  # besondere Formate (Duell, Finde den Fehler, Level) bringen eigenes Label und eigene Sprüche mit
+        kat["texte"] = {**kat.get("texte", {}), **typ.get("texte", {})}
+        kat.update({k: v for k, v in typ.items() if k != "texte"})
     return kat
 
 
@@ -353,6 +359,11 @@ class RaetselRenderer:
     Ohne Auflösung (`aufloesung.zeigen = false`) folgt auf „Zeit um!“ die Endkarte."""
 
     def __init__(self, config, raetsel, basis_pfad):
+        self._basis_einrichten(config, raetsel, basis_pfad)
+        self._ablauf_einrichten()
+
+    def _basis_einrichten(self, config, raetsel, basis_pfad):
+        """Farben, Schriften und Texte – alles, was nicht vom Ablauf abhängt (nutzt auch level.py)."""
         self.cfg = config
         self.raetsel = raetsel
         self.basis = basis_pfad
@@ -384,6 +395,9 @@ class RaetselRenderer:
         self.setzer_fett = TextSetzer(self.fett_pfad, emoji_pfad)
         self.setzer_normal = TextSetzer(self.normal_pfad, emoji_pfad)
 
+    def _ablauf_einrichten(self):
+        """Zeiten des Videos und alle vorbereiteten Ebenen."""
+        config, raetsel = self.cfg, self.raetsel
         z = config["zeiten"]
         self.t_lesen = lesezeit_fuer(config, raetsel)          # ohne Zeitdruck: noch kein Countdown
         self.t_countdown = countdown_fuer(config, raetsel)     # reine Denkzeit
@@ -430,8 +444,19 @@ class RaetselRenderer:
         text = waehle(self.texte.get(schluessel), self.zufall, self.schwierigkeit)
         if not text:
             return text
-        return text.replace("{countdown}", str(round(self.t_countdown))).replace(
+        text = text.replace("{countdown}", str(round(self.t_countdown))).replace(
             "{buchstaben}", buchstaben_text(len(self.optionen)))
+        for seite in ("links", "rechts"):  # Namen der Duell-Figuren, z. B. „Team {links} oder Team {rechts}?“
+            if isinstance(self.raetsel.get(seite), dict):
+                text = text.replace("{" + seite + "}", str(self.raetsel[seite].get("name", "")))
+        return text
+
+    def stimme_start(self, rolle):
+        """Sekunde, an der ein gesprochener Satz beginnt (Rolle „frage“ oder „loesung“)."""
+        st = self.cfg.get("stimme", {})
+        if rolle == "frage":
+            return st.get("start_frage", 0.1)
+        return self.aufloesung_zeitpunkt() + st.get("start_loesung", 0.15)
 
     @property
     def frame_anzahl(self):
@@ -486,7 +511,7 @@ class RaetselRenderer:
         hoehe = self.inhalt_unten - self.inhalt_oben
 
         # Mit Antworten oder Such-Gitter wird der Countdown-Ring kleiner, damit mehr Platz bleibt
-        kompakt = bool(self.optionen) or self.typ == "finde"
+        kompakt = bool(self.optionen) or self.typ in ("finde", "duell", "fehler", "level")
         self.ring_d = g["countdown_ring_klein"] if kompakt else g["countdown_ring_durchmesser"]
         self.countdown_y = self.inhalt_unten - self.ring_d / 2 - 30
         self.balken_y = self.countdown_y + self.ring_d / 2 - 10
@@ -592,6 +617,25 @@ class RaetselRenderer:
         if self.typ == "finde":
             self.loesung_ebene = self._einzeilig(self.setzer_fett, loesung, g.get("loesung_finde", 72), textbreite,
                                                  self.akzent, self.akzent, 40)
+        elif self.typ in ("duell", "fehler"):
+            # Lösung und Erklärung stehen unter dem Rätsel – dort, wo vorher der Countdown lief. Damit die
+            # Erklärung groß genug bleibt, rückt das Rätsel bei der Auflösung etwas verkleinert nach oben.
+            self.aufl_skal = g.get("aufloesung_verkleinern", 0.84)
+            h = self.inhalt_ebene.height
+            rand_oben = self.inhalt_y - h / 2
+            self.aufl_y = rand_oben + h * self.aufl_skal / 2
+            oben, unten = rand_oben + h * self.aufl_skal + 18, self.inhalt_unten - 4
+            self.loesung_ebene = self._einzeilig(self.setzer_fett, loesung, g.get("loesung_kompakt", 72), textbreite,
+                                                 self.loesungsfarbe, self.loesungsfarbe, 40)
+            platz = unten - oben - self.loesung_ebene.height - 8
+            groesse = self.setzer_fett.passende_groesse(r["erklaerung"], textbreite, platz,
+                                                        g.get("erklaerung_kompakt", 50), 26, 1.25)
+            self.erklaerung_ebene = self.setzer_fett.block(r["erklaerung"], groesse, textbreite, self.textfarbe,
+                                                          self.akzent, 1.25)
+            hoehe = self.loesung_ebene.height + 8 + self.erklaerung_ebene.height
+            y = (oben + unten) / 2 - hoehe / 2
+            self.loesung_y = y + self.loesung_ebene.height / 2
+            self.erklaerung_y = y + self.loesung_ebene.height + 8 + self.erklaerung_ebene.height / 2
         else:
             self.kontext_ebene = mit_deckkraft(self.setzer_normal.block(
                 r["frage"], g.get("kontext", 38), textbreite, self.dezent, self.dezent, 1.25), 0.85)
@@ -718,6 +762,12 @@ class RaetselRenderer:
         """Die eigentliche Rätsel-Ebene: Text (optional mit Bild darüber) oder Such-Gitter."""
         if self.typ == "finde":
             return self._finde_ebene(max_b, max_h)
+        if self.typ == "duell":
+            self.aufgeloest_ebene = self._duell_ebene(max_b, max_h, True)
+            return self._duell_ebene(max_b, max_h, False)
+        if self.typ == "fehler":
+            self.aufgeloest_ebene = self._fehler_ebene(max_b, max_h, True)
+            return self._fehler_ebene(max_b, max_h, False)
         g = self.cfg["groessen"]
         frage = self.raetsel["frage"]
         zeilenabstand = self.kat.get("zeilenabstand", g["zeilenabstand"])
@@ -831,6 +881,151 @@ class RaetselRenderer:
 
         self.finde_aufloesung_ebene = gitter_bauen(True)
         return gitter_bauen(False)
+
+    # ---- „Wer hat recht?“ (Duell) und „Finde den Fehler“
+    def _zeichen(self, d, mitte, radius, haken, farbe):
+        """Runde Plakette mit weißem Haken (richtig) oder Kreuz (falsch) – Montserrat hat dafür keine Zeichen."""
+        x, y = mitte
+        d.ellipse((x - radius, y - radius, x + radius, y + radius), fill=farbe)
+        dicke, weiss = max(4, round(radius * 0.26)), (255, 255, 255, 255)
+        if haken:
+            d.line([(x - radius * 0.46, y + radius * 0.02), (x - radius * 0.12, y + radius * 0.36),
+                    (x + radius * 0.48, y - radius * 0.34)], fill=weiss, width=dicke, joint="curve")
+        else:
+            a = radius * 0.38
+            d.line([(x - a, y - a), (x + a, y + a)], fill=weiss, width=dicke)
+            d.line([(x - a, y + a), (x + a, y - a)], fill=weiss, width=dicke)
+
+    def _sprechblase(self, text, breite, hoehe):
+        """Weiße Sprechblase mit Zipfel nach unten; der Text wird so groß wie möglich gesetzt."""
+        zipfel, f = 26, 2
+        form = Image.new("RGBA", (breite * f, (hoehe + zipfel) * f), (0, 0, 0, 0))
+        d = ImageDraw.Draw(form)
+        d.rounded_rectangle((0, 0, breite * f - 1, hoehe * f - 1), 34 * f, fill=(255, 255, 255, 255))
+        mx = breite * f // 2
+        d.polygon([(mx - 22 * f, hoehe * f - 2), (mx + 22 * f, hoehe * f - 2), (mx, (hoehe + zipfel) * f - 1)],
+                  fill=(255, 255, 255, 255))
+        blase = form.resize((breite, hoehe + zipfel), Image.LANCZOS)
+        dunkel = (20, 20, 24, 255)
+        groesse = self.setzer_fett.passende_groesse(text, breite - 44, hoehe - 20, 112, 30, 1.1)
+        inhalt = self.setzer_fett.block(text, groesse, breite - 44, dunkel, dunkel, 1.1)
+        blase.alpha_composite(inhalt, ((breite - inhalt.width) // 2, max(0, (hoehe - inhalt.height) // 2)))
+        return blase
+
+    def _duell_karte(self, seite, breite, hoehe, zustand):
+        """Karte einer Duell-Figur: Brustbild und Name – die Sprechblase mit der Antwort kommt getrennt zurück.
+        `zustand`: None = noch offen, True = hatte recht, False = lag falsch."""
+        import figuren
+        person = self.raetsel[seite]
+        f = figuren.aussehen(self.cfg, person.get("name", ""), seite)
+        team = hex_zu_rgb(f["farbe"]) + (255,)
+        gruen = hex_zu_rgb(self.cfg["farben"].get("loesung", "#6FCF97")) + (255,)
+        rand = team if zustand is None else gruen if zustand else self.option_rand
+        staerke = 5 if zustand is None else 9 if zustand else 3
+        karte = Image.new("RGBA", (breite, hoehe), (0, 0, 0, 0))
+        d = ImageDraw.Draw(karte)
+        d.rounded_rectangle((3, 3, breite - 4, hoehe - 4), radius=40, fill=self.option_fuellung)
+        blase_h = round(hoehe * 0.27)
+        blase = self._sprechblase(str(person["sagt"]), breite - 44, blase_h)
+        # Brustbild: reicht bis zum unteren Kartenrand und wird an den runden Ecken abgeschnitten
+        platz = hoehe - 22 - blase.height - 6
+        stimmung = "sicher" if zustand is None else "freut" if zustand else "geschockt"
+        bild = figuren.brustbild(f, stimmung, min((breite - 40) / figuren.BREITE, platz / figuren.HOEHE))
+        ebene = Image.new("RGBA", (breite, hoehe), (0, 0, 0, 0))
+        ebene.alpha_composite(bild, ((breite - bild.width) // 2, hoehe - 4 - bild.height))
+        maske = Image.new("L", (breite, hoehe), 0)
+        ImageDraw.Draw(maske).rounded_rectangle((6, 6, breite - 7, hoehe - 7), radius=37, fill=255)
+        ebene.putalpha(Image.composite(ebene.getchannel("A"), Image.new("L", (breite, hoehe), 0), maske))
+        karte.alpha_composite(ebene)
+        d = ImageDraw.Draw(karte)
+        d.rounded_rectangle((3, 3, breite - 4, hoehe - 4), radius=40, outline=rand, width=staerke)
+        name = self._pille(str(person.get("name", "")).upper(), team if zustand is not False else self.dezent)
+        karte.alpha_composite(name, ((breite - name.width) // 2, hoehe - 26 - name.height))
+        if zustand is False:
+            karte = mit_deckkraft(karte, 0.55)
+        if zustand is not None:  # Haken bzw. Kreuz oben rechts am Kopf
+            self._zeichen(ImageDraw.Draw(karte), (breite - 62, 22 + blase.height + 46), 40, zustand,
+                          gruen if zustand else self.warnung)
+        return karte, blase, (22, 22)
+
+    def _duell_ebene(self, max_b, max_h, aufgeloest):
+        """„Wer hat recht?“: Frage oben, darunter zwei Figuren mit ihren Antworten in Sprechblasen."""
+        r, g = self.raetsel, self.cfg["groessen"]
+        max_b, max_h = int(max_b), int(max_h)
+        groesse = self.setzer_fett.passende_groesse(r["frage"], max_b, max_h * 0.26, g.get("duell_frage", 100), 44, 1.15)
+        self.raetsel_schriftgroesse = groesse
+        frage = self.setzer_fett.block(r["frage"], groesse, max_b, self.textfarbe, self.akzent, 1.15)
+        luecke, abstand = 34, 24
+        kb, kh = (max_b - abstand) // 2, max_h - frage.height - luecke
+        basis = Image.new("RGBA", (max_b, max_h), (0, 0, 0, 0))
+        basis.alpha_composite(frage, ((max_b - frage.width) // 2, 0))
+        recht, blasen = r.get("recht"), []
+        for i, seite in enumerate(("links", "rechts")):
+            zustand = (recht in (seite, "beide")) if aufgeloest else None
+            karte, blase, (bx, by) = self._duell_karte(seite, kb, kh, zustand)
+            x, y = i * (kb + abstand), frage.height + luecke
+            basis.alpha_composite(karte, (x, y))
+            if zustand is False:
+                blase = mit_deckkraft(blase, 0.55)
+            blasen.append((blase, (x + bx, y + by)))
+        voll, reihen = basis.copy(), []
+        for blase, (x, y) in blasen:
+            voll.alpha_composite(blase, (x, y))
+            streifen = Image.new("RGBA", (max_b, blase.height), (0, 0, 0, 0))
+            streifen.alpha_composite(blase, (x, 0))
+            reihen.append((streifen, y))
+        if not aufgeloest:  # die Antworten springen kurz nacheinander herein: erst links, dann rechts
+            start, schritt = self.anim.get("duell_start", 0.3), self.anim.get("duell_abstand", 0.45)
+            self.reihen_aufbau = (basis, reihen, start, schritt, start + schritt * (len(reihen) - 1) + 0.4)
+        return voll
+
+    def _fehler_ebene(self, max_b, max_h, aufgeloest):
+        """„Finde den Fehler“: nummerierte Rechenzeilen; bei der Auflösung wird die falsche Zeile rot markiert."""
+        r, g = self.raetsel, self.cfg["groessen"]
+        max_b, max_h = int(max_b), int(max_h)
+        zeilen, falsch = [str(z) for z in r["zeilen"]], int(r["fehler_zeile"])
+        n, luecke, abstand = len(zeilen), 30, 12
+        kopf_groesse = self.setzer_fett.passende_groesse(r["frage"], max_b, 150, g.get("fehler_frage", 62), 36, 1.15)
+        kopf = self.setzer_fett.block(r["frage"], kopf_groesse, max_b, self.textfarbe, self.akzent, 1.15)
+        platz = max_h - kopf.height - luecke
+        groesse = g.get("fehler_zeile", 62)
+        while groesse > 30:  # so groß wie möglich: jede Zeile einzeilig, alle Zeilen passen in die Höhe
+            hoehe = round(groesse * 1.62)
+            if n * hoehe + (n - 1) * abstand <= platz and all(
+                    len(self.setzer_fett.umbrechen(z, groesse, max_b - hoehe - 44)[0]) == 1 for z in zeilen):
+                break
+            groesse -= 2
+        hoehe = round(groesse * 1.62)
+        self.raetsel_schriftgroesse = groesse
+        basis = Image.new("RGBA", (max_b, kopf.height + luecke + n * hoehe + (n - 1) * abstand), (0, 0, 0, 0))
+        basis.alpha_composite(kopf, ((max_b - kopf.width) // 2, 0))
+        reihen = []
+        for i, z in enumerate(zeilen):
+            markiert = aufgeloest and i + 1 == falsch
+            zeile = Image.new("RGBA", (max_b, hoehe), (0, 0, 0, 0))
+            d = ImageDraw.Draw(zeile)
+            d.rounded_rectangle((0, 0, max_b - 1, hoehe - 1), radius=min(30, hoehe // 2),
+                                fill=(78, 18, 26, 255) if markiert else self.option_fuellung,
+                                outline=self.warnung if markiert else self.option_rand, width=5 if markiert else 2)
+            k = hoehe - 20
+            if markiert:
+                self._zeichen(d, (10 + k / 2, hoehe / 2), k / 2, False, self.warnung)
+            else:
+                d.ellipse((10, 10, 10 + k, 10 + k), fill=self.akzent)
+                d.text((10 + k / 2, hoehe / 2 + 1), str(i + 1), font=schrift(self.fett_pfad, round(k * 0.56)),
+                       fill=self.label_textfarbe, anchor="mm")
+            text = self.setzer_fett.block(z, groesse, max_b - hoehe - 44, self.textfarbe, self.akzent, 1.0)
+            zeile.alpha_composite(text, (10 + k + 22, max(0, (hoehe - text.height) // 2)))
+            if aufgeloest and not markiert:
+                zeile = mit_deckkraft(zeile, 0.4)
+            reihen.append((zeile, kopf.height + luecke + i * (hoehe + abstand)))
+        voll = basis.copy()
+        for zeile, y in reihen:
+            voll.alpha_composite(zeile, (0, y))
+        if not aufgeloest:  # die Zeilen bauen sich nacheinander auf – wie ein Beweis, der gerade geschrieben wird
+            start, schritt = self.anim.get("fehler_start", 0.25), self.anim.get("fehler_abstand", 0.2)
+            self.reihen_aufbau = (basis, reihen, start, schritt, start + schritt * (n - 1) + 0.4)
+        return voll
 
     def _wasserzeichen_vorbereiten(self):
         wz = self.cfg["wasserzeichen"]
@@ -1102,6 +1297,20 @@ class RaetselRenderer:
             if q > 0:
                 einfuegen(bild, self.loesung_ebene, (self.mitte_x, self.countdown_y), ease_out(q * 2) * raus,
                           0.8 + 0.2 * ease_out_back(q))
+            return
+        if self.typ in ("duell", "fehler"):  # das Rätsel bleibt stehen und zeigt, wer recht hat bzw. wo der Fehler steckt
+            self._glow(bild, t, self.inhalt_y, raus)
+            p = ease_out(t / 0.4)
+            skal = 1 + (self.aufl_skal - 1) * p
+            mitte = (self.mitte_x, self.inhalt_y + (self.aufl_y - self.inhalt_y) * p)
+            einfuegen(bild, self.inhalt_ebene, mitte, (1 - p) * raus, skal)
+            einfuegen(bild, self.aufgeloest_ebene, mitte, p * raus, skal)
+            q = (t - 0.3) / 0.35
+            if q > 0:
+                einfuegen(bild, self.loesung_ebene, (self.mitte_x, self.loesung_y), ease_out(q * 2) * raus,
+                          1.3 - 0.3 * ease_out_back(q))
+            q = ease_out((t - 0.7) / 0.4)
+            einfuegen(bild, self.erklaerung_ebene, (self.mitte_x, self.erklaerung_y + 20 * (1 - q)), q * raus)
             return
         self._glow(bild, t, self.loesung_y, raus)
         einfuegen(bild, self.kontext_ebene, (self.mitte_x, self.kontext_y), ease_out(t / 0.3) * raus)

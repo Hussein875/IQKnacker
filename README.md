@@ -222,6 +222,62 @@ Jedes Rätsel muss mindestens eins davon haben – sonst fliegt es raus:
 
 Danach `python generate.py --vorschau` ausführen und die PNGs in `output/` anschauen.
 
+### Besondere Formate: Duell, Finde den Fehler, Level (seit 16.11.2026)
+
+Drei Formate, bei denen die Zuschauer **Partei ergreifen** oder **mitspielen** – gedacht für Kommentare
+(„Team Anna!“, „Level 4 geschafft“). Sie stehen wie alle Cloud-Rätsel in `neue_raetsel.json` und haben
+zusätzlich das Feld `typ`. Label, Sprüche, Captions und Hashtags je Format stehen in `config.json` unter `typen`.
+
+**`"typ": "duell"` – Wer hat recht?** Zwei gezeichnete Figuren (Anna und Ben, Aussehen unter `figuren` in
+`config.json`) antworten unterschiedlich; bei der Auflösung jubelt, wer recht hat. Ideal für **Streit-Rätsel**,
+bei denen zwei Antworten naheliegen (Punkt vor Strich, Klammern, Ziegenproblem).
+
+```json
+{"id": 1097, "kategorie": "mathe", "typ": "duell", "frage": "*2 + 2 × 2* = ?",
+ "links": {"name": "Anna", "sagt": "8"}, "rechts": {"name": "Ben", "sagt": "6"}, "recht": "rechts",
+ "loesung": "6 – Ben hat recht", "erklaerung": "*Punkt vor Strich:* erst 2 × 2 = 4, dann 2 + 4 = 6.",
+ "sprich": "Zwei plus zwei mal zwei. Anna sagt acht. Ben sagt sechs. Wer hat recht?",
+ "sprich_loesung": "Ben hat recht! Punkt vor Strich.",
+ "schwierigkeit": "leicht", "status": "neu", "konzept": "punkt-vor-strich-duell"}
+```
+
+`recht`: `links`, `rechts`, `beide` oder `keiner`. Die Antworten (`sagt`) kurz halten (eine Zahl, ein Wort).
+Abwechseln, wer recht hat – sonst wählt jeder immer dieselbe Figur. Die Erklärung hat höchstens ~115 Zeichen.
+
+**`"typ": "fehler"` – Finde den Fehler.** Nummerierte Zeilen (`zeilen`, 3–8 Stück, jede höchstens ~32 Zeichen),
+genau eine ist falsch (`fehler_zeile`, ab 1 gezählt). Die Zeilen bauen sich nacheinander auf; bei der Auflösung
+wird die falsche rot. `loesung` ist „Zeile 5“, die `erklaerung` sagt, was dort schiefgeht.
+
+```json
+{"id": 1101, "kategorie": "mathe", "typ": "fehler", "frage": "Beweis: *1 = 2* – wo steckt der Fehler?",
+ "zeilen": ["a = b", "a² = ab", "a² − b² = ab − b²", "(a + b)(a − b) = b(a − b)", "a + b = b", "2b = b", "2 = 1"],
+ "fehler_zeile": 5, "loesung": "Zeile 5",
+ "erklaerung": "Dort wird durch *(a − b)* geteilt – und das ist *0*, weil a = b. Durch 0 teilen ist verboten!",
+ "schwierigkeit": "schwer", "status": "neu", "konzept": "beweis-1-gleich-2"}
+```
+
+**`"typ": "level"` – Level 1 bis 5 in einem Video** (`level.py`). Fünf sehr kurze Rätsel, jedes schwerer, mit
+Fortschrittsanzeige; die Farbe wandert von Grün nach Rot, der Lösungs-Ton wird von Level zu Level höher. Am Ende:
+„Wie weit bist du gekommen? Schreib dein Level“. Denkzeit je Level: 3, 4, 5, 6, 7 Sekunden (`level.sekunden` in
+`config.json`, pro Level mit `sekunden` änderbar; mit Stimme wird ein Level automatisch so lang wie nötig).
+
+```json
+{"id": 1103, "kategorie": "mathe", "typ": "level", "frage": "5 Level Kopfrechnen – wie weit kommst du?",
+ "level": [{"frage": "*9 × 7*", "loesung": "63"}, {"frage": "*15 × 15*", "loesung": "225"},
+           {"frage": "*25 × 16*", "loesung": "400"}, {"frage": "*99 × 12*", "loesung": "1.188"},
+           {"frage": "*37 × 27*", "loesung": "999"}],
+ "loesung": "63 · 225 · 400 · 1.188 · 999", "erklaerung": "Tricks: 25 × 16 = 100 × 4 · 99 × 12 = 1.200 − 12 …",
+ "schwierigkeit": "mittel", "status": "neu", "konzept": "level-kopfrechnen-1"}
+```
+
+Jede Level-Frage muss **ohne Text auskommen** (Rechnung, Zahlenreihe, ein Wort) und in der Denkzeit im Kopf lösbar
+sein; Level 1 schafft jeder, Level 5 nur mit Trick. `frage`, `loesung` und `erklaerung` des Eintrags braucht es
+weiterhin (Titel, alle Lösungen für den Kommentar). Pro Level optional `sprich` / `sprich_loesung` für die Stimme –
+bei Zahlenreihen z. B. „Welche Zahl kommt als Nächstes?“, danach nur noch „Level drei.“ (sonst liest sie jede Zahl vor).
+
+Für alle drei: `sprich` und `sprich_loesung` angeben, wenn die Frage Rechenzeichen, Klammern oder Hochzahlen enthält –
+die Stimme soll „Klammer auf“ und „hoch zwei“ sagen, nicht raten. Eigene Caption pro Rätsel: Feld `caption`.
+
 ### Themen & Trends
 
 Ein Rätsel kann ein `thema` bekommen, z. B. `"thema": "halloween"`. Dann trägt es die Plakette, Farbe, Sprüche und Hashtags des Themas (in `config.json` unter `themen`). Vorhanden: `halloween`, `herbst`, `weihnachten`, `silvester`, `gaming` – dazu Trend-Themen aus `neue_raetsel.json` (z. B. `trend_2026_11_gta6`). Welche Trends anstehen, steht in der gemeinsamen Trendliste `TRENDS.md` im Repo `dotchitv`.
