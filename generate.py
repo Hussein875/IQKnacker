@@ -727,7 +727,10 @@ def plan_als_metricool(ausgabe, cfg, posts, von, bis):
     mc = cfg.get("metricool", {})
     zeilen, ohne_link = [], []
     for r, datum, uhrzeit, caption in posts:
-        ki = "true" if mc.get("ki_stimme") and r.get("ki_stimme") else "false"  # KI-Stimme kennzeichnen
+        # KI-Stimme kennzeichnen: am Mac merkt sich raetsel.json, welches Video eine Stimme hat – in der Cloud
+        # fehlt diese Angabe, dort gilt: alle Rätsel ab `stimme.ab_id` wurden mit Stimme gerendert
+        mit_stimme = r.get("ki_stimme") or r.get("id", 0) >= cfg.get("stimme", {}).get("ab_id", 10 ** 9)
+        ki = "true" if mc.get("ki_stimme") and mit_stimme else "false"
         link = drive_link(cfg, r)
         if not link:
             ohne_link.append(dateiname(r) + ".mp4")

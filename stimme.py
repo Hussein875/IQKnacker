@@ -30,7 +30,11 @@ FESTE_SAETZE = {
 
 
 def ssl_kontext():
-    """Zertifikate aus certifi – das python.org-Python auf dem Mac bringt keine eigenen mit."""
+    """Zertifikate: in der Cloud gibt SSL_CERT_FILE die Datei vor, sonst kommen sie aus certifi –
+    das python.org-Python auf dem Mac bringt keine eigenen mit."""
+    vorgabe = os.environ.get("SSL_CERT_FILE")
+    if vorgabe and os.path.exists(vorgabe):
+        return ssl.create_default_context(cafile=vorgabe)
     try:
         import certifi
         return ssl.create_default_context(cafile=certifi.where())

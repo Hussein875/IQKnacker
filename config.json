@@ -499,7 +499,8 @@
   },
   "stimme": {
     "aktiv": true,
-    "voice_id": "muSxG4dqYjBCkbpXqbEl",
+    "ab_id": 1074,
+    "voice_id": "Ehc9dVwDGENWbpsWNTfK",
     "modell": "eleven_multilingual_v2",
     "einstellungen": {
       "stability": 0.4,
