@@ -74,6 +74,10 @@ class LevelRenderer(RaetselRenderer):
             frage = str(eintrag["frage"])
             groesse = self.setzer_fett.passende_groesse(frage, textbreite, self.bereich_unten - self.frage_oben - 40,
                                                         g.get("level_frage", 150), g["raetsel_min"], 1.2)
+            # Rechnungen und Zahlenreihen bleiben in einer Zeile – lieber etwas kleiner als mittendrin umbrochen
+            if "\n" not in frage and len(frage.replace("*", "")) <= 28:
+                while groesse > 60 and len(self.setzer_fett.umbrechen(frage, groesse, textbreite)[0]) > 1:
+                    groesse -= 2
             if i == 0:
                 self.raetsel_schriftgroesse = groesse
             spruch = hook if i == 0 and hook else sprueche[round(i * (len(sprueche) - 1) / max(1, n - 1))]

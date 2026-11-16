@@ -1385,163 +1385,159 @@
       "konzept": "klammer-streit-8-durch-2"
     },
     {
-      "id": 1099,
+      "id": 1105,
       "kategorie": "iq",
       "typ": "duell",
-      "frage": "*3 Türen*, 1 Gewinn. Du wählst Tür 1. Der Moderator weiß alles und öffnet die leere Tür 3. *Wechseln?*",
+      "frage": "Du sägst einen Baumstamm in *3 Teile*. Jeder Schnitt dauert *10 Minuten*. Wie lange brauchst du?",
       "links": {
         "name": "Anna",
-        "sagt": "Bleiben!"
+        "sagt": "20 Minuten"
       },
       "rechts": {
         "name": "Ben",
-        "sagt": "Wechseln!"
+        "sagt": "30 Minuten"
       },
-      "recht": "rechts",
-      "loesung": "Wechseln – Ben hat recht",
-      "erklaerung": "Tür 1 gewinnt nur in *1 von 3* Fällen. Wechseln gewinnt in *2 von 3* – der Moderator öffnet ja nie den Gewinn.",
-      "sprich": "Drei Türen, ein Gewinn. Du wählst Tür eins. Der Moderator weiß, wo der Gewinn ist, und öffnet die leere Tür drei. Anna bleibt. Ben wechselt. Wer hat recht?",
-      "sprich_loesung": "Ben hat recht! Wechseln gewinnt in zwei von drei Fällen.",
-      "schwierigkeit": "schwer",
+      "recht": "links",
+      "loesung": "20 Minuten – Anna hat recht",
+      "erklaerung": "Für 3 Teile brauchst du nur *2 Schnitte*: 2 × 10 = 20 Minuten.",
+      "sprich": "Du sägst einen Baumstamm in drei Teile. Jeder Schnitt dauert zehn Minuten. Anna sagt zwanzig Minuten. Ben sagt dreißig. Wer hat recht?",
+      "sprich_loesung": "Anna hat recht! Für drei Teile reichen zwei Schnitte.",
+      "schwierigkeit": "leicht",
       "status": "neu",
-      "konzept": "ziegenproblem"
+      "konzept": "schnitte-statt-teile"
     },
     {
-      "id": 1100,
+      "id": 1106,
       "kategorie": "mathe",
       "typ": "duell",
-      "frage": "*−3²* = ?",
+      "frage": "Ist die *0* eine gerade Zahl?",
       "links": {
         "name": "Anna",
-        "sagt": "9"
+        "sagt": "Nein!"
       },
       "rechts": {
         "name": "Ben",
-        "sagt": "−9"
+        "sagt": "Ja!"
       },
       "recht": "rechts",
-      "loesung": "−9 – Ben hat recht",
-      "erklaerung": "Das Quadrat gilt nur für die 3: −(3 × 3) = −9. Für 9 bräuchte man eine *Klammer*: (−3)².",
-      "sprich": "Minus drei hoch zwei. Anna sagt neun. Ben sagt minus neun. Wer hat recht?",
-      "sprich_loesung": "Ben hat recht! Ohne Klammer gilt das Quadrat nur für die Drei.",
-      "schwierigkeit": "mittel",
+      "loesung": "Ja – Ben hat recht",
+      "erklaerung": "Gerade heißt: *ohne Rest durch 2 teilbar*. 0 ÷ 2 = 0, Rest 0 – also gerade!",
+      "sprich": "Ist die Null eine gerade Zahl? Anna sagt nein. Ben sagt ja. Wer hat recht?",
+      "sprich_loesung": "Ben hat recht! Null geteilt durch zwei geht ohne Rest.",
+      "schwierigkeit": "leicht",
       "status": "neu",
-      "konzept": "minus-quadrat"
+      "konzept": "null-ist-gerade"
     },
     {
-      "id": 1101,
+      "id": 1107,
       "kategorie": "mathe",
       "typ": "fehler",
-      "frage": "Beweis: *1 = 2* – wo steckt der Fehler?",
+      "frage": "Eine Rechnung ist *falsch*. Welche?",
       "zeilen": [
-        "a = b",
-        "a² = ab",
-        "a² − b² = ab − b²",
-        "(a + b)(a − b) = b(a − b)",
-        "a + b = b",
-        "2b = b",
-        "2 = 1"
+        "7 + 8 = 15",
+        "9 × 6 = 54",
+        "32 − 15 = 17",
+        "8 × 7 = 54",
+        "45 + 15 = 60"
       ],
-      "fehler_zeile": 5,
-      "loesung": "Zeile 5",
-      "erklaerung": "Dort wird durch *(a − b)* geteilt – und das ist *0*, weil a = b. Durch 0 teilen ist verboten!",
-      "sprich": "Hier wird bewiesen, dass eins gleich zwei ist. In welcher Zeile steckt der Fehler?",
-      "sprich_loesung": "Zeile fünf! Dort wird durch null geteilt.",
-      "schwierigkeit": "schwer",
+      "fehler_zeile": 4,
+      "loesung": "Zeile 4",
+      "erklaerung": "8 × 7 = *56*, nicht 54. Die 54 gehört zu 9 × 6 in Zeile 2!",
+      "sprich": "Eine dieser Rechnungen ist falsch. Findest du sie?",
+      "sprich_loesung": "Zeile vier! Acht mal sieben ist sechsundfünfzig.",
+      "schwierigkeit": "leicht",
       "status": "neu",
-      "konzept": "beweis-1-gleich-2"
+      "konzept": "fehler-einmaleins-1"
     },
     {
-      "id": 1102,
-      "kategorie": "iq",
+      "id": 1108,
+      "kategorie": "wort",
       "typ": "fehler",
-      "frage": "Wo ist der *fehlende Euro*?",
+      "frage": "Ein Wort ist *falsch geschrieben*. Welches?",
       "zeilen": [
-        "3 Freunde zahlen je 10 €: 30 €",
-        "Die Rechnung war nur 25 €",
-        "Zurück: je 1 € + 2 € Trinkgeld",
-        "Jeder hat also 9 € gezahlt: 27 €",
-        "27 € + 2 € Trinkgeld = 29 €",
-        "Es fehlt 1 € … oder?"
+        "Maschine",
+        "Adresse",
+        "Standart",
+        "Terrasse",
+        "Rhythmus"
       ],
-      "fehler_zeile": 5,
-      "loesung": "Zeile 5",
-      "erklaerung": "Die 2 € Trinkgeld stecken schon in den 27 €: *25 € Rechnung + 2 €*. Richtig: 27 € + 3 € zurück = 30 €.",
-      "sprich": "Drei Freunde zahlen dreißig Euro. Am Ende fehlt plötzlich ein Euro. In welcher Zeile steckt der Fehler?",
-      "sprich_loesung": "Zeile fünf! Das Trinkgeld steckt schon in den siebenundzwanzig Euro.",
-      "schwierigkeit": "mittel",
+      "fehler_zeile": 3,
+      "loesung": "Zeile 3",
+      "erklaerung": "Richtig ist *Standard* – mit d am Ende. Mit „Art“ hat das Wort nichts zu tun!",
+      "sprich": "Ein Wort ist falsch geschrieben. Findest du es?",
+      "sprich_loesung": "Zeile drei! Standard schreibt man hinten mit d.",
+      "schwierigkeit": "leicht",
       "status": "neu",
-      "konzept": "fehlender-euro"
+      "konzept": "fehler-rechtschreibung-standard"
     },
     {
-      "id": 1103,
+      "id": 1109,
       "kategorie": "mathe",
       "typ": "level",
       "frage": "5 Level Kopfrechnen – wie weit kommst du?",
       "level": [
         {
-          "frage": "*9 × 7*",
+          "frage": "*8 + 7*",
+          "loesung": "15"
+        },
+        {
+          "frage": "*6 × 7*",
+          "loesung": "42"
+        },
+        {
+          "frage": "*100 − 37*",
           "loesung": "63"
         },
         {
-          "frage": "*15 × 15*",
-          "loesung": "225"
+          "frage": "*14 × 5*",
+          "loesung": "70"
         },
         {
-          "frage": "*25 × 16*",
-          "loesung": "400"
-        },
-        {
-          "frage": "*99 × 12*",
-          "loesung": "1.188",
-          "sprich_loesung": "Eintausendeinhundertachtundachtzig!"
-        },
-        {
-          "frage": "*37 × 27*",
-          "loesung": "999"
+          "frage": "*25 × 12*",
+          "loesung": "300"
         }
       ],
-      "loesung": "63 · 225 · 400 · 1.188 · 999",
-      "erklaerung": "Tricks: 25 × 16 = 100 × 4 · 99 × 12 = 1.200 − 12 · 37 × 27 = 111 × 9.",
-      "schwierigkeit": "mittel",
+      "loesung": "15 · 42 · 63 · 70 · 300",
+      "erklaerung": "Tricks: 14 × 5 ist die Hälfte von 140 · 25 × 12 = 100 × 3.",
+      "schwierigkeit": "leicht",
       "status": "neu",
       "konzept": "level-kopfrechnen-1"
     },
     {
-      "id": 1104,
+      "id": 1110,
       "kategorie": "iq",
       "typ": "level",
       "frage": "5 Level Zahlenreihen – wie weit kommst du?",
       "level": [
         {
-          "frage": "2 – 4 – 6 – 8 – *?*",
+          "frage": "2 – 4 – 6 – 8 – *?*",
           "loesung": "10",
           "sprich": "Welche Zahl kommt als Nächstes?"
         },
         {
-          "frage": "1 – 4 – 9 – 16 – *?*",
-          "loesung": "25",
+          "frage": "40 – 35 – 30 – 25 – *?*",
+          "loesung": "20",
           "sprich": "Und jetzt?"
         },
         {
-          "frage": "1 – 1 – 2 – 3 – 5 – *?*",
-          "loesung": "8",
+          "frage": "1 – 2 – 4 – 8 – *?*",
+          "loesung": "16",
           "sprich": "Level drei."
         },
         {
-          "frage": "2 – 6 – 12 – 20 – *?*",
-          "loesung": "30",
+          "frage": "1 – 3 – 6 – 10 – *?*",
+          "loesung": "15",
           "sprich": "Level vier."
         },
         {
-          "frage": "3 – 5 – 9 – 17 – 33 – *?*",
-          "loesung": "65",
-          "sprich": "Letztes Level. Nur für Genies."
+          "frage": "1 – 4 – 9 – 16 – *?*",
+          "loesung": "25",
+          "sprich": "Letztes Level!"
         }
       ],
-      "loesung": "10 · 25 · 8 · 30 · 65",
-      "erklaerung": "+2 · Quadratzahlen · Summe der zwei Zahlen davor · +4, +6, +8, +10 · immer × 2 − 1.",
-      "schwierigkeit": "mittel",
+      "loesung": "10 · 20 · 16 · 15 · 25",
+      "erklaerung": "+2 · −5 · immer das Doppelte · +2, +3, +4, +5 · Quadratzahlen: 1×1, 2×2, 3×3 …",
+      "schwierigkeit": "leicht",
       "status": "neu",
       "konzept": "level-zahlenreihen-1"
     }
@@ -1579,7 +1575,13 @@
     1058,
     1059,
     93,
-    95
+    95,
+    1099,
+    1100,
+    1101,
+    1102,
+    1103,
+    1104
   ],
   "konzepte": {
     "11": "uhr-rechnen",

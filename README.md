@@ -228,9 +228,15 @@ Drei Formate, bei denen die Zuschauer **Partei ergreifen** oder **mitspielen** �
 („Team Anna!“, „Level 4 geschafft“). Sie stehen wie alle Cloud-Rätsel in `neue_raetsel.json` und haben
 zusätzlich das Feld `typ`. Label, Sprüche, Captions und Hashtags je Format stehen in `config.json` unter `typen`.
 
+**Leicht halten.** Die ersten Versionen (Beweis „1 = 2“, fehlender Euro, 37 × 27, Ziegenproblem) waren dem Kanal
+„zu schwer“ (Rückmeldung vom 16.11.2026) und sind gestrichen. Maßstab seitdem: Man versteht die Aufgabe in
+3 Sekunden, und ein normaler Zuschauer löst sie ohne Stift – keine Algebra mit Buchstaben, keine Scheinbeweise,
+keine Paradoxien, kein Malnehmen zweier zweistelliger Zahlen. Der Reiz kommt vom Mitmachen und Rechthaben,
+nicht von der Schwierigkeit. Beispiele im richtigen Maß: #1097, #1098, #1105 bis #1110.
+
 **`"typ": "duell"` – Wer hat recht?** Zwei gezeichnete Figuren (Anna und Ben, Aussehen unter `figuren` in
 `config.json`) antworten unterschiedlich; bei der Auflösung jubelt, wer recht hat. Ideal für **Streit-Rätsel**,
-bei denen zwei Antworten naheliegen (Punkt vor Strich, Klammern, Ziegenproblem).
+bei denen zwei Antworten naheliegen (Punkt vor Strich, Klammern, „Ist die 0 eine gerade Zahl?“).
 
 ```json
 {"id": 1097, "kategorie": "mathe", "typ": "duell", "frage": "*2 + 2 × 2* = ?",
@@ -249,12 +255,17 @@ genau eine ist falsch (`fehler_zeile`, ab 1 gezählt). Die Zeilen bauen sich nac
 wird die falsche rot. `loesung` ist „Zeile 5“, die `erklaerung` sagt, was dort schiefgeht.
 
 ```json
-{"id": 1101, "kategorie": "mathe", "typ": "fehler", "frage": "Beweis: *1 = 2* – wo steckt der Fehler?",
- "zeilen": ["a = b", "a² = ab", "a² − b² = ab − b²", "(a + b)(a − b) = b(a − b)", "a + b = b", "2b = b", "2 = 1"],
- "fehler_zeile": 5, "loesung": "Zeile 5",
- "erklaerung": "Dort wird durch *(a − b)* geteilt – und das ist *0*, weil a = b. Durch 0 teilen ist verboten!",
- "schwierigkeit": "schwer", "status": "neu", "konzept": "beweis-1-gleich-2"}
+{"id": 1107, "kategorie": "mathe", "typ": "fehler", "frage": "Eine Rechnung ist *falsch*. Welche?",
+ "zeilen": ["7 + 8 = 15", "9 × 6 = 54", "32 − 15 = 17", "8 × 7 = 54", "45 + 15 = 60"],
+ "fehler_zeile": 4, "loesung": "Zeile 4",
+ "erklaerung": "8 × 7 = *56*, nicht 54. Die 54 gehört zu 9 × 6 in Zeile 2!",
+ "sprich": "Eine dieser Rechnungen ist falsch. Findest du sie?",
+ "sprich_loesung": "Zeile vier! Acht mal sieben ist sechsundfünfzig.",
+ "schwierigkeit": "leicht", "status": "neu", "konzept": "fehler-einmaleins-1"}
 ```
+
+Gut geeignet: einfache Rechnungen (eine stimmt nicht), Rechtschreibung (ein Wort ist falsch geschrieben, siehe
+#1108 – Schreibweise im Duden prüfen, keine Wörter mit zwei erlaubten Formen), Kassenzettel, Reihenfolgen.
 
 **`"typ": "level"` – Level 1 bis 5 in einem Video** (`level.py`). Fünf sehr kurze Rätsel, jedes schwerer, mit
 Fortschrittsanzeige; die Farbe wandert von Grün nach Rot, der Lösungs-Ton wird von Level zu Level höher. Am Ende:
@@ -262,16 +273,18 @@ Fortschrittsanzeige; die Farbe wandert von Grün nach Rot, der Lösungs-Ton wird
 `config.json`, pro Level mit `sekunden` änderbar; mit Stimme wird ein Level automatisch so lang wie nötig).
 
 ```json
-{"id": 1103, "kategorie": "mathe", "typ": "level", "frage": "5 Level Kopfrechnen – wie weit kommst du?",
- "level": [{"frage": "*9 × 7*", "loesung": "63"}, {"frage": "*15 × 15*", "loesung": "225"},
-           {"frage": "*25 × 16*", "loesung": "400"}, {"frage": "*99 × 12*", "loesung": "1.188"},
-           {"frage": "*37 × 27*", "loesung": "999"}],
- "loesung": "63 · 225 · 400 · 1.188 · 999", "erklaerung": "Tricks: 25 × 16 = 100 × 4 · 99 × 12 = 1.200 − 12 …",
- "schwierigkeit": "mittel", "status": "neu", "konzept": "level-kopfrechnen-1"}
+{"id": 1109, "kategorie": "mathe", "typ": "level", "frage": "5 Level Kopfrechnen – wie weit kommst du?",
+ "level": [{"frage": "*8 + 7*", "loesung": "15"}, {"frage": "*6 × 7*", "loesung": "42"},
+           {"frage": "*100 − 37*", "loesung": "63"}, {"frage": "*14 × 5*", "loesung": "70"},
+           {"frage": "*25 × 12*", "loesung": "300"}],
+ "loesung": "15 · 42 · 63 · 70 · 300", "erklaerung": "Tricks: 14 × 5 ist die Hälfte von 140 · 25 × 12 = 100 × 3.",
+ "schwierigkeit": "leicht", "status": "neu", "konzept": "level-kopfrechnen-1"}
 ```
 
 Jede Level-Frage muss **ohne Text auskommen** (Rechnung, Zahlenreihe, ein Wort) und in der Denkzeit im Kopf lösbar
-sein; Level 1 schafft jeder, Level 5 nur mit Trick. `frage`, `loesung` und `erklaerung` des Eintrags braucht es
+sein; Level 1 und 2 schafft jeder, Level 5 ist höchstens so schwer wie „25 × 12“ oder „1 – 4 – 9 – 16 – ?“ – die
+meisten sollen bis Level 4 kommen und stolz ihr Level kommentieren. Kurze Fragen bleiben automatisch in einer
+Zeile. `frage`, `loesung` und `erklaerung` des Eintrags braucht es
 weiterhin (Titel, alle Lösungen für den Kommentar). Pro Level optional `sprich` / `sprich_loesung` für die Stimme –
 bei Zahlenreihen z. B. „Welche Zahl kommt als Nächstes?“, danach nur noch „Level drei.“ (sonst liest sie jede Zahl vor).
 
