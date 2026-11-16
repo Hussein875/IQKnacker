@@ -198,7 +198,7 @@ Das Video fordert zweimal zum Kommentieren auf: **vor der Auflösung** („Jetzt
 
 - `*Sternchen*` um Wörter setzen → erscheinen in der Akzentfarbe: `"Wie viele *Dreiecke* siehst du?"`
 - `\n` erzwingt einen Zeilenumbruch: `"Welche Zahl kommt als Nächstes?\n2 – 6 – 12 – ?"`
-- Damit eine Zahlenreihe nicht mitten drin umbricht, statt normaler Leerzeichen geschützte Leerzeichen verwenden (` `), wie in Rätsel 12. Zahl und Einheit („20 €“, „60 km/h“, „25 %“) hält der Generator automatisch zusammen.
+- Damit eine Zahlenreihe nicht mitten drin umbricht, statt normaler Leerzeichen geschützte Leerzeichen verwenden (` `), wie in Rätsel 12. Zahl und Einheit („20 €“, „60 km/h“, „25 %“) hält der Generator automatisch zusammen, ebenso kurze Rechnungen („4 × 4 = 16“, „(a − b)“) – keine Zeile beginnt mit einem Rechenzeichen oder Gedankenstrich. In der Erklärung bleibt außerdem kein einzelnes Restwort in der letzten Zeile stehen, und Emoji-Gleichungen brechen nie mitten in der Gleichung um (die Schrift wird dann etwas kleiner).
 - Emojis funktionieren überall (Rätsel, Sprüche, Optionen). Am besten einfache Emojis ohne Hautfarben oder Kombinationen.
 - Kürzere Texte werden größer dargestellt. Ideal sind 1–3 kurze Sätze.
 

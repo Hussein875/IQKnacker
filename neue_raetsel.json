@@ -1282,7 +1282,7 @@
       "kategorie": "mathe",
       "frage": "Ist *123.456.789*\nohne Rest durch *9* teilbar?",
       "loesung": "Ja",
-      "erklaerung": "Quersumme: 1 + 2 + … + 9 = 45 – und 45 ist durch 9 teilbar, also auch die ganze Zahl. Der Quersummen-Trick klappt bei jeder Zahl!",
+      "erklaerung": "Trick: *Quersumme* bilden! 1+2+…+9 = 45, und 45 ist durch 9 teilbar – also auch die ganze Zahl.",
       "schwierigkeit": "mittel",
       "status": "neu",
       "konzept": "quersumme-9"

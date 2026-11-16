@@ -108,6 +108,35 @@ def einfuegen(frame, ebene, mitte, deckkraft=1.0, skalierung=1.0):
 
 EINHEIT = re.compile(r"(\d) (€|\$|%|km/h|km|kg|cm|m|Cent)(?=[\s.,!?*)]|$)")
 NUMMER = re.compile(r"\b(Tür|Zeile|Level|Platz|Seite|Band|Teil|Nr\.) (\d)")  # „Tür 1“ nie über zwei Zeilen
+KETTE = re.compile(r"[^\s×÷]+(?: [×÷] [^\s×÷]+)+")       # „4 × 4“, „8 ÷ 2 × 4“
+KLAMMER = re.compile(r"\([^()\n]{1,12}\)")                # „(a − b)“, „(2 + 2)“
+VORNE = re.compile(r"(?<=\S) ([×÷+−=–])(?= )")            # Rechenzeichen und Gedankenstrich
+ERGEBNIS = re.compile(r"= (?=\S{1,9}(?:\s|$))")           # „= 16“, „= ?“, „= b.“
+KETTE_MAX = 14         # so lang darf eine Rechnung wie „8 ÷ 2 × 4“ sein, um ganz zusammenzubleiben
+STUECK_MAX = 18        # länger wird kein zusammengehaltenes Stück – sonst müsste die Schrift schrumpfen
+RESTZEILE_MIN = 0.34   # ist die letzte Zeile kürzer als dieser Anteil der längsten, wird gleichmäßiger umbrochen
+EIN_WORT_MIN = 0.5     # … und ein einzelnes Wort in der letzten Zeile darf nicht kürzer sein als dieser Anteil
+
+
+def _lockern(stueck, stufen=("=", "×÷", "+−")):
+    """Zu lange Stücke dürfen wieder umbrechen: erst nach „=“, dann nach „×“/„÷“, zuletzt nach „+“/„−“."""
+    if not stufen or len(stueck.replace("*", "")) <= STUECK_MAX:
+        return stueck
+    teile = re.sub(f"([{stufen[0]}])\u00a0", "\\1 ", stueck).split(" ")
+    return " ".join(_lockern(teil, stufen[1:]) for teil in teile)
+
+
+def zusammenhalten(text):
+    """Geschützte Leerzeichen an den Stellen, an denen ein Zeilenumbruch hässlich wäre."""
+    text = EINHEIT.sub("\\1\u00a0\\2", text)  # „20 €“, „60 km/h“: Einheit nie allein in die nächste Zeile
+    text = NUMMER.sub("\\1\u00a0\\2", text)
+    # kurze Rechnungen bleiben ganz zusammen – lange dürfen nach einem Rechenzeichen umbrechen
+    text = KETTE.sub(lambda m: m.group().replace(" ", "\u00a0")
+                     if len(m.group().replace("*", "")) <= KETTE_MAX else m.group(), text)
+    text = KLAMMER.sub(lambda m: m.group().replace(" ", "\u00a0"), text)   # kurze Klammern bleiben zusammen
+    text = VORNE.sub("\u00a0\\1", text)       # keine Zeile beginnt mit ×, +, = oder einem Gedankenstrich
+    text = ERGEBNIS.sub("=\u00a0", text)      # das Ergebnis bleibt beim Gleichheitszeichen
+    return "\n".join(" ".join(_lockern(stueck) for stueck in zeile.split(" ")) for zeile in text.split("\n"))
 
 
 def zerlege_text(text):
@@ -118,8 +147,7 @@ def zerlege_text(text):
     """
     absaetze = []
     akzent = False
-    text = EINHEIT.sub("\\1\u00a0\\2", text)  # „20 €“, „60 km/h“: Einheit nie allein in die nächste Zeile
-    text = NUMMER.sub("\\1\u00a0\\2", text)
+    text = zusammenhalten(text)
     for zeile in text.split("\n"):
         woerter = []
         for roh in zeile.split(" "):
@@ -198,25 +226,57 @@ class TextSetzer:
                     breite += f.getlength(lauf)
         return breite
 
-    def umbrechen(self, text, groesse, max_breite):
-        """Gibt Zeilen (Listen von Wörtern) und ob alles in die Breite passt zurück."""
+    @staticmethod
+    def _fuellen(breiten, leer, max_breite):
+        """Wörter der Reihe nach auf Zeilen verteilen. Rückgabe: Zeilen als Listen von Wort-Nummern."""
+        teile, zeile, breite = [], [], 0
+        for i, wb in enumerate(breiten):
+            neue_breite = wb if not zeile else breite + leer + wb
+            if zeile and neue_breite > max_breite:
+                teile.append(zeile)
+                zeile, breite = [i], wb
+            else:
+                zeile.append(i)
+                breite = neue_breite
+        teile.append(zeile)
+        return teile
+
+    def _ausgleichen(self, breiten, leer, max_breite):
+        """Steht in der letzten Zeile nur ein kurzer Rest („übrig.“, „verboten!“), die Zeilen gleichmäßiger füllen:
+        gleiche Zeilenzahl, aber so schmal wie möglich umbrochen."""
+        teile = self._fuellen(breiten, leer, max_breite)
+        if len(teile) < 2 or max(breiten) > max_breite:
+            return teile
+
+        def zeilenbreite(teil):
+            return sum(breiten[i] for i in teil) + leer * (len(teil) - 1)
+
+        rest = zeilenbreite(teile[-1]) / max(zeilenbreite(t) for t in teile)
+        if rest >= (EIN_WORT_MIN if len(teile[-1]) == 1 else RESTZEILE_MIN):
+            return teile
+        unten, oben = max(breiten), max_breite
+        for _ in range(12):
+            mitte = (unten + oben) / 2
+            versuch = self._fuellen(breiten, leer, mitte)
+            if len(versuch) <= len(teile):
+                teile, oben = versuch, mitte
+            else:
+                unten = mitte
+        return teile
+
+    def umbrechen(self, text, groesse, max_breite, ausgleichen=False):
+        """Gibt Zeilen (Listen von Wörtern) und ob alles in die Breite passt zurück.
+        Mit `ausgleichen` bleibt kein kurzer Rest allein in der letzten Zeile (für Fließtext wie die Erklärung);
+        die Zahl der Zeilen ändert sich dadurch nie."""
         f = schrift(self.schrift_pfad, groesse)
         leer = f.getlength(" ")
         zeilen, passt = [], True
+        verteilen = self._ausgleichen if ausgleichen else self._fuellen
         for absatz in zerlege_text(text):
-            zeile, breite = [], 0
-            for wort in absatz:
-                wb = self.wortbreite(wort, groesse)
-                if wb > max_breite:
-                    passt = False
-                neue_breite = wb if not zeile else breite + leer + wb
-                if zeile and neue_breite > max_breite:
-                    zeilen.append(zeile)
-                    zeile, breite = [wort], wb
-                else:
-                    zeile.append(wort)
-                    breite = neue_breite
-            zeilen.append(zeile)
+            breiten = [self.wortbreite(wort, groesse) for wort in absatz]
+            if any(wb > max_breite for wb in breiten):
+                passt = False
+            zeilen += [[absatz[i] for i in teil] for teil in verteilen(breiten, leer, max_breite)]
         return zeilen, passt
 
     def passende_groesse(self, text, max_breite, max_hoehe, max_groesse, min_groesse, zeilenabstand):
@@ -227,14 +287,14 @@ class TextSetzer:
                 return groesse
         return min_groesse
 
-    def block_mit_woertern(self, text, groesse, max_breite, farbe, akzent, zeilenabstand=1.2):
+    def block_mit_woertern(self, text, groesse, max_breite, farbe, akzent, zeilenabstand=1.2, ausgleichen=False):
         """Setzt zentrierten, umbrochenen Text auf eine transparente Ebene.
 
         Rückgabe: (Ebene, Liste der Wort-Rechtecke) – die Rechtecke braucht die Wort-für-Wort-Animation.
         """
         f = schrift(self.schrift_pfad, groesse)
         leer = f.getlength(" ")
-        zeilen, _ = self.umbrechen(text, groesse, max_breite)
+        zeilen, _ = self.umbrechen(text, groesse, max_breite, ausgleichen)
         zeilenhoehe = round(groesse * zeilenabstand)
         oberlaenge, unterlaenge = f.getmetrics()
         breiten = [sum(self.wortbreite(w, groesse) for w in z) + leer * max(0, len(z) - 1) for z in zeilen]
@@ -631,7 +691,7 @@ class RaetselRenderer:
             groesse = self.setzer_fett.passende_groesse(r["erklaerung"], textbreite, platz,
                                                         g.get("erklaerung_kompakt", 50), 26, 1.25)
             self.erklaerung_ebene = self.setzer_fett.block(r["erklaerung"], groesse, textbreite, self.textfarbe,
-                                                          self.akzent, 1.25)
+                                                          self.akzent, 1.25, ausgleichen=True)
             hoehe = self.loesung_ebene.height + 8 + self.erklaerung_ebene.height
             y = (oben + unten) / 2 - hoehe / 2
             self.loesung_y = y + self.loesung_ebene.height / 2
@@ -647,7 +707,7 @@ class RaetselRenderer:
             groesse = self.setzer_fett.passende_groesse(r["erklaerung"], textbreite, platz,
                                                         g.get("erklaerung", 56), 32, 1.3)
             self.erklaerung_ebene = self.setzer_fett.block(r["erklaerung"], groesse, textbreite, self.textfarbe,
-                                                          self.akzent, 1.3)
+                                                          self.akzent, 1.3, ausgleichen=True)
             hoehe = self.kontext_ebene.height + 50 + self.loesung_ebene.height + 40 + self.erklaerung_ebene.height
             y = (self.bereich_oben + self.inhalt_unten - 40) / 2 - hoehe / 2
             self.kontext_y = y + self.kontext_ebene.height / 2
@@ -783,6 +843,10 @@ class RaetselRenderer:
             max_h -= bild_ebene.height + 40
         groesse = self.setzer_fett.passende_groesse(frage, max_b, max_h, max_groesse, g["raetsel_min"],
                                                     zeilenabstand)
+        if self.raetsel.get("kategorie") == "emoji":  # jede Gleichung bleibt in ihrer Zeile – lieber etwas kleiner
+            gleichungen = frage.count("\n") + 1
+            while groesse > g["raetsel_min"] and len(self.setzer_fett.umbrechen(frage, groesse, max_b)[0]) > gleichungen:
+                groesse -= 2
         self.raetsel_schriftgroesse = groesse
         text, boxen = self.setzer_fett.block_mit_woertern(frage, groesse, max_b, self.textfarbe, self.akzent,
                                                          zeilenabstand)
