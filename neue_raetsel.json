@@ -321,6 +321,52 @@
           "Schneemann-Logik ❄️"
         ]
       }
+    },
+    "trend_2026_12_06_nikolaus": {
+      "label": "NIKOLAUS",
+      "akzent": "#FF5A5F",
+      "zeitraum": [
+        "12-04",
+        "12-06"
+      ],
+      "hashtags": [
+        "#nikolaus",
+        "#nikolaustag",
+        "#stiefel"
+      ],
+      "captions": [
+        "Stiefel rausgestellt? 🎅 Dann erst mal rechnen!",
+        "Nikolaus-Rätsel 🎅 Wer hat recht?"
+      ],
+      "texte": {
+        "hook": [
+          "Nikolaus-Rätsel 🎅",
+          "Stiefel schon geputzt? 👢"
+        ]
+      }
+    },
+    "trend_2026_12_06_advent2": {
+      "label": "2. ADVENT",
+      "akzent": "#F2C94C",
+      "zeitraum": [
+        "12-04",
+        "12-06"
+      ],
+      "hashtags": [
+        "#advent",
+        "#adventskranz",
+        "#zweiteradvent"
+      ],
+      "captions": [
+        "Zwei Kerzen brennen 🕯️🕯️ – rechnest du mit?",
+        "Adventskranz-Rätsel zum 2. Advent 🕯️"
+      ],
+      "texte": {
+        "hook": [
+          "Zweite Kerze an 🕯️",
+          "Advents-Rätsel 🕯️"
+        ]
+      }
     }
   },
   "raetsel": [
@@ -1547,6 +1593,354 @@
       "schwierigkeit": "leicht",
       "status": "neu",
       "konzept": "level-zahlenreihen-1"
+    },
+    {
+      "id": 1111,
+      "kategorie": "emoji",
+      "frage": "🧁 + 🧁 = 6\n🧁 + 🍓 + 🍓 = 7\n🐵 + 🐵 = 2\n*🐵 + 🧁 + 🍓 = ?*",
+      "loesung": "6",
+      "erklaerung": "🧁 = 3, 🍓 = 2, 🐵 = 1 → 1 + 3 + 2 = 6.",
+      "schwierigkeit": "leicht",
+      "status": "neu"
+    },
+    {
+      "id": 1112,
+      "kategorie": "emoji",
+      "frage": "🍇 + 🍇 = 18\n🍇 + 🚗 + 🚗 = 23\n🍓 + 🍓 = 6\n*🍓 + 🍇 + 🚗 = ?*",
+      "loesung": "19",
+      "erklaerung": "🍇 = 9, 🚗 = 7, 🍓 = 3 → 3 + 9 + 7 = 19.",
+      "schwierigkeit": "leicht",
+      "status": "neu"
+    },
+    {
+      "id": 1113,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt vor alle drei?\n*___SCHUH*\n*___TUCH*\n*___SCHRIFT*",
+      "loesung": "Hand",
+      "erklaerung": "Handschuh, Handtuch, Handschrift.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-hand"
+    },
+    {
+      "id": 1114,
+      "kategorie": "mathe",
+      "frage": "Ohne Taschenrechner:\n*45 × 9 = ?*",
+      "loesung": "405",
+      "erklaerung": "Mal 9 = mal 10 minus einmal: 450 − 45 = 405. Mit dem Trick geht jedes Mal-9 im Kopf!",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "mal-9-trick"
+    },
+    {
+      "id": 1115,
+      "kategorie": "mathe",
+      "typ": "duell",
+      "thema": "trend_2026_12_06_nikolaus",
+      "frage": "*4 Paar Stiefel* stehen vor der Tür. In *jeden Stiefel* kommt 1 Mandarine. Wie viele Mandarinen?",
+      "links": {
+        "name": "Anna",
+        "sagt": "4"
+      },
+      "rechts": {
+        "name": "Ben",
+        "sagt": "8"
+      },
+      "recht": "rechts",
+      "loesung": "8 – Ben hat recht",
+      "erklaerung": "4 *Paar* sind 8 Stiefel – also 8 Mandarinen. Wusstest du? Am 6.12. ist Nikolaus.",
+      "sprich": "Vor der Tür stehen vier Paar Stiefel. In jeden Stiefel kommt eine Mandarine. Anna sagt vier. Ben sagt acht. Wer hat recht?",
+      "sprich_loesung": "Ben hat recht! Vier Paar sind acht Stiefel.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "paar-zaehlen"
+    },
+    {
+      "id": 1116,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*APFEL___*\n*STAMM___*\n*WEIHNACHTS___*",
+      "loesung": "Baum",
+      "erklaerung": "Apfelbaum, Stammbaum, Weihnachtsbaum.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-baum"
+    },
+    {
+      "id": 1117,
+      "kategorie": "mathe",
+      "typ": "level",
+      "frage": "5 Level Prozente – wie weit kommst du?",
+      "level": [
+        {
+          "frage": "*50 % von 20*",
+          "loesung": "10",
+          "sprich": "Fünfzig Prozent von zwanzig?"
+        },
+        {
+          "frage": "*10 % von 70*",
+          "loesung": "7",
+          "sprich": "Zehn Prozent von siebzig?"
+        },
+        {
+          "frage": "*25 % von 80*",
+          "loesung": "20",
+          "sprich": "Fünfundzwanzig Prozent von achtzig?"
+        },
+        {
+          "frage": "*20 % von 45*",
+          "loesung": "9",
+          "sprich": "Zwanzig Prozent von fünfundvierzig?"
+        },
+        {
+          "frage": "*75 % von 40*",
+          "loesung": "30",
+          "sprich": "Fünfundsiebzig Prozent von vierzig?"
+        }
+      ],
+      "loesung": "10 · 7 · 20 · 9 · 30",
+      "erklaerung": "Tricks: 25 % = ein Viertel · 20 % = ein Fünftel · 75 % = drei Viertel.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "level-prozente-1"
+    },
+    {
+      "id": 1118,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt vor alle drei?\n*___REIFEN*\n*___EINBRUCH*\n*___JACKE*",
+      "loesung": "Winter",
+      "erklaerung": "Winterreifen, Wintereinbruch, Winterjacke.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "wort-dreier-winter"
+    },
+    {
+      "id": 1119,
+      "kategorie": "iq",
+      "frage": "In jeder *Ecke* eines Zimmers sitzt eine Katze. *Jede Katze* sieht *3 Katzen*. Wie viele Katzen sind im Zimmer?",
+      "loesung": "4",
+      "erklaerung": "4 Ecken, 4 Katzen – jede sieht die 3 anderen. Wer 12 oder 16 rechnet, zählt dieselben Katzen mehrfach!",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "katzen-ecken"
+    },
+    {
+      "id": 1120,
+      "kategorie": "wort",
+      "typ": "fehler",
+      "frage": "Hier versteckt sich ein *Rechtschreibfehler*. Wo?",
+      "caption": "Ein Wort ist falsch geschrieben – findest du es? 🕵️",
+      "hashtags": [
+        "#rechtschreibung",
+        "#deutsch",
+        "#findedenfehler",
+        "#quiz"
+      ],
+      "zeilen": [
+        "Ziemlich",
+        "Paket",
+        "Interessant",
+        "Nähmlich",
+        "Wiederholen"
+      ],
+      "fehler_zeile": 4,
+      "loesung": "Zeile 4",
+      "erklaerung": "Richtig ist *nämlich* – ohne h. Merkspruch: Wer nämlich mit h schreibt, ist dämlich!",
+      "sprich": "Ein Wort ist falsch geschrieben. Findest du es?",
+      "sprich_loesung": "Zeile vier! Nämlich schreibt man ohne h.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "fehler-rechtschreibung-naemlich"
+    },
+    {
+      "id": 1121,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*PUDEL___*\n*ZIPFEL___*\n*WOLL___*",
+      "loesung": "Mütze",
+      "erklaerung": "Pudelmütze, Zipfelmütze, Wollmütze.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-muetze"
+    },
+    {
+      "id": 1122,
+      "kategorie": "mathe",
+      "frage": "Ohne Taschenrechner:\n*18 × 35 = ?*",
+      "loesung": "630",
+      "erklaerung": "Trick: eine Zahl halbieren, die andere verdoppeln. 18 × 35 = 9 × 70 = 630. Das Ergebnis bleibt gleich!",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "halbieren-verdoppeln"
+    },
+    {
+      "id": 1123,
+      "kategorie": "iq",
+      "typ": "duell",
+      "frage": "Was ist *schwerer*: *1 kg Federn* oder *1 kg Eisen*?",
+      "links": {
+        "name": "Anna",
+        "sagt": "Gleich!"
+      },
+      "rechts": {
+        "name": "Ben",
+        "sagt": "Eisen!"
+      },
+      "recht": "links",
+      "loesung": "Gleich schwer – Anna hat recht",
+      "erklaerung": "1 kg ist 1 kg! Die Federn brauchen nur viel *mehr Platz*.",
+      "sprich": "Was ist schwerer: ein Kilo Federn oder ein Kilo Eisen? Anna sagt gleich schwer. Ben sagt Eisen. Wer hat recht?",
+      "sprich_loesung": "Anna hat recht! Ein Kilo ist ein Kilo.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "kilo-federn-eisen"
+    },
+    {
+      "id": 1124,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt vor alle drei?\n*___WEIN*\n*___BIRNE*\n*___WÜRMCHEN*",
+      "loesung": "Glüh",
+      "erklaerung": "Glühwein, Glühbirne, Glühwürmchen.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "wort-dreier-glueh"
+    },
+    {
+      "id": 1125,
+      "kategorie": "iq",
+      "thema": "trend_2026_12_06_advent2",
+      "frage": "Adventskranz: Am 1. Advent brennt *1 Kerze*, am 2. Advent *2* … am 4. Advent *4*. Wie oft zündest du *insgesamt* eine Kerze an?",
+      "loesung": "10-mal",
+      "erklaerung": "1 + 2 + 3 + 4 = 10 – nicht 4! Wusstest du? Der erste Adventskranz (1839) hatte für jeden Tag bis Heiligabend eine Kerze.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "advent-anzuenden-summe"
+    },
+    {
+      "id": 1126,
+      "kategorie": "mathe",
+      "typ": "fehler",
+      "frage": "Eine Zeile ist *falsch*. Welche?",
+      "zeilen": [
+        "1 Min = 60 Sek",
+        "1 Tag = 1240 Min",
+        "1 Woche = 7 Tage",
+        "1 Std = 3600 Sek",
+        "1 Woche = 168 Std"
+      ],
+      "fehler_zeile": 2,
+      "loesung": "Zeile 2",
+      "erklaerung": "1 Tag = 24 × 60 = *1440* Minuten, nicht 1240!",
+      "sprich": "Eine Zeile ist falsch. Findest du sie?",
+      "sprich_loesung": "Zeile zwei! Ein Tag hat eintausendvierhundertvierzig Minuten.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "fehler-zeiteinheiten"
+    },
+    {
+      "id": 1127,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*SCHNEE___*\n*CHRISTBAUM___*\n*KANONEN___*",
+      "loesung": "Kugel",
+      "erklaerung": "Schneekugel, Christbaumkugel, Kanonenkugel.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "wort-dreier-kugel"
+    },
+    {
+      "id": 1128,
+      "kategorie": "iq",
+      "frage": "Was dauert *länger*:\n*1 Million Sekunden*\noder *1 Woche*?",
+      "loesung": "1 Million Sekunden",
+      "erklaerung": "1 Tag = 86.400 s, 1 Woche ≈ 605.000 s. 1 Million Sekunden sind über *11 Tage*! 1 Milliarde Sekunden: fast 32 Jahre.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "million-sekunden"
+    },
+    {
+      "id": 1129,
+      "kategorie": "mathe",
+      "typ": "duell",
+      "frage": "*30 min + 45 min* = ?",
+      "links": {
+        "name": "Anna",
+        "sagt": "75 min"
+      },
+      "rechts": {
+        "name": "Ben",
+        "sagt": "1 h 15 min"
+      },
+      "recht": "beide",
+      "loesung": "Beide haben recht",
+      "erklaerung": "75 Minuten = 60 + 15 = *1 Stunde 15 Minuten*. Beide sagen dasselbe!",
+      "sprich": "Dreißig Minuten plus fünfundvierzig Minuten. Anna sagt fünfundsiebzig Minuten. Ben sagt eine Stunde und fünfzehn Minuten. Wer hat recht?",
+      "sprich_loesung": "Beide haben recht! Fünfundsiebzig Minuten sind eine Stunde und fünfzehn Minuten.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "beide-recht-zeit"
+    },
+    {
+      "id": 1130,
+      "kategorie": "iq",
+      "typ": "level",
+      "frage": "5 Level Uhrzeiten – wie weit kommst du?",
+      "level": [
+        {
+          "frage": "*9:00 + 30 Min*",
+          "loesung": "9:30",
+          "sprich": "Neun Uhr plus dreißig Minuten?",
+          "sprich_loesung": "Neun Uhr dreißig."
+        },
+        {
+          "frage": "*10:45 + 15 Min*",
+          "loesung": "11:00",
+          "sprich": "Zehn Uhr fünfundvierzig plus fünfzehn Minuten?",
+          "sprich_loesung": "Elf Uhr."
+        },
+        {
+          "frage": "*13:40 + 30 Min*",
+          "loesung": "14:10",
+          "sprich": "Dreizehn Uhr vierzig plus dreißig Minuten?",
+          "sprich_loesung": "Vierzehn Uhr zehn."
+        },
+        {
+          "frage": "*23:30 + 1 Std*",
+          "loesung": "0:30",
+          "sprich": "Dreiundzwanzig Uhr dreißig plus eine Stunde?",
+          "sprich_loesung": "Null Uhr dreißig."
+        },
+        {
+          "frage": "*16:35 + 2 Std 40 Min*",
+          "loesung": "19:15",
+          "sprich": "Sechzehn Uhr fünfunddreißig plus zwei Stunden und vierzig Minuten?",
+          "sprich_loesung": "Neunzehn Uhr fünfzehn."
+        }
+      ],
+      "loesung": "9:30 · 11:00 · 14:10 · 0:30 · 19:15",
+      "erklaerung": "Tricks: erst die Stunden, dann die Minuten · 35 + 40 = 75 Min = 1 Std 15 Min.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "level-uhrzeiten-1"
+    },
+    {
+      "id": 1131,
+      "kategorie": "iq",
+      "typ": "duell",
+      "frage": "Du druckst *10 Seiten* Text, jedes Blatt *vorne und hinten*. Wie viele *Blätter* brauchst du?",
+      "links": {
+        "name": "Anna",
+        "sagt": "10"
+      },
+      "rechts": {
+        "name": "Ben",
+        "sagt": "5"
+      },
+      "recht": "rechts",
+      "loesung": "5 – Ben hat recht",
+      "erklaerung": "Ein Blatt hat *2 Seiten*: 10 Seiten passen auf 5 Blätter.",
+      "sprich": "Du druckst zehn Seiten Text, jedes Blatt vorne und hinten. Anna sagt zehn Blätter. Ben sagt fünf. Wer hat recht?",
+      "sprich_loesung": "Ben hat recht! Ein Blatt hat zwei Seiten.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "seiten-blaetter"
     }
   ],
   "gestrichen": [
