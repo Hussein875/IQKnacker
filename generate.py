@@ -525,18 +525,52 @@ def stimme_vorbereiten(r, cfg, ffmpeg):
                            math.ceil((stimme.dauer(paar[1]) + 0.45) * 2) / 2))
         r = dict(r)
         r["_level_zeiten"] = zeiten
-        return r, teile
-    teile = []
-    for rolle, satz in (("frage", stimme.frage_text(r, cfg)), ("loesung", stimme.loesung_text(r, cfg))):
+        satz = stimme.abschluss_text(r, cfg, random.Random(f"stimme-{r['id']}"))
         mp3 = stimme.sprich(satz, cfg, STIMMEN_CACHE) if satz else None
         samples = stimme.als_samples(ffmpeg, mp3) if mp3 else None
-        if samples is None:
-            return r, []  # lieber ganz ohne Stimme als nur halb
-        teile.append((rolle, samples))
+        if samples is not None:  # „Welches Level hast du geschafft?“ – gesprochen am Ende
+            teile.append(("abschluss", samples))
+            r["_abschluss_min"] = stimme.dauer(samples) + cfg["stimme"].get("nach_abschluss", 0.4)
+        return r, teile
     st = cfg["stimme"]
-    r = dict(r)
-    r["lesezeit"] = max(1.5, stimme.dauer(teile[0][1]) + st.get("nach_frage", 0.3))
-    r["_aufloesung_min"] = stimme.dauer(teile[1][1]) + st.get("nach_loesung", 1.6)
+    zufall = random.Random(f"stimme-{r['id']}")
+    luecke = st.get("luecke_sprecher", 0.25)
+
+    def kette(saetze):
+        """[(voice_id, Satz)] → (Samples hintereinander mit kurzen Pausen, Startzeit jedes Satzes) oder None."""
+        gesamt, starts = array.array("h"), []
+        for i, (stimm_id, satz) in enumerate(saetze):
+            mp3 = stimme.sprich(satz, cfg, STIMMEN_CACHE, stimm_id) if satz else None
+            samples = stimme.als_samples(ffmpeg, mp3) if mp3 else None
+            if samples is None:
+                return None
+            if i:
+                gesamt.extend(array.array("h", [0]) * round(luecke * stimme.SR))
+            starts.append(len(gesamt) / stimme.SR)
+            gesamt.extend(samples)
+        return gesamt, starts
+
+    original, r = r, dict(r)
+    if stimme.duell_mit_figuren(r, cfg):  # Anna und Ben sprechen ihre Antworten selbst
+        frage = kette(stimme.duell_frage_teile(r, cfg))
+        loesung = kette(stimme.duell_jubel(r, cfg, zufall) + [(None, stimme.loesung_text(r, cfg))])
+        if frage:  # Sprechblasen erscheinen genau dann, wenn die Figur spricht
+            beginn = st.get("start_frage", 0.1)
+            r["_blasen_zeiten"] = [beginn + frage[1][1], beginn + frage[1][2]]
+    else:
+        frage = kette([(None, stimme.frage_text(r, cfg))])
+        loesung = kette([(None, stimme.loesung_text(r, cfg))])
+    if not frage or not loesung:
+        return original, []  # lieber ganz ohne Stimme als nur halb
+    teile = [("frage", frage[0]), ("loesung", loesung[0])]
+    r["lesezeit"] = max(1.5, stimme.dauer(frage[0]) + st.get("nach_frage", 0.3))
+    r["_aufloesung_min"] = stimme.dauer(loesung[0]) + st.get("nach_loesung", 1.6)
+    if cfg.get("aufloesung", {}).get("zeigen"):  # gesprochener Kommentar-Aufruf am Ende
+        satz = stimme.abschluss_text(r, cfg, zufall)
+        ende = kette([(None, satz)]) if satz else None
+        if ende:
+            teile.append(("abschluss", ende[0]))
+            r["_abschluss_min"] = stimme.dauer(ende[0]) + st.get("nach_abschluss", 0.4)
     return r, teile
 
 

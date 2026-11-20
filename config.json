@@ -70,13 +70,13 @@
       "max": 10
     },
     "countdown": {
-      "leicht": 8,
-      "mittel": 12,
-      "schwer": 15,
-      "standard": 12
+      "leicht": 6,
+      "mittel": 9,
+      "schwer": 12,
+      "standard": 9
     },
     "countdown_zuschlag": {
-      "emoji": 3
+      "emoji": 2
     },
     "zeit_um": 0.7,
     "abschluss": 1.6,
@@ -514,7 +514,36 @@
     "nach_frage": 0.3,
     "nach_loesung": 1.6,
     "start_frage": 0.1,
-    "start_loesung": 0.15
+    "start_loesung": 0.15,
+    "abschluss": {
+      "standard": [
+        "Hattest du's? Schreib Haken oder Kreuz in die Kommentare!",
+        "Und, richtig gelegen? Schreib's in die Kommentare!"
+      ],
+      "wort": [
+        "Hattest du das Wort? Schreib's in die Kommentare!",
+        "Wie schnell hattest du's? Schreib's unten rein!"
+      ],
+      "duell": [
+        "Team {links} oder Team {rechts}? Ab in die Kommentare!",
+        "Und du – Team {links} oder Team {rechts}?"
+      ],
+      "fehler": [
+        "Hast du den Fehler gefunden? Schreib's in die Kommentare!"
+      ],
+      "level": [
+        "Welches Level hast du geschafft? Schreib's in die Kommentare!",
+        "Bis zu welchem Level bist du gekommen? Schreib's unten rein!"
+      ]
+    },
+    "jubel": [
+      "Ja! Wusste ich's doch!",
+      "Yes! Ich hatte recht!",
+      "Ha! Hab ich doch gesagt!"
+    ],
+    "figuren_stimmen": true,
+    "luecke_sprecher": 0.25,
+    "nach_abschluss": 0.4
   },
   "typen": {
     "duell": {
@@ -624,7 +653,8 @@
       "haare": "#7A3E1D",
       "frisur": "lang",
       "shirt": "#FF7EB6",
-      "farbe": "#FF7EB6"
+      "farbe": "#FF7EB6",
+      "stimme": ""
     },
     "ben": {
       "haut": "#E0A878",
@@ -632,7 +662,8 @@
       "frisur": "kurz",
       "shirt": "#56CCF2",
       "farbe": "#56CCF2",
-      "brille": true
+      "brille": true,
+      "stimme": ""
     }
   },
   "level": {

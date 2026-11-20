@@ -190,10 +190,69 @@ def verfuegbar(cfg):
     return bool(st.get("aktiv")) and _schluessel() is not None
 
 
-def sprich(satz, cfg, cache):
-    """Satz bei ElevenLabs sprechen lassen (MP3, zwischengespeichert). Rückgabe: Pfad oder None bei Fehler."""
+def figur_stimme(cfg, person):
+    """Eigene Stimme einer Duell-Figur (`figuren.<name>.stimme` in config.json) oder None."""
+    name = str((person or {}).get("name", "")).lower()
+    return (cfg.get("figuren", {}).get(name) or {}).get("stimme") or None
+
+
+def duell_mit_figuren(r, cfg):
+    """Duell mit eigenen Stimmen für beide Figuren? Dann sprechen Anna und Ben ihre Antworten selbst."""
+    return (r.get("typ") == "duell" and cfg.get("stimme", {}).get("figuren_stimmen", True)
+            and bool(figur_stimme(cfg, r.get("links"))) and bool(figur_stimme(cfg, r.get("rechts"))))
+
+
+def _antwort_sprechbar(person):
+    text = person.get("sprich") or _zahlen_sprechbar(_ohne_emojis(str(person.get("sagt", ""))).strip())
+    text = re.sub(r"\b1 h\b", "eine Stunde", text)
+    text = re.sub(r"(\d) h\b", r"\1 Stunden", re.sub(r"(\d) min\b", r"\1 Minuten", text))
+    return text if text[-1:] in ".?!" else text + "!"
+
+
+def duell_frage_teile(r, cfg):
+    """Duell mit Figuren-Stimmen: [(voice_id oder None = Erzähler, Satz)] – Frage, Anna, Ben, „Wer hat recht?“."""
+    links, rechts = r["links"], r["rechts"]
+    frage = r.get("sprich_frage")
+    if not frage and r.get("sprich"):  # vorhandenes `sprich` bis vor „Anna sagt …“ verwenden
+        frage = re.split(rf"\s*{re.escape(str(links.get('name', '')))} sagt", r["sprich"])[0].strip()
+    if not frage:
+        frage = _zahlen_sprechbar(_ohne_emojis(str(r["frage"]).replace("*", ""))).strip()
+    if frage[-1:] not in ".?!":
+        frage += "?"
+    return [(None, frage), (figur_stimme(cfg, links), _antwort_sprechbar(links)),
+            (figur_stimme(cfg, rechts), _antwort_sprechbar(rechts)), (None, "Wer hat recht?")]
+
+
+def duell_jubel(r, cfg, zufall):
+    """Kurzer Jubel der Figur(en), die recht haben – (voice_id, Satz) oder []."""
+    saetze = cfg.get("stimme", {}).get("jubel") or ["Ja! Wusste ich's doch!", "Yes! Ich hatte recht!"]
+    recht = r.get("recht")
+    seiten = ["links", "rechts"] if recht == "beide" else [recht] if recht in ("links", "rechts") else []
+    return [(figur_stimme(cfg, r[s]), zufall.choice(saetze)) for s in seiten][:1] if seiten else []
+
+
+def abschluss_text(r, cfg, zufall):
+    """Gesprochener Kommentar-Aufruf am Ende (`stimme.abschluss` in config.json, je Format/Kategorie)."""
+    texte = cfg.get("stimme", {}).get("abschluss") or {}
+    if not texte:
+        return None
+    auswahl = texte.get(r.get("typ") or "") or texte.get(r.get("kategorie") or "") or texte.get("standard")
+    if not auswahl:
+        return None
+    satz = zufall.choice(auswahl) if isinstance(auswahl, list) else auswahl
+    for seite in ("links", "rechts"):
+        if isinstance(r.get(seite), dict):
+            satz = satz.replace("{" + seite + "}", str(r[seite].get("name", "")))
+    return satz
+
+
+def sprich(satz, cfg, cache, voice_id=None):
+    """Satz bei ElevenLabs sprechen lassen (MP3, zwischengespeichert). Rückgabe: Pfad oder None bei Fehler.
+    `voice_id`: andere Stimme als die Erzählerin (z. B. Anna oder Ben im Duell)."""
     satz = deutsch_sichern(satz)
-    st = cfg["stimme"]
+    st = dict(cfg["stimme"])
+    if voice_id:
+        st["voice_id"] = voice_id
     kennung = json.dumps([st["voice_id"], st["modell"], st["einstellungen"], satz], sort_keys=True)
     os.makedirs(cache, exist_ok=True)
     mp3 = os.path.join(cache, hashlib.sha1(kennung.encode()).hexdigest() + ".mp3")

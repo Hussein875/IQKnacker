@@ -476,7 +476,7 @@ class RaetselRenderer:
                                           self.aufl.get("min_dauer", 3.5), self.aufl.get("max_dauer", 8))
             # mit Stimme: so lange, dass die gesprochene Lösung ganz hineinpasst
             self.t_aufloesung = max(self.t_aufloesung, float(raetsel.get("_aufloesung_min", 0)))
-            self.t_abschluss = z.get("abschluss", 2.4)
+            self.t_abschluss = max(z.get("abschluss", 2.4), float(raetsel.get("_abschluss_min", 0)))
             self.t_end = self.t_pause + self.t_aufloesung + self.t_abschluss
             letzte_szene = self.t_abschluss
         else:
@@ -516,6 +516,8 @@ class RaetselRenderer:
         st = self.cfg.get("stimme", {})
         if rolle == "frage":
             return st.get("start_frage", 0.1)
+        if rolle == "abschluss":
+            return self.aufloesung_zeitpunkt() + self.t_aufloesung + st.get("start_abschluss", 0.15)
         return self.aufloesung_zeitpunkt() + st.get("start_loesung", 0.15)
 
     @property
@@ -1040,6 +1042,9 @@ class RaetselRenderer:
             reihen.append((streifen, y))
         if not aufgeloest:  # die Antworten springen kurz nacheinander herein: erst links, dann rechts
             start, schritt = self.anim.get("duell_start", 0.3), self.anim.get("duell_abstand", 0.45)
+            if r.get("_blasen_zeiten") and self.anim.get("duell_blasen_mit_stimme"):  # Blase erst, wenn die Figur spricht
+                start, zweite = r["_blasen_zeiten"][:2]
+                schritt = max(0.1, zweite - start)
             self.reihen_aufbau = (basis, reihen, start, schritt, start + schritt * (len(reihen) - 1) + 0.4)
         return voll
 

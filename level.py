@@ -41,7 +41,7 @@ class LevelRenderer(RaetselRenderer):
             self.abschnitte.append((t, denkzeit, aufloesung))
             t += denkzeit + aufloesung
         self.t_raetsel = t                            # Ende des letzten Levels
-        self.t_abschluss = lv.get("abschluss", 2.6)
+        self.t_abschluss = max(lv.get("abschluss", 2.6), float(raetsel.get("_abschluss_min", 0)))
         self.dauer = self.t_raetsel + self.t_abschluss
         self.t_loop = min(z.get("loop", 0), self.t_abschluss)
         self.t_uebergang = z["uebergang"]
@@ -139,6 +139,8 @@ class LevelRenderer(RaetselRenderer):
 
     def stimme_start(self, rolle):
         """Rolle = ("frage", Level-Index) oder ("loesung", Level-Index)."""
+        if rolle == "abschluss":
+            return self.t_raetsel + self.cfg.get("stimme", {}).get("start_abschluss", 0.15)
         art, i = rolle
         start, denkzeit, _ = self.abschnitte[i]
         return start + 0.1 if art == "frage" else start + denkzeit + 0.1
