@@ -379,6 +379,21 @@ def im_zeitraum(cfg, raetsel, datum):
     return von <= tag <= bis if von <= bis else (tag >= von or tag <= bis)  # auch über Neujahr
 
 
+def zeigt_aufloesung(cfg, raetsel):
+    """Kommt die Lösung ins Video? Reihenfolge: `--ohne-aufloesung` → Feld `aufloesung` am Rätsel →
+    `typen.<typ>.aufloesung` → `aufloesung.zeigen` in config.json. Ohne Auflösung endet das Video mit
+    „Schreib deine Antwort in die Kommentare“ – die Lösung kommt in den angepinnten Kommentar."""
+    a = cfg.get("aufloesung", {})
+    if a.get("_aus"):
+        return False
+    if isinstance(raetsel.get("aufloesung"), bool):
+        return raetsel["aufloesung"]
+    typ = cfg.get("typen", {}).get(raetsel.get("typ") or "", {})
+    if isinstance(typ.get("aufloesung"), bool):
+        return typ["aufloesung"]
+    return bool(a.get("zeigen"))
+
+
 def countdown_fuer(cfg, raetsel):
     """Countdown-Länge: eigener Wert im Rätsel (`countdown`), sonst je Schwierigkeit aus der Config."""
     if raetsel.get("countdown"):
@@ -465,7 +480,7 @@ class RaetselRenderer:
         self.t_zeit_um = z.get("zeit_um", 0)
         self.t_uebergang = z["uebergang"]
         self.aufl = config.get("aufloesung", {})
-        self.mit_aufloesung = bool(self.aufl.get("zeigen"))
+        self.mit_aufloesung = zeigt_aufloesung(config, raetsel)
         if self.mit_aufloesung:
             self.t_pause = self.aufl.get("pause", 2.1)
             if self.typ == "finde":
@@ -479,8 +494,8 @@ class RaetselRenderer:
             self.t_abschluss = max(z.get("abschluss", 2.4), float(raetsel.get("_abschluss_min", 0)))
             self.t_end = self.t_pause + self.t_aufloesung + self.t_abschluss
             letzte_szene = self.t_abschluss
-        else:
-            self.t_end = z["endkarte"]
+        else:  # mit Stimme: so lange, dass der gesprochene Kommentar-Aufruf ganz hineinpasst
+            self.t_end = max(z["endkarte"], float(raetsel.get("_abschluss_min", 0)))
             letzte_szene = self.t_end
         self.t_loop = min(z.get("loop", 0), letzte_szene)
         self.dauer = self.t_raetsel + self.t_zeit_um + self.t_end
@@ -517,6 +532,8 @@ class RaetselRenderer:
         if rolle == "frage":
             return st.get("start_frage", 0.1)
         if rolle == "abschluss":
+            if not self.mit_aufloesung:  # Endkarte „Schreib deine Antwort in die Kommentare“
+                return self.t_raetsel + self.t_zeit_um + st.get("start_abschluss", 0.15)
             return self.aufloesung_zeitpunkt() + self.t_aufloesung + st.get("start_abschluss", 0.15)
         return self.aufloesung_zeitpunkt() + st.get("start_loesung", 0.15)
 

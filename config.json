@@ -543,7 +543,22 @@
     ],
     "figuren_stimmen": true,
     "luecke_sprecher": 0.25,
-    "nach_abschluss": 0.4
+    "nach_abschluss": 0.4,
+    "abschluss_ohne_aufloesung": {
+      "standard": [
+        "Was hast du raus? Schreib's in die Kommentare!",
+        "Und? Deine Antwort in die Kommentare – mal sehen, wer's knackt!"
+      ],
+      "wort": [
+        "Welches Wort ist es? Schreib's in die Kommentare!"
+      ],
+      "duell": [
+        "Team {links} oder Team {rechts}? Ab in die Kommentare!"
+      ],
+      "fehler": [
+        "Welche Zeile? Schreib die Nummer in die Kommentare!"
+      ]
+    }
   },
   "typen": {
     "duell": {
@@ -654,7 +669,7 @@
       "frisur": "lang",
       "shirt": "#FF7EB6",
       "farbe": "#FF7EB6",
-      "stimme": ""
+      "stimme": "xLCJR8xcZX2YjImGFyGw"
     },
     "ben": {
       "haut": "#E0A878",

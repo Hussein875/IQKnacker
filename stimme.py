@@ -231,9 +231,11 @@ def duell_jubel(r, cfg, zufall):
     return [(figur_stimme(cfg, r[s]), zufall.choice(saetze)) for s in seiten][:1] if seiten else []
 
 
-def abschluss_text(r, cfg, zufall):
-    """Gesprochener Kommentar-Aufruf am Ende (`stimme.abschluss` in config.json, je Format/Kategorie)."""
-    texte = cfg.get("stimme", {}).get("abschluss") or {}
+def abschluss_text(r, cfg, zufall, mit_aufloesung=True):
+    """Gesprochener Kommentar-Aufruf am Ende (`stimme.abschluss` in config.json, je Format/Kategorie;
+    ohne Auflösung im Video: `stimme.abschluss_ohne_aufloesung`)."""
+    st = cfg.get("stimme", {})
+    texte = (st.get("abschluss") if mit_aufloesung else st.get("abschluss_ohne_aufloesung")) or {}
     if not texte:
         return None
     auswahl = texte.get(r.get("typ") or "") or texte.get(r.get("kategorie") or "") or texte.get("standard")

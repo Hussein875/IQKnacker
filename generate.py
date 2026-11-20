@@ -342,7 +342,8 @@ def caption_text(r, cfg):
     hashtags = (allgemein[:1] + zusatz + allgemein[1:])[:anzahl]
 
     aufruf = kat.get("caption_aufruf") or cfg.get("caption_aufruf", "Schreib deine Antwort in die Kommentare 👇")
-    if cfg.get("aufloesung", {}).get("zeigen"):
+    from renderer import zeigt_aufloesung
+    if zeigt_aufloesung(cfg, r):
         aufruf = kat.get("caption_aufruf_aufloesung") or cfg.get("caption_aufruf_aufloesung") or aufruf
     elif r.get("optionen"):
         from renderer import buchstaben_text
@@ -370,7 +371,8 @@ def kommentar_text(r, cfg):
     if str(r["loesung"]) in optionen:  # bei A/B/C den Buchstaben mit angeben
         werte["loesung"] = f"{'ABCD'[optionen.index(str(r['loesung']))]} – {r['loesung']}"
     vorlage = kat.get("kommentar_vorlage") or cfg["kommentar_vorlage"]
-    if cfg.get("aufloesung", {}).get("zeigen"):  # Lösung steht schon im Video → Kommentar fragt nach ✅/❌
+    from renderer import zeigt_aufloesung
+    if zeigt_aufloesung(cfg, r):  # Lösung steht schon im Video → Kommentar fragt nach ✅/❌
         vorlage = kat.get("kommentar_vorlage_aufloesung") or cfg.get("kommentar_vorlage_aufloesung") or vorlage
     return vorlage.format(**werte).strip() + "\n"
 
@@ -551,26 +553,31 @@ def stimme_vorbereiten(r, cfg, ffmpeg):
         return gesamt, starts
 
     original, r = r, dict(r)
+    from renderer import zeigt_aufloesung
+    mit_aufloesung = zeigt_aufloesung(cfg, r)
     if stimme.duell_mit_figuren(r, cfg):  # Anna und Ben sprechen ihre Antworten selbst
         frage = kette(stimme.duell_frage_teile(r, cfg))
-        loesung = kette(stimme.duell_jubel(r, cfg, zufall) + [(None, stimme.loesung_text(r, cfg))])
+        loesung = kette(stimme.duell_jubel(r, cfg, zufall) + [(None, stimme.loesung_text(r, cfg))]) \
+            if mit_aufloesung else None
         if frage:  # Sprechblasen erscheinen genau dann, wenn die Figur spricht
             beginn = st.get("start_frage", 0.1)
             r["_blasen_zeiten"] = [beginn + frage[1][1], beginn + frage[1][2]]
     else:
         frage = kette([(None, stimme.frage_text(r, cfg))])
-        loesung = kette([(None, stimme.loesung_text(r, cfg))])
-    if not frage or not loesung:
+        loesung = kette([(None, stimme.loesung_text(r, cfg))]) if mit_aufloesung else None
+    if not frage or (mit_aufloesung and not loesung):
         return original, []  # lieber ganz ohne Stimme als nur halb
-    teile = [("frage", frage[0]), ("loesung", loesung[0])]
+    teile = [("frage", frage[0])]
     r["lesezeit"] = max(1.5, stimme.dauer(frage[0]) + st.get("nach_frage", 0.3))
-    r["_aufloesung_min"] = stimme.dauer(loesung[0]) + st.get("nach_loesung", 1.6)
-    if cfg.get("aufloesung", {}).get("zeigen"):  # gesprochener Kommentar-Aufruf am Ende
-        satz = stimme.abschluss_text(r, cfg, zufall)
-        ende = kette([(None, satz)]) if satz else None
-        if ende:
-            teile.append(("abschluss", ende[0]))
-            r["_abschluss_min"] = stimme.dauer(ende[0]) + st.get("nach_abschluss", 0.4)
+    if mit_aufloesung:
+        teile.append(("loesung", loesung[0]))
+        r["_aufloesung_min"] = stimme.dauer(loesung[0]) + st.get("nach_loesung", 1.6)
+    # gesprochener Kommentar-Aufruf am Ende (nach der Auflösung bzw. auf der Endkarte)
+    satz = stimme.abschluss_text(r, cfg, zufall, mit_aufloesung)
+    ende = kette([(None, satz)]) if satz else None
+    if ende:
+        teile.append(("abschluss", ende[0]))
+        r["_abschluss_min"] = stimme.dauer(ende[0]) + st.get("nach_abschluss", 0.4)
     return r, teile
 
 
@@ -946,6 +953,7 @@ def main():
     cfg = lade_json(CONFIG_DATEI)
     if args.ohne_aufloesung:
         cfg.setdefault("aufloesung", {})["zeigen"] = False
+        cfg["aufloesung"]["_aus"] = True
     raetsel = lade_json(RAETSEL_DATEI)
     uebernommen = neue_raetsel_laden(raetsel, cfg)
     repariert = pruefe_raetsel(raetsel, cfg)

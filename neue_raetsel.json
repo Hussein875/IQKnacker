@@ -1941,6 +1941,41 @@
       "schwierigkeit": "leicht",
       "status": "neu",
       "konzept": "seiten-blaetter"
+    },
+    {
+      "id": 1132,
+      "kategorie": "mathe",
+      "frage": "Welche Zahl gehört ans *Fragezeichen?*\n*3 + 3 = 18*\n*4 + 4 = 32*\n*5 + 5 = ?*",
+      "loesung": "50",
+      "erklaerung": "Muster: Zahl × Zahl × 2. 3 × 3 × 2 = 18, 4 × 4 × 2 = 32 → 5 × 5 × 2 = 50.",
+      "sprich": "Fast alle sagen zehn. Schau genau hin!",
+      "aufloesung": false,
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "muster-quadrat-mal-2"
+    },
+    {
+      "id": 1133,
+      "kategorie": "iq",
+      "frage": "Füge *einen Strich* hinzu, damit es stimmt:\n*5 + 5 + 5 = 550*",
+      "loesung": "545 + 5 = 550",
+      "erklaerung": "Ein Strich am ersten + macht eine 4: 545 + 5 = 550. Wer = zu ≠ macht, hat auch recht 😉",
+      "sprich": "Ein einziger Strich – und die Rechnung stimmt. Findest du ihn?",
+      "aufloesung": false,
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "ein-strich-550"
+    },
+    {
+      "id": 1134,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*GEBURTS___*\n*FEIER___*\n*MON___*",
+      "loesung": "Tag",
+      "erklaerung": "Geburtstag, Feiertag, Montag.",
+      "aufloesung": false,
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-tag"
     }
   ],
   "gestrichen": [
