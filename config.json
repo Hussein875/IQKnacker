@@ -198,6 +198,9 @@
     "ordner": "output",
     "drive_ordner": "IQKnacker Videos"
   },
+  "plan": {
+    "max_tage_voraus": 14
+  },
   "metricool": {
     "marke": "",
     "youtube_kategorie": "EDUCATION",

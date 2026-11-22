@@ -95,6 +95,7 @@ python generate.py --plan 7 --nur-drive
 ```
 
 - `--nur-drive` macht nahtlos nach dem letzten verplanten Tag weiter (frühestens morgen) und nimmt nur Rätsel, deren Video in `drive_links.json` steht (Dateiname → Google-Drive-Datei-ID).
+- **Höchstens 14 Tage im Voraus** (`config.json` → `plan.max_tage_voraus`): Reicht der Plan schon so weit, plant `--plan` nichts („Nichts zu planen“) oder nur die Tage bis zur Grenze. So kommen Verbesserungen spätestens nach zwei Wochen in den Videos an – vorher waren es bis zu drei.
 - Die vergebenen Termine landen in `geplant.json` – das Gedächtnis der Cloud-Planung. `raetsel.json` bleibt unberührt; lokal werden die Termine beim nächsten Aufruf automatisch übernommen.
 - Neue Videos erzeugst du weiter am Mac; sie landen automatisch in Drive und werden ab der nächsten Woche mit eingeplant.
 

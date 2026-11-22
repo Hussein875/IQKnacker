@@ -837,6 +837,23 @@ def plan_als_excel(pfad, zeilen):
     mappe.save(pfad)
 
 
+def plan_tage_begrenzen(tage, start, cfg, heute=None):
+    """Nie weiter als plan.max_tage_voraus (Standard 14) Tage im Voraus planen – so kommen Verbesserungen
+    schnell in die Videos statt erst nach Wochen. Gibt die erlaubte Zahl Tage zurück (0 = nichts zu tun)."""
+    heute = heute or datetime.date.today()
+    max_tage = cfg.get("plan", {}).get("max_tage_voraus", 14)
+    grenze = heute + datetime.timedelta(days=max_tage)
+    erlaubt = min(tage, (grenze - start).days + 1)
+    if erlaubt <= 0:
+        print(f"✓ Nichts zu planen: Der {start:%d.%m.} liegt mehr als {max_tage} Tage in der Zukunft "
+              f"(Plan höchstens bis {grenze:%d.%m.}, config.json → plan.max_tage_voraus). Keine CSV nötig.")
+        return 0
+    if erlaubt < tage:
+        print(f"ℹ Nur {erlaubt} statt {tage} Tage geplant: höchstens {max_tage} Tage im Voraus "
+              f"(bis {grenze:%d.%m.}, config.json → plan.max_tage_voraus).")
+    return erlaubt
+
+
 def posting_plan(raetsel, cfg, tage, uhrzeiten, start, nur_drive=False):
     """Verteilt fertige, noch nicht gepostete Videos auf Tage und Uhrzeiten – als Vorlage zum Einplanen.
     Jedes Rätsel bekommt seinen Termin; ist der vorbei, zählt es automatisch als gepostet."""
@@ -1031,7 +1048,9 @@ def main():
                          for u in args.uhrzeiten.split(",") if u.strip()]
         except ValueError:
             sys.exit("✗ --uhrzeiten bitte so angeben: 12:30,18:30,21:00")
-        posting_plan(raetsel, cfg, args.plan, sorted(uhrzeiten), start, nur_drive=args.nur_drive)
+        tage = plan_tage_begrenzen(args.plan, start, cfg)
+        if tage:
+            posting_plan(raetsel, cfg, tage, sorted(uhrzeiten), start, nur_drive=args.nur_drive)
         return
 
     if args.liste:
