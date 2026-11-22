@@ -837,6 +837,11 @@ def plan_als_excel(pfad, zeilen):
     mappe.save(pfad)
 
 
+def raetselart(r):
+    """Format eines Rätsels für die Abwechslung im Plan: Typ (Duell, Level, Fehler …), sonst die Kategorie."""
+    return r.get("typ") or r.get("kategorie")
+
+
 def plan_tage_begrenzen(tage, start, cfg, heute=None):
     """Nie weiter als plan.max_tage_voraus (Standard 14) Tage im Voraus planen – so kommen Verbesserungen
     schnell in die Videos statt erst nach Wochen. Gibt die erlaubte Zahl Tage zurück (0 = nichts zu tun)."""
@@ -872,6 +877,11 @@ def posting_plan(raetsel, cfg, tage, uhrzeiten, start, nur_drive=False):
     themen = cfg.get("themen", {})
     jetzt, vorbei, gesetzt = datetime.datetime.now(), 0, {}
     zieltage = saison_zieltage(fertig, themen, start)
+    # Nie zwei gleiche Rätselarten direkt hintereinander – auch nicht über die Tagesgrenze und den letzten
+    # schon geplanten Post hinweg (am 27./28.11. liefen sonst vier Emoji-Gleichungen in Folge)
+    davor = sorted((r for r in raetsel if r.get("termin") and r["termin"][:10] < start.isoformat()),
+                   key=lambda r: r["termin"])
+    letzte_art = raetselart(davor[-1]) if davor else None
     zeilen = [f"POSTING-PLAN IQKnacker – {len(uhrzeiten)} Videos pro Tag", "=" * 44, ""]
     tabelle, posts = [], []
     i = 0
@@ -896,8 +906,9 @@ def posting_plan(raetsel, cfg, tage, uhrzeiten, start, nur_drive=False):
                 r = next(x for x in erlaubt if x.get("thema") == thema)
                 gesetzt[thema] = gesetzt.get(thema, 0) + 1
             else:
-                r = normal[0]
+                r = next((x for x in normal if raetselart(x) != letzte_art), normal[0])
             fertig.remove(r)
+            letzte_art = raetselart(r)
             r["termin"] = f"{datum.isoformat()} {uhrzeit}"
             caption = caption_text(r, cfg).strip()
             posts.append((r, datum, uhrzeit, caption))

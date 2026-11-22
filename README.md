@@ -14,7 +14,7 @@ Erzeugt aus einer Rätsel-Liste (`raetsel.json`) automatisch fertige Hochformat-
 | Auflösung | 3,5–8 s | Grünes „AUFLÖSUNG“, die Lösung groß, darunter die Erklärung (so lange, dass man sie lesen kann). Bei Suchrätseln wird das gesuchte Zeichen eingekreist. |
 | Abschluss | 2,2 s | „Hattest du's? Schreib ✅ oder ❌ in die Kommentare 👇 – Und bei welcher Sekunde? ⏱️“ – blendet dann in den ersten Frame über, damit das Video **nahtlos loopt** |
 
-Es werden **keine Antworten vorgegeben**: Die Zuschauer sollen rätseln, nicht raten. Mit `--ohne-aufloesung` entstehen Videos ohne Lösung (stattdessen eine Endkarte „📌 Die erste richtige Antwort wird angepinnt“) – praktisch, um beide Varianten zu vergleichen.
+Es werden **keine Antworten vorgegeben**: Die Zuschauer sollen rätseln, nicht raten. Mit `--ohne-aufloesung` entstehen Videos ohne Lösung (stattdessen eine Endkarte mit der Kommentar-Frage) – praktisch, um beide Varianten zu vergleichen. **Seit 22.11. pausiert:** Rätsel ohne Auflösung erst wieder, wenn die Lösung automatisch kommt (z. B. „Lösung von gestern“ im nächsten Video) – nie etwas versprechen, das jemand von Hand erledigen müsste.
 
 ---
 
@@ -147,7 +147,7 @@ Verteilt alle fertigen, noch nicht geposteten Videos (in der Reihenfolge der Dat
 
 ---
 
-## Kommentare anheizen
+## Kommentare anheizen (freiwillig – nichts davon ist Pflicht)
 
 Das Video fordert zweimal zum Kommentieren auf: **vor der Auflösung** („Jetzt kommentieren!“ – wer sich vorher festlegt, will danach wissen, ob er recht hatte) und **danach** („Hattest du's? ✅ oder ❌ – und bei welcher Sekunde?“). Ein ✅ ist der einfachste Kommentar überhaupt, und mit der Sekunde können die Leute angeben. Bei Fallen-Rätseln diskutieren sie außerdem, ob die Lösung stimmt („Warum 11 und nicht 16?“).
 
@@ -156,7 +156,7 @@ Das Video fordert zweimal zum Kommentieren auf: **vor der Auflösung** („Jetzt
    - auf ✅ mit Sekunde: „Krass schnell 🔥“ · „Respekt! 🧠“
    - auf ❌: „Nächstes Mal klappt's 💪“ · „Die war auch fies 😅“
    - auf Diskussionen über die Lösung: kurz den Rechenweg erklären – und die Diskussion laufen lassen
-3. **Falls die Vergleichs-Variante ohne Auflösung läuft** (`--ohne-aufloesung`): nach 3–6 Stunden die früheste richtige Antwort anpinnen (im Posteingang unter „Kommentare“ nach Zeit sortiert) und mit der Lösung antworten – so verspricht es die Endkarte.
+3. **Falls die Vergleichs-Variante ohne Auflösung läuft** (`--ohne-aufloesung`): nach 3–6 Stunden die früheste richtige Antwort anpinnen (im Posteingang unter „Kommentare“ nach Zeit sortiert) und mit der Lösung antworten. Betrifft nur noch #1132 (27.11.), #1134 (29.11.) und #1133 (1.12.) – deren Caption verspricht das Anpinnen noch. Neue Videos versprechen es nicht mehr.
 
 > Das Skript warnt, wenn ein Kommentar länger als 150 Zeichen ist (TikTok-Limit, Emojis zählen doppelt).
 

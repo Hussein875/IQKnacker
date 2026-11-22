@@ -162,7 +162,7 @@
       "Welche Antwort? *{buchstaben}* in die Kommentare 👇"
     ],
     "endkarte_2": [
-      "📌 Die erste richtige Antwort wird angepinnt"
+      "Die Lösung kommt nicht im Video – rätsel mit! 🧠"
     ],
     "handle": "Folge *@iqknacker* für mehr Rätsel",
     "pause_1": "*Jetzt* kommentieren!",
@@ -219,7 +219,7 @@
     "#rätsel"
   ],
   "hashtags_anzahl": 5,
-  "caption_aufruf": "Schreib deine Lösung in die Kommentare 👇\n📌 Die erste richtige Antwort wird angepinnt – nicht spicken!",
+  "caption_aufruf": "Schreib deine Lösung in die Kommentare 👇",
   "caption_aufruf_optionen": "{buchstaben}? Schreib's in die Kommentare 👇",
   "caption_aufruf_aufloesung": "Auflösung am Ende 👀 Aber erst selbst rätseln!\nHattest du's? Schreib ✅ oder ❌ – und bei welcher Sekunde ⏱️",
   "kommentar_vorlage": "✅ Lösung: {loesung}\n{erklaerung}\nGlückwunsch an alle, die's hatten 🏆",
@@ -367,7 +367,7 @@
         "Nur echte Adleraugen finden es sofort 🦅",
         "Konzentrationstest: Wie schnell bist du? 🔍"
       ],
-      "caption_aufruf": "Gefunden? Schreib Reihe & Spalte in die Kommentare 👇\n📌 Die erste richtige Antwort wird angepinnt – nicht spicken!",
+      "caption_aufruf": "Gefunden? Schreib Reihe & Spalte in die Kommentare 👇",
       "texte": {
         "hook": [
           "Nur Adleraugen finden es sofort 🦅",
