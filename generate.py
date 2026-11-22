@@ -325,6 +325,27 @@ def dateiname(r):
 
 # ---------------------------------------------------------------- Texte (Caption, Kommentar)
 
+def suchsatz(r):
+    """Erste Caption-Zeile: das Rätsel selbst in Wörtern, nach denen man sucht („Welches Wort passt vor REIFEN,
+    EINBRUCH und JACKE?“). Vorher kamen Pool-Sätze ohne Inhalt („Drei Begriffe, ein Wort“ 11-mal); die Suche
+    fand die Videos so nur über Hashtags. Leer bei Emoji-Rätseln – ihre Gleichungen taugen nicht als Text."""
+    if r.get("kategorie") == "emoji":
+        return ""
+    zeilen = [re.sub(r"\s+", " ", z.replace("*", "")).strip() for z in str(r.get("frage", "")).split("\n")]
+    zeilen = [z for z in zeilen if z]
+    if not zeilen:
+        return ""
+    luecken = [z.replace("_", "").strip(" -") for z in zeilen[1:] if "___" in z]
+    if luecken and len(luecken) == len(zeilen) - 1:      # Wort-Dreier: Kopfzeile + Wörter mit Lücke
+        kopf = re.sub(r"\s*alle(n)? drei\s*", " ", zeilen[0]).rstrip(" ?:")
+        woerter = luecken[0] if len(luecken) == 1 else ", ".join(luecken[:-1]) + " und " + luecken[-1]
+        return f"{kopf} {woerter}?"
+    satz = zeilen[0]
+    for z in zeilen[1:]:  # „3 + 3 = 18“ / „4 + 4 = 32“ → durch Komma getrennt, Sätze mit Leerzeichen
+        satz += (" " if satz[-1] in ".?!:" or z[:1].islower() else ", ") + z
+    return satz if len(satz) <= 150 else satz[:147].rsplit(" ", 1)[0] + " …"
+
+
 def caption_text(r, cfg):
     from renderer import einstellungen
     kat = einstellungen(cfg, r)
@@ -332,6 +353,10 @@ def caption_text(r, cfg):
     captions = kat.get("captions") or ["Kannst du das lösen? 🧠"]
     from renderer import countdown_fuer
     auswahl = zufall.choice(captions)  # immer ziehen: so bleiben die Hashtags eines Rätsels gleich
+    satz = suchsatz(r)
+    if satz and not r.get("caption"):  # Emoji vom Pool-Satz behalten, Text durch das Rätsel ersetzen
+        zeichen = auswahl.split()[-1] if auswahl.split() and not auswahl.split()[-1][0].isalnum() else ""
+        auswahl = f"{satz} {zeichen}".strip()
     caption = namen_einsetzen((r.get("caption") or auswahl).replace("{countdown}", str(round(countdown_fuer(cfg, r)))), r)
 
     allgemein = list(cfg.get("hashtags_allgemein", []))
