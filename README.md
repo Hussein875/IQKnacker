@@ -71,7 +71,7 @@ Die neuen Rätsel landen mit Status `neu` in `raetsel.json`. Danach wie gewohnt 
 | `005_iq.mp4` | das fertige Video |
 | `005_iq.png` | Vorschaubild des Rätsels (auch als TikTok-Titelbild geeignet) |
 | `005_iq_aufloesung.png` | Vorschaubild der Auflösung – zum Kontrollieren von Lösung und Erklärung |
-| `005_iq_caption.txt` | Caption + 7 Hashtags zum Reinkopieren |
+| `005_iq_caption.txt` | Caption + 5 Hashtags zum Reinkopieren |
 | `005_iq_kommentar.txt` | Kommentar zum Anpinnen („Hattest du's? ✅ oder ❌ …“ mit der Lösung) |
 
 Nach einem erfolgreichen Video wird der Status in `raetsel.json` von `neu` auf `erstellt` gesetzt. Auf `gepostet` springt er **automatisch**: `--plan` (siehe unten) trägt bei jedem Rätsel seinen Termin ein (`"termin": "2026-10-25 18:30"`), und sobald der vorbei ist, zählt das Rätsel beim nächsten Aufruf von `generate.py` als gepostet. Du musst also nichts abhaken – nur die Videos so einplanen, wie es im Plan steht.
@@ -368,7 +368,7 @@ Alles steht zentral in **`config.json`**:
 | `musik` | `modus`, Ordner, Lautstärke, Ein-/Ausblenden (siehe unten) |
 | `soundeffekte` | Ticken, Tipp-Pling und Gong an/aus (`aktiv`), Lautstärke |
 | `audio.lautheit_lufs` | Gesamtlautheit des Tons (Standard −14 LUFS, üblich für Social Media) |
-| `hashtags_allgemein`, `hashtags_anzahl` | immer verwendete Hashtags, Anzahl insgesamt (5–8) |
+| `hashtags_allgemein`, `hashtags_anzahl` | immer verwendete Hashtags, Anzahl insgesamt (3–5; Instagram erlaubt seit Dezember 2025 höchstens 5) |
 | `caption_aufruf_aufloesung`, `caption_aufruf` | Aufforderung in der Caption – mit bzw. ohne Auflösung im Video |
 | `kommentar_vorlage_aufloesung`, `kommentar_vorlage` | Text der Kommentar-Datei – mit bzw. ohne Auflösung im Video (`{loesung}`, `{erklaerung}`, …) |
 

@@ -335,7 +335,7 @@ def caption_text(r, cfg):
     caption = namen_einsetzen((r.get("caption") or auswahl).replace("{countdown}", str(round(countdown_fuer(cfg, r)))), r)
 
     allgemein = list(cfg.get("hashtags_allgemein", []))
-    anzahl = max(5, min(8, cfg.get("hashtags_anzahl", 7)))
+    anzahl = max(3, min(5, cfg.get("hashtags_anzahl", 5)))  # Instagram erlaubt seit 12/2025 höchstens 5
     thema = [h for h in kat.get("thema_hashtags", []) if h not in allgemein][:3]  # Themen-Hashtags immer dabei
     eigene = [h for h in (r.get("hashtags") or kat.get("hashtags", [])) if h not in allgemein and h not in thema]
     zusatz = thema + zufall.sample(eigene, min(len(eigene), max(0, anzahl - len(allgemein) - len(thema))))
