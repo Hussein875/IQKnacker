@@ -367,6 +367,52 @@
           "Advents-Rätsel 🕯️"
         ]
       }
+    },
+    "trend_2026_12_13_sternschnuppen": {
+      "label": "GEMINIDEN",
+      "akzent": "#8FD3FF",
+      "zeitraum": [
+        "12-12",
+        "12-14"
+      ],
+      "hashtags": [
+        "#sternschnuppen",
+        "#geminiden",
+        "#nachthimmel"
+      ],
+      "captions": [
+        "Sternschnuppen-Nacht ✨ – wer hat richtig gezählt?",
+        "Heute fallen die Sternschnuppen 🌠 – zählst du richtig?"
+      ],
+      "texte": {
+        "hook": [
+          "Sternschnuppen-Nacht 🌠",
+          "Wünsch dir was ✨"
+        ]
+      }
+    },
+    "trend_2026_12_16_kino": {
+      "label": "KINOSTART",
+      "akzent": "#FF6B6B",
+      "zeitraum": [
+        "12-14",
+        "12-18"
+      ],
+      "hashtags": [
+        "#kino",
+        "#kinostart",
+        "#kinoabend"
+      ],
+      "captions": [
+        "Blockbuster-Woche 🍿 – wie lang ist die Schlange?",
+        "Ab ins Kino 🎬 – aber erst das Rätsel!"
+      ],
+      "texte": {
+        "hook": [
+          "Kino-Woche 🍿",
+          "Popcorn bereit? 🎬"
+        ]
+      }
     }
   },
   "raetsel": [
@@ -1976,6 +2022,349 @@
       "schwierigkeit": "leicht",
       "status": "neu",
       "konzept": "wort-dreier-tag"
+    },
+    {
+      "id": 1135,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt vor alle drei?\n*___WATTE*\n*___HUT*\n*___GUSS*",
+      "loesung": "Zucker",
+      "erklaerung": "Zuckerwatte, Zuckerhut, Zuckerguss.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-zucker"
+    },
+    {
+      "id": 1136,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*SCHNEE___*\n*WEIHNACHTS___*\n*HAMPEL___*",
+      "loesung": "Mann",
+      "erklaerung": "Schneemann, Weihnachtsmann, Hampelmann.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-mann"
+    },
+    {
+      "id": 1137,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*WAL___*\n*HASEL___*\n*KOKOS___*",
+      "loesung": "Nuss",
+      "erklaerung": "Walnuss, Haselnuss, Kokosnuss.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "wort-dreier-nuss"
+    },
+    {
+      "id": 1138,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt vor alle drei?\n*___PUNSCH*\n*___GARTEN*\n*___WAGEN*",
+      "loesung": "Kinder",
+      "erklaerung": "Kinderpunsch, Kindergarten, Kinderwagen.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "wort-dreier-kinder"
+    },
+    {
+      "id": 1139,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*BLÄTTER___*\n*HEFE___*\n*PIZZA___*",
+      "loesung": "Teig",
+      "erklaerung": "Blätterteig, Hefeteig, Pizzateig.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "wort-dreier-teig"
+    },
+    {
+      "id": 1140,
+      "kategorie": "wort",
+      "frage": "Welches Wort passt hinter alle drei?\n*ADVENTS___*\n*BLUMEN___*\n*LORBEER___*",
+      "loesung": "Kranz",
+      "erklaerung": "Adventskranz, Blumenkranz, Lorbeerkranz.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "wort-dreier-kranz"
+    },
+    {
+      "id": 1141,
+      "kategorie": "mathe",
+      "frage": "Ohne Taschenrechner:\n*199 + 199 + 199 = ?*",
+      "loesung": "597",
+      "erklaerung": "Rechne mit 200: 3 × 200 = 600. Du hast pro Zahl 1 zu viel genommen, also 600 − 3 = 597. Klappt mit jeder Zahl knapp unter einer runden!",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "fast-runde-zahl"
+    },
+    {
+      "id": 1142,
+      "kategorie": "mathe",
+      "frage": "Ohne Taschenrechner:\n*4 × 7 × 25 = ?*",
+      "loesung": "700",
+      "erklaerung": "Reihenfolge tauschen: erst 4 × 25 = 100, dann × 7 = 700. Beim Malnehmen darfst du die Zahlen beliebig ordnen!",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "geschickt-tauschen-4-25"
+    },
+    {
+      "id": 1143,
+      "kategorie": "iq",
+      "frage": "Was ist *schneller*:\n*1 km in 6 Minuten*\noder *10 km/h*?",
+      "loesung": "Gleich schnell",
+      "erklaerung": "Eine Stunde hat 60 Minuten = 10 × 6 Minuten. Also schaffst du 10 × 1 km = 10 km pro Stunde – genau 10 km/h!",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "tempo-umrechnen"
+    },
+    {
+      "id": 1144,
+      "kategorie": "mathe",
+      "frage": "Schreib als Zahl:\n*elftausend elfhundertelf*",
+      "loesung": "12.111",
+      "erklaerung": "11.000 + 1.100 + 11 = 12.111. Die meisten schreiben 11.111 – aber elfhundert sind schon 1.100!",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "elftausend-elfhundert"
+    },
+    {
+      "id": 1145,
+      "kategorie": "mathe",
+      "typ": "duell",
+      "frage": "Was ist *größer*: *0,5* oder *0,45*?",
+      "links": {
+        "name": "Anna",
+        "sagt": "0,5"
+      },
+      "rechts": {
+        "name": "Ben",
+        "sagt": "0,45"
+      },
+      "recht": "links",
+      "loesung": "0,5 – Anna hat recht",
+      "erklaerung": "0,5 ist dasselbe wie *0,50* – und 50 Hundertstel sind mehr als 45.",
+      "sprich": "Was ist größer: null Komma fünf oder null Komma vier fünf? Anna sagt null Komma fünf. Ben sagt null Komma vier fünf. Wer hat recht?",
+      "sprich_loesung": "Anna hat recht! Null Komma fünf ist null Komma fünfzig.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "komma-laenge-falle"
+    },
+    {
+      "id": 1146,
+      "kategorie": "mathe",
+      "typ": "duell",
+      "frage": "*1 Stunde 30 Minuten* – wie viele *Stunden* sind das?",
+      "links": {
+        "name": "Anna",
+        "sagt": "1,3"
+      },
+      "rechts": {
+        "name": "Ben",
+        "sagt": "1,5"
+      },
+      "recht": "rechts",
+      "loesung": "1,5 Stunden – Ben hat recht",
+      "erklaerung": "30 Minuten sind eine *halbe* Stunde, also 1,5. Eine Stunde hat 60 Minuten, nicht 100!",
+      "sprich": "Eine Stunde dreißig Minuten. Wie viele Stunden sind das? Anna sagt eins Komma drei. Ben sagt eins Komma fünf. Wer hat recht?",
+      "sprich_loesung": "Ben hat recht! Dreißig Minuten sind eine halbe Stunde.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "dezimal-stunden-falle"
+    },
+    {
+      "id": 1147,
+      "kategorie": "mathe",
+      "typ": "duell",
+      "frage": "Was ist *mehr Pizza*: eine *halbe Pizza* oder *4 Achtel*?",
+      "links": {
+        "name": "Anna",
+        "sagt": "Gleich!"
+      },
+      "rechts": {
+        "name": "Ben",
+        "sagt": "4 Achtel!"
+      },
+      "recht": "links",
+      "loesung": "Gleich viel – Anna hat recht",
+      "erklaerung": "Schneid die Pizza in 8 Stücke: Die Hälfte sind genau *4 Stücke*. Mehr Stücke heißt nicht mehr Pizza!",
+      "sprich": "Was ist mehr Pizza: eine halbe Pizza oder vier Achtel? Anna sagt gleich viel. Ben sagt vier Achtel. Wer hat recht?",
+      "sprich_loesung": "Anna hat recht! Vier Achtel sind eine halbe Pizza.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "bruch-gleich-viel"
+    },
+    {
+      "id": 1148,
+      "kategorie": "mathe",
+      "typ": "level",
+      "frage": "5 Level Geteilt – wie weit kommst du?",
+      "level": [
+        {
+          "frage": "*20 : 4*",
+          "loesung": "5",
+          "sprich": "Zwanzig geteilt durch vier?"
+        },
+        {
+          "frage": "*42 : 6*",
+          "loesung": "7",
+          "sprich": "Zweiundvierzig geteilt durch sechs?"
+        },
+        {
+          "frage": "*84 : 2*",
+          "loesung": "42",
+          "sprich": "Vierundachtzig geteilt durch zwei?"
+        },
+        {
+          "frage": "*150 : 3*",
+          "loesung": "50",
+          "sprich": "Hundertfünfzig geteilt durch drei?"
+        },
+        {
+          "frage": "*144 : 12*",
+          "loesung": "12",
+          "sprich": "Hundertvierundvierzig geteilt durch zwölf?"
+        }
+      ],
+      "loesung": "5 · 7 · 42 · 50 · 12",
+      "erklaerung": "Tricks: 84 : 2 = Hälfte von 80 plus Hälfte von 4 · 150 : 3 = 15 : 3 mit Null · 12 × 12 = 144.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "level-geteilt-1"
+    },
+    {
+      "id": 1149,
+      "kategorie": "iq",
+      "typ": "level",
+      "frage": "5 Level Zahlenreihen – wie weit kommst du?",
+      "level": [
+        {
+          "frage": "5 – 10 – 15 – 20 – *?*",
+          "loesung": "25",
+          "sprich": "Welche Zahl kommt als Nächstes?"
+        },
+        {
+          "frage": "100 – 90 – 80 – 70 – *?*",
+          "loesung": "60",
+          "sprich": "Und jetzt?"
+        },
+        {
+          "frage": "64 – 32 – 16 – 8 – *?*",
+          "loesung": "4",
+          "sprich": "Level drei."
+        },
+        {
+          "frage": "1 – 3 – 9 – 27 – *?*",
+          "loesung": "81",
+          "sprich": "Level vier."
+        },
+        {
+          "frage": "1 – 1 – 2 – 3 – 5 – 8 – *?*",
+          "loesung": "13",
+          "sprich": "Letztes Level!"
+        }
+      ],
+      "loesung": "25 · 60 · 4 · 81 · 13",
+      "erklaerung": "+5 · −10 · immer die Hälfte · immer mal 3 · die zwei Zahlen davor zusammen: 5 + 8 = 13.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "level-zahlenreihen-2"
+    },
+    {
+      "id": 1150,
+      "kategorie": "wort",
+      "typ": "fehler",
+      "frage": "Welches Weihnachtswort ist *falsch geschrieben*?",
+      "caption": "Ein Wort ist falsch geschrieben – findest du es? 🕵️",
+      "hashtags": [
+        "#rechtschreibung",
+        "#deutsch",
+        "#findedenfehler",
+        "#advent"
+      ],
+      "zeilen": [
+        "Plätzchen",
+        "Adventskalendar",
+        "Weihnachtsbaum",
+        "Geschenkpapier",
+        "Tannenzapfen"
+      ],
+      "fehler_zeile": 2,
+      "loesung": "Zeile 2",
+      "erklaerung": "Richtig ist *Adventskalender* – hinten mit e, wie bei Kalender.",
+      "sprich": "Ein Wort ist falsch geschrieben. Findest du es?",
+      "sprich_loesung": "Zeile zwei! Kalender schreibt man hinten mit e.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "fehler-rechtschreibung-kalender"
+    },
+    {
+      "id": 1151,
+      "kategorie": "mathe",
+      "typ": "fehler",
+      "frage": "Welche Rechnung *stimmt nicht*?",
+      "zeilen": [
+        "7 × 7 = 49",
+        "9 × 9 = 81",
+        "11 × 11 = 121",
+        "8 × 8 = 64",
+        "12 × 12 = 124"
+      ],
+      "fehler_zeile": 5,
+      "loesung": "Zeile 5",
+      "erklaerung": "12 × 12 = *144*, nicht 124. Trick: 10 × 12 = 120, plus 2 × 12 = 24.",
+      "sprich": "Eine dieser Rechnungen ist falsch. Findest du sie?",
+      "sprich_loesung": "Zeile fünf! Zwölf mal zwölf ist hundertvierundvierzig.",
+      "schwierigkeit": "leicht",
+      "status": "neu",
+      "konzept": "fehler-quadratzahlen"
+    },
+    {
+      "id": 1152,
+      "kategorie": "iq",
+      "thema": "trend_2026_12_16_kino",
+      "frage": "In der *Kinoschlange* stehst du an *5. Stelle von vorne* und an *5. Stelle von hinten*. Wie viele Leute stehen in der Schlange?",
+      "loesung": "9",
+      "erklaerung": "4 vor dir, 4 hinter dir, plus du = 9 – nicht 10, sonst zählst du dich doppelt! Wusstest du? Die erste Kino-Vorführung war 1895 in Paris.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "position-vorne-hinten"
+    },
+    {
+      "id": 1153,
+      "kategorie": "iq",
+      "typ": "duell",
+      "thema": "trend_2026_12_13_sternschnuppen",
+      "frage": "Lea sieht *12 Sternschnuppen*, Tom *10* – *4 davon* sahen beide. Wie viele *verschiedene* waren es?",
+      "links": {
+        "name": "Anna",
+        "sagt": "22"
+      },
+      "rechts": {
+        "name": "Ben",
+        "sagt": "18"
+      },
+      "recht": "rechts",
+      "loesung": "18 – Ben hat recht",
+      "erklaerung": "Die 4 gemeinsamen sind doppelt gezählt: 12 + 10 − 4 = *18*. Wusstest du? Die Geminiden stammen von einem Asteroiden.",
+      "sprich": "Lea zählt zwölf Sternschnuppen, Tom zehn. Vier davon sahen beide. Anna sagt zweiundzwanzig. Ben sagt achtzehn. Wer hat recht?",
+      "sprich_loesung": "Ben hat recht! Die vier gemeinsamen zählen nur einmal.",
+      "schwierigkeit": "mittel",
+      "status": "neu",
+      "konzept": "doppelt-gezaehlt-ueberlappung"
+    },
+    {
+      "id": 1154,
+      "kategorie": "emoji",
+      "frage": "🍦 + 🍦 + 🍦 = 27\n🍦 + 🍌 + 🍌 = 23\n🐶 + 🐶 = 4\n*🐶 + 🍦 + 🍌 = ?*",
+      "loesung": "18",
+      "erklaerung": "🍦 = 9, 🍌 = 7, 🐶 = 2 → 2 + 9 + 7 = 18.",
+      "schwierigkeit": "leicht",
+      "status": "neu"
+    },
+    {
+      "id": 1155,
+      "kategorie": "emoji",
+      "frage": "🍌 + 🍌 + 🍌 = 15\n🍌 + 🐔 + 🐔 = 23\n🥥 + 🥥 = 8\n*🥥 + 🍌 + 🐔 = ?*",
+      "loesung": "18",
+      "erklaerung": "🍌 = 5, 🐔 = 9, 🥥 = 4 → 4 + 5 + 9 = 18.",
+      "schwierigkeit": "leicht",
+      "status": "neu"
     }
   ],
   "gestrichen": [
